@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Musahm GTM Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c3924d;
+  --gold-light: #d4a96a;
+  --gold-dim: rgba(195,146,77,.12);
+  --gold-border: rgba(195,146,77,.25);
+  --black: #0d0d0d;
+  --charcoal: #1a1a1a;
+  --dark: #2c2c2c;
+  --gray-900: #1f1f1f;
+  --gray-700: #3a3a3a;
+  --gray-600: #555;
+  --gray-500: #777;
+  --gray-400: #999;
+  --gray-300: #bbb;
+  --gray-200: #ddd;
+  --gray-100: #eee;
+  --cream: #f7f4ef;
+  --cream-dark: #ede8e0;
+  --white: #fff;
+  --red: #c0392b;
+  --green: #27ae60;
+  --blue: #2980b9;
+  --sidebar-w: 272px;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-ar: 'Segoe UI', Tahoma, Arial, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font); background: var(--cream); color: var(--charcoal); font-size: 15px; line-height: 1.7; }
+
+/* SIDEBAR */
+.sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; background: var(--charcoal); z-index: 100; display: flex; flex-direction: column; border-right: 1px solid var(--gray-700); overflow: hidden; }
+.sidebar-brand { padding: 28px 24px 20px; border-bottom: 1px solid var(--gray-700); flex-shrink: 0; }
+.sidebar-brand h1 { color: var(--gold); font-size: 20px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2px; }
+.sidebar-brand p { color: var(--gray-500); font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; }
+.sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+.sidebar-nav::-webkit-scrollbar { width: 3px; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: var(--gray-700); border-radius: 3px; }
+.nav-group { margin-bottom: 4px; }
+.nav-group-label { padding: 8px 24px 4px; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-500); }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 24px; color: var(--gray-400); text-decoration: none; font-size: 12.5px; font-weight: 500; cursor: pointer; transition: color .15s, background .15s; border-left: 2px solid transparent; }
+.nav-item:hover { color: var(--cream); background: rgba(255,255,255,.04); }
+.nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(195,146,77,.06); }
+.nav-item img { width: 16px; height: 16px; flex-shrink: 0; filter: brightness(0) invert(.55); transition: filter .15s; }
+.nav-item:hover img { filter: brightness(0) invert(.85); }
+.nav-item.active img { filter: brightness(0) saturate(100%) invert(63%) sepia(30%) saturate(600%) hue-rotate(3deg) brightness(95%); }
+.sidebar-footer { padding: 16px 24px; border-top: 1px solid var(--gray-700); flex-shrink: 0; }
+.sidebar-footer p { color: var(--gray-600); font-size: 10px; }
+
+/* MAIN */
+.main { margin-left: var(--sidebar-w); min-height: 100vh; }
+
+/* PAGES (SPA) */
+.page { display: none; }
+.page.active { display: block; }
+
+/* HERO */
+.hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: var(--charcoal); color: var(--cream); padding: 60px 40px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at 50% 50%, rgba(195,146,77,.06) 0%, transparent 60%); pointer-events: none; }
+.hero::after { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 0H0v60' fill='none' stroke='rgba(195,146,77,0.04)' stroke-width='.5'/%3E%3C/svg%3E"); pointer-events: none; }
+.hero-eyebrow { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 40px; font-weight: 600; position: relative; z-index: 1; }
+.hero h2 { font-size: 60px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.05; margin-bottom: 24px; position: relative; z-index: 1; color: var(--white); }
+.hero h2 span { color: var(--gold); }
+.hero-tagline { font-size: 20px; font-weight: 300; color: var(--gray-300); margin-bottom: 10px; position: relative; z-index: 1; }
+.hero-tagline-ar { font-family: var(--font-ar); font-size: 22px; color: var(--gold-light); direction: rtl; margin-bottom: 48px; position: relative; z-index: 1; }
+.hero-divider { width: 48px; height: 1px; background: var(--gold); margin: 28px auto; position: relative; z-index: 1; }
+.hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; max-width: 800px; width: 100%; margin-top: 48px; position: relative; z-index: 1; }
+.hero-stat { padding: 20px; border: 1px solid var(--gray-700); border-radius: 6px; }
+.hero-stat-num { font-size: 28px; font-weight: 700; color: var(--gold); }
+.hero-stat-label { font-size: 11px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+/* SECTION PAGE */
+.pg { padding: 64px 56px 80px; max-width: 1020px; margin: 0 auto; }
+.pg-header { margin-bottom: 44px; }
+.pg-number { font-size: 11px; font-weight: 700; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.pg-number img { width: 18px; height: 18px; filter: brightness(0) saturate(100%) invert(63%) sepia(30%) saturate(600%) hue-rotate(3deg) brightness(95%); }
+.pg-title { font-size: 34px; font-weight: 700; color: var(--charcoal); letter-spacing: -0.5px; line-height: 1.15; margin-bottom: 10px; }
+.pg-desc { font-size: 15px; color: var(--gray-600); max-width: 640px; line-height: 1.7; }
+
+/* TYPOGRAPHY */
+h3 { font-size: 20px; font-weight: 600; color: var(--charcoal); margin: 36px 0 14px; letter-spacing: -0.2px; }
+h4 { font-size: 15px; font-weight: 600; color: var(--dark); margin: 24px 0 10px; }
+p { margin-bottom: 12px; }
+
+/* CARD */
+.card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 6px; padding: 24px; margin-bottom: 14px; transition: border-color .15s; }
+.card:hover { border-color: var(--gold-border); }
+.card-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.card-title { font-size: 17px; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
+.card-body { color: var(--gray-600); font-size: 13.5px; line-height: 1.75; }
+
+/* GRID */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+
+/* TABLE */
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 14px 0 20px; }
+thead th { text-align: left; padding: 9px 12px; background: var(--charcoal); color: var(--cream); font-weight: 600; font-size: 10.5px; letter-spacing: 0.5px; text-transform: uppercase; }
+thead th:first-child { border-radius: 4px 0 0 0; }
+thead th:last-child { border-radius: 0 4px 0 0; }
+tbody td { padding: 9px 12px; border-bottom: 1px solid var(--gray-100); vertical-align: top; }
+tbody tr:nth-child(even) td { background: rgba(0,0,0,.015); }
+tbody tr:hover td { background: var(--gold-dim); }
+
+/* QUOTE */
+.quote { border-left: 3px solid var(--gold); padding: 18px 22px; background: var(--gold-dim); border-radius: 0 6px 6px 0; margin: 16px 0; font-size: 14px; line-height: 1.8; color: var(--dark); }
+.quote.ar { direction: rtl; font-family: var(--font-ar); border-left: none; border-right: 3px solid var(--gold); border-radius: 6px 0 0 6px; font-size: 15px; }
+
+/* CALLOUT */
+.co { padding: 18px 22px; border-radius: 6px; margin: 16px 0; font-size: 13.5px; }
+.co-gold { background: var(--gold-dim); border: 1px solid var(--gold-border); }
+.co-dark { background: var(--charcoal); color: var(--cream); }
+.co-red { background: rgba(192,57,43,.05); border: 1px solid rgba(192,57,43,.12); }
+.co-green { background: rgba(39,174,96,.05); border: 1px solid rgba(39,174,96,.12); }
+.co-title { font-weight: 600; margin-bottom: 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* TABS */
+.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--gray-200); margin-bottom: 20px; flex-wrap: wrap; }
+.tab-btn { padding: 9px 18px; font-size: 12.5px; font-weight: 600; color: var(--gray-500); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-family: var(--font); transition: color .15s; }
+.tab-btn:hover { color: var(--charcoal); }
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* DETAILS */
+details { margin: 14px 0; border: 1px solid var(--gray-200); border-radius: 6px; overflow: hidden; }
+details summary { padding: 12px 18px; font-weight: 600; font-size: 13px; cursor: pointer; background: var(--white); color: var(--charcoal); transition: background .15s; list-style: none; display: flex; align-items: center; justify-content: space-between; }
+details summary::-webkit-details-marker { display: none; }
+details summary::after { content: '+'; font-size: 18px; font-weight: 400; color: var(--gold); }
+details[open] summary::after { content: '\2212'; }
+details summary:hover { background: var(--gold-dim); }
+details .det-body { padding: 18px; background: var(--white); }
+
+/* BADGE */
+.badge { display: inline-block; font-size: 9.5px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; }
+.b-gold { background: var(--gold); color: var(--white); }
+.b-dark { background: var(--charcoal); color: var(--cream); }
+.b-outline { border: 1px solid var(--gold); color: var(--gold); }
+.b-green { background: var(--green); color: var(--white); }
+.b-red { background: var(--red); color: var(--white); }
+
+/* PROGRESS */
+.pbar { height: 5px; background: var(--gray-100); border-radius: 3px; overflow: hidden; margin: 5px 0; }
+.pfill { height: 100%; background: var(--gold); border-radius: 3px; }
+
+/* VS */
+.vs-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch; margin: 16px 0; }
+.vs-side { padding: 20px; border-radius: 6px; font-size: 13px; line-height: 1.7; }
+.vs-them { background: rgba(192,57,43,.04); border: 1px solid rgba(192,57,43,.1); }
+.vs-us { background: rgba(39,174,96,.04); border: 1px solid rgba(39,174,96,.1); }
+.vs-div { display: flex; align-items: center; padding: 0 14px; font-size: 11px; font-weight: 700; color: var(--gray-400); }
+
+/* PIPELINE */
+.pipeline { display: flex; gap: 0; margin: 20px 0; }
+.pipe-stage { flex: 1; padding: 14px; background: var(--white); border: 1px solid var(--gray-200); text-align: center; }
+.pipe-stage:first-child { border-radius: 6px 0 0 6px; }
+.pipe-stage:last-child { border-radius: 0 6px 6px 0; }
+.pipe-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-500); }
+.pipe-title { font-size: 12.5px; font-weight: 600; color: var(--charcoal); margin-top: 3px; }
+.pipe-score { font-size: 10.5px; color: var(--gold); margin-top: 2px; }
+
+/* SCENE */
+.scene { background: var(--white); border: 1px solid var(--gray-200); border-radius: 6px; padding: 24px; margin-bottom: 16px; border-left: 3px solid var(--gold); position: relative; }
+.scene-num { position: absolute; top: -1px; left: -1px; background: var(--gold); color: var(--white); font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 6px 0 6px 0; }
+.scene-title { font-size: 17px; font-weight: 600; margin: 6px 0 4px; }
+.scene-dur { font-size: 11px; color: var(--gray-500); margin-bottom: 12px; }
+.wow { background: var(--gold-dim); border: 1px solid var(--gold-border); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+
+/* TIER */
+.tier { border-radius: 6px; padding: 24px; margin-bottom: 14px; }
+.tier-t1 { background: var(--gold-dim); border: 1px solid var(--gold-border); }
+.tier-t2 { background: rgba(41,128,185,.06); border: 1px solid rgba(41,128,185,.12); }
+.tier-t3 { background: rgba(0,0,0,.02); border: 1px solid var(--gray-200); }
+.score-ring { width: 56px; height: 56px; border-radius: 50%; border: 3px solid var(--gray-200); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex-shrink: 0; }
+.score-ring.t1 { border-color: var(--gold); color: var(--gold); }
+.score-ring.t2 { border-color: var(--blue); color: var(--blue); }
+.score-ring.t3 { border-color: var(--gray-400); color: var(--gray-400); }
+
+/* SEVERITY */
+.sev { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: 6px; margin-bottom: 10px; }
+.sev-p1 { background: rgba(192,57,43,.08); border: 1px solid rgba(192,57,43,.15); }
+.sev-p2 { background: rgba(230,126,34,.08); border: 1px solid rgba(230,126,34,.15); }
+.sev-p3 { background: rgba(241,196,15,.08); border: 1px solid rgba(241,196,15,.2); }
+.sev-p4 { background: rgba(39,174,96,.06); border: 1px solid rgba(39,174,96,.12); }
+.sev-label { font-weight: 700; font-size: 13px; min-width: 28px; }
+.sev-name { font-weight: 600; font-size: 13px; min-width: 70px; }
+.sev-time { font-size: 11px; color: var(--gray-600); font-weight: 600; min-width: 70px; }
+.sev-desc { font-size: 12px; color: var(--gray-600); }
+
+/* CHECK */
+.chk { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; font-size: 13px; }
+.chk::before { content: ''; width: 14px; height: 14px; border: 1.5px solid var(--gold); border-radius: 3px; flex-shrink: 0; margin-top: 3px; }
+
+/* CODE */
+.code { background: var(--gray-900); color: #e0e0e0; padding: 20px; border-radius: 6px; font-family: Menlo, Consolas, monospace; font-size: 11.5px; line-height: 1.7; overflow-x: auto; margin: 14px 0; white-space: pre-wrap; }
+
+/* GOLD LINE */
+.gl { width: 100%; height: 1px; background: var(--gold-border); margin: 36px 0; }
+
+/* UTILITY */
+.mt-0 { margin-top: 0; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; }
+.mb-0 { margin-bottom: 0; } .mb-8 { margin-bottom: 8px; }
+.text-sm { font-size: 12.5px; } .text-xs { font-size: 10.5px; }
+.text-muted { color: var(--gray-500); } .text-gold { color: var(--gold); }
+.fw-600 { font-weight: 600; } .upper { text-transform: uppercase; letter-spacing: 0.5px; }
+.strikethrough { text-decoration: line-through; opacity: .55; }
+
+/* FOOTER */
+.footer { padding: 40px 56px; text-align: center; background: var(--charcoal); color: var(--gray-500); font-size: 11px; }
+
+/* RESPONSIVE */
+@media (max-width: 1100px) { .g4 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 900px) {
+  .sidebar { position: fixed; top: 0; left: 0; right: 0; width: 100%; height: auto; max-height: 50px; flex-direction: row; align-items: center; overflow: visible; }
+  .sidebar-brand { padding: 10px 16px; border-bottom: none; border-right: 1px solid var(--gray-700); }
+  .sidebar-brand h1 { font-size: 15px; margin-bottom: 0; }
+  .sidebar-brand p { display: none; }
+  .sidebar-nav { display: flex; padding: 0; overflow-x: auto; }
+  .nav-group { display: contents; }
+  .nav-group-label { display: none; }
+  .nav-item { white-space: nowrap; padding: 14px 12px; border-left: none; border-bottom: 2px solid transparent; font-size: 11px; }
+  .nav-item.active { border-left: none; border-bottom-color: var(--gold); }
+  .sidebar-footer { display: none; }
+  .main { margin-left: 0; margin-top: 50px; }
+  .pg { padding: 40px 20px 60px; }
+  .hero h2 { font-size: 34px; }
+  .g2, .g3 { grid-template-columns: 1fr; }
+  .vs-grid { grid-template-columns: 1fr; }
+  .vs-div { padding: 10px 0; justify-content: center; }
+  .pipeline { flex-direction: column; }
+  .pipe-stage:first-child { border-radius: 6px 6px 0 0; }
+  .pipe-stage:last-child { border-radius: 0 0 6px 6px; }
+}
+@media print { .sidebar { display: none; } .main { margin-left: 0; } .page { display: block !important; page-break-after: always; } .hero { min-height: auto; padding: 40px 0; } }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-brand"><h1>Musahm</h1><p>GTM Playbook</p></div>
+  <div class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-item active" data-page="home"><img src="icons/flag.svg" alt="">Overview</div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">Foundation</div>
+      <div class="nav-item" data-page="positioning"><img src="icons/target.svg" alt="">Positioning</div>
+      <div class="nav-item" data-page="voice"><img src="icons/megaphone.svg" alt="">Voice Guide</div>
+      <div class="nav-item" data-page="battlecards"><img src="icons/sword.svg" alt="">Battle Cards</div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">Sales Enablement</div>
+      <div class="nav-item" data-page="meddic"><img src="icons/checklist.svg" alt="">MEDDIC</div>
+      <div class="nav-item" data-page="cxo"><img src="icons/crown.svg" alt="">CXO Value Story</div>
+      <div class="nav-item" data-page="demo"><img src="icons/play.svg" alt="">Demo Script</div>
+      <div class="nav-item" data-page="tiering"><img src="icons/layers.svg" alt="">Account Tiering</div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">Operations</div>
+      <div class="nav-item" data-page="pricing"><img src="icons/chart.svg" alt="">Pricing Tiers</div>
+      <div class="nav-item" data-page="crisis"><img src="icons/shield.svg" alt="">Crisis Playbook</div>
+      <div class="nav-item" data-page="brand"><img src="icons/check-circle.svg" alt="">Brand Checklist</div>
+      <div class="nav-item" data-page="winloss"><img src="icons/strategy.svg" alt="">Win/Loss Analysis</div>
+      <div class="nav-item" data-page="thankyou"><img src="icons/heart.svg" alt="">Thank-You Page</div>
+      <div class="nav-item" data-page="humanizer"><img src="icons/eye.svg" alt="">Humanizer Report</div>
+    </div>
+  </div>
+  <div class="sidebar-footer"><p>Internal Document</p><p>April 2026</p></div>
+</nav>
+
+<main class="main">
+
+<!-- HOME -->
+<div class="page active" id="home">
+<section class="hero">
+  <div class="hero-eyebrow">Go-to-Market Strategy</div>
+  <h2>Musahm<br><span>GTM Playbook</span></h2>
+  <p class="hero-tagline">Saudi governance. World-class platform.</p>
+  <p class="hero-tagline-ar">حوكمة سعودية. منصة عالمية.</p>
+  <div class="hero-divider"></div>
+  <div class="hero-grid">
+    <div class="hero-stat"><div class="hero-stat-num">13</div><div class="hero-stat-label">Deliverables</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">7</div><div class="hero-stat-label">Milestones Complete</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">21</div><div class="hero-stat-label">Content Files Audited</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">8.9</div><div class="hero-stat-label">Avg Humanizer Score</div></div>
+  </div>
+</section>
+</div>
+
+<!-- POSITIONING -->
+<div class="page" id="positioning"><div class="pg">
+  <div class="pg-header">
+    <div class="pg-number"><img src="icons/target.svg" alt="">Deliverable 01</div>
+    <h2 class="pg-title">Canonical Positioning Statement</h2>
+    <p class="pg-desc">The single source of truth for all Musahm messaging. Every piece of GTM content traces back to this statement.</p>
+  </div>
+  <div class="card" style="border-left:3px solid var(--gold)"><div class="card-label">For</div><p class="card-body mb-0">Board Secretaries, CEOs, CFOs, and Legal Counsel at Saudi SMBs (20-500 employees), closed joint-stock, listed, and LLC entities.</p></div>
+  <div class="card" style="border-left:3px solid var(--gold)"><div class="card-label">Who</div><p class="card-body mb-0">Manage corporate governance across WhatsApp groups, email chains, and shared drives, and face rising compliance pressure from the new Companies Law, CMA requirements, and Vision 2030 governance mandates.</p></div>
+  <div class="card" style="border-left:3px solid var(--gold)"><div class="card-label">Our Platform</div><p class="card-body mb-0">Musahm is the only Saudi-built governance platform that combines board management, shareholder registry with SMS communications, e-signatures, and a governed document management system (Vault) in a single Arabic-first product.</p></div>
+  <div class="card" style="border-left:3px solid var(--gold)"><div class="card-label">Unlike</div><p class="card-body mb-0">Majles.tech (board management only, no shareholder registry, no DMS), Ebana (standalone DMS, no governance context), SharePoint (general-purpose storage, no governance logic), and Diligent (enterprise pricing, English-first, no Saudi regulatory alignment).</p></div>
+  <div class="card" style="border-left:3px solid var(--gold)"><div class="card-label">We Prove It By</div><div class="card-body">
+    <div class="chk">Three Saudi companies operating on the platform today: Al-Ufuq (education), Miral (healthcare), Amwaj (education).</div>
+    <div class="chk">The only Saudi platform with an integrated shareholder registry and direct SMS shareholder communications.</div>
+    <div class="chk">Six pre-configured governance workspaces with five-level access control and per-document ACLs.</div>
+    <div class="chk">Complete audit trail on every action: user identity, details, and timestamp.</div>
+    <div class="chk">OTP-verified external document sharing with watermarks.</div>
+    <div class="chk">AI-powered field extraction from documents. Semantic search under active development.</div>
+  </div></div>
+  <details class="mt-24"><summary>Arabic Positioning Statement</summary><div class="det-body"><div class="quote ar"><strong>للعملاء:</strong> أمناء سر مجالس الإدارة والمديرين التنفيذيين والماليين والمستشارين القانونيين في الشركات السعودية المتوسطة (20-500 موظف).<br><br><strong>الذين</strong> يديرون حوكمة شركاتهم عبر مجموعات واتساب وسلاسل بريد إلكتروني ومجلدات مشتركة، ويواجهون ضغوطاً متزايدة من نظام الشركات الجديد ومتطلبات هيئة السوق المالية ومعايير رؤية 2030.<br><br><strong>منصتنا</strong> مساهم هي المنصة السعودية الوحيدة التي تجمع إدارة المجلس وسجل المساهمين مع تواصل SMS والتوقيعات الإلكترونية ونظام إدارة وثائق محوكم (Vault) في منتج واحد بواجهة عربية أصلية.</div></div></details>
+  <div class="gl"></div>
+  <h3>Derivative Formats</h3>
+  <div class="co co-gold mt-16"><div class="co-title">Elevator Pitch</div><p class="mb-0">Musahm is the Saudi-built governance platform that combines board management, shareholder registry, and document governance in one Arabic-first product. Because Saudi companies deserve governance that understands their regulations, their language, and their way of doing business.</p></div>
+  <h4>Competitive One-Liners</h4>
+  <table><thead><tr><th>Competitor</th><th>Positioning Against</th></tr></thead><tbody>
+    <tr><td><strong>vs. Majles</strong></td><td>"Majles manages board meetings. Musahm manages governance. Shareholder registry, SMS communications, document management: three capabilities Majles does not offer."</td></tr>
+    <tr><td><strong>vs. Ebana</strong></td><td>"Ebana stores documents. Vault governs them, inside a platform that connects every document to the governance decision it came from."</td></tr>
+    <tr><td><strong>vs. Diligent</strong></td><td>"Diligent serves Fortune 500 boards at Fortune 500 prices. Musahm serves Saudi companies of every type, in Arabic, at SMB-accessible pricing."</td></tr>
+    <tr><td><strong>vs. WhatsApp</strong></td><td>"Your board decisions are in a WhatsApp group. Your contracts are in someone's inbox. One resignation and you lose both."</td></tr>
+  </tbody></table>
+</div></div>
+
+<!-- VOICE GUIDE -->
+<div class="page" id="voice"><div class="pg">
+  <div class="pg-header">
+    <div class="pg-number"><img src="icons/megaphone.svg" alt="">Deliverable 02</div>
+    <h2 class="pg-title">Brand Voice Guide</h2>
+    <p class="pg-desc">How Musahm sounds. Four attributes, four confidence tiers, five signature constructions, and seven anti-patterns.</p>
+  </div>
+  <h3 class="mt-0">Core Energy</h3>
+  <div class="co co-dark"><p class="mb-0" style="font-size:17px;font-weight:500;line-height:1.6;">Musahm sounds like a Saudi company that has <em>already won</em>, not one trying to prove itself.</p></div>
+  <p>The core energy is <strong>confident national ownership</strong>. Not defensive, not aggressive, but settled and assured: "We built this because it needed to exist, and we were the right people to build it."</p>
+  <div class="g3 mt-24">
+    <div class="card"><div class="card-label">Builder's Pride</div><p class="card-body mb-0">The voice of people who made something with their own hands, for their own market. "بنينا" (we built) is the emotional anchor.</p></div>
+    <div class="card"><div class="card-label">Institutional Weight</div><p class="card-body mb-0">Musahm does not sound like a startup. It sounds like an institution that happens to be new. Professional register, specific claims.</p></div>
+    <div class="card"><div class="card-label">Vision 2030 Context</div><p class="card-body mb-0">The voice treats Saudi Arabia's national transformation as the water it swims in, not a hashtag it pins on.</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Brand Voice Matrix</h3>
+  <div class="g2">
+    <div class="card"><div class="card-label">Confident</div><h4 class="mt-0">We Are</h4><p class="card-body">Direct, evidence-backed claims. Every assertion cites a feature, a number, or a named client.</p><h4>We Are Not</h4><p class="card-body mb-0">Arrogant or unsubstantiated. No "best-in-class," no "revolutionary," no superlatives without proof.</p></div>
+    <div class="card"><div class="card-label">Saudi-Native</div><h4 class="mt-0">We Are</h4><p class="card-body">Culturally authentic, Arabic-first, grounded in Saudi Companies Law and CMA requirements.</p><h4>We Are Not</h4><p class="card-body mb-0">Performatively Saudi. No hollow hashtags, no flag-waving without substance.</p></div>
+    <div class="card"><div class="card-label">Professional</div><h4 class="mt-0">We Are</h4><p class="card-body">Enterprise-grade register, compliance-aware, respects the buyer's intelligence.</p><h4>We Are Not</h4><p class="card-body mb-0">Bureaucratic, cold, or jargon-heavy. Professional is warm and clear.</p></div>
+    <div class="card"><div class="card-label">Forward-Looking</div><h4 class="mt-0">We Are</h4><p class="card-body">Innovation-driven. We announce what is live today and label what is coming.</p><h4>We Are Not</h4><p class="card-body mb-0">Hype-driven or vaporware. "Coming soon" is a commitment, not decoration.</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Confidence Calibration</h3>
+  <div class="card" style="border-left:3px solid var(--green)"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><span class="badge b-green">Tier 1</span><strong>Full Confidence</strong><span class="text-xs text-muted">Assert without qualification</span></div><p class="card-body mb-0">Saudi-built platform. Only KSA platform with integrated shareholder registry. Only KSA platform with governance + DMS. SMS shareholder communications. Arabic-first UX. Five hierarchical roles. Full audit trail.</p></div>
+  <div class="card" style="border-left:3px solid var(--blue)"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><span class="badge" style="background:var(--blue);color:white">Tier 2</span><strong>Confident with Context</strong><span class="text-xs text-muted">Assert with supporting detail</span></div><p class="card-body mb-0">World-class platform (pair with specifics). Built for Saudi regulations (cite which). AI features (name capabilities). Easy onboarding (quantify: "15 minutes").</p></div>
+  <div class="card" style="border-left:3px solid var(--gray-400)"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><span class="badge b-dark">Tier 3</span><strong>Measured Confidence</strong></div><p class="card-body mb-0">Electronic voting. Board meeting management. Committee management. Version control.</p></div>
+  <div class="card" style="border-left:3px solid var(--red)"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><span class="badge b-red">Tier 4</span><strong>Do Not Claim</strong></div><p class="card-body mb-0">Task assignment post-meeting. Real-time document collaboration. Board member performance tracking. Data residency in KSA (unverified). Specific pricing.</p></div>
+  <div class="gl"></div>
+  <h3>Anti-Patterns</h3>
+  <div class="co co-red"><div class="co-title" style="color:var(--red)">The Apologetic Local</div><p class="strikethrough mb-8">"We may not be as big as international platforms, but we offer a solid solution for the Saudi market."</p><p class="text-sm mb-0">Positions Saudi-built as a limitation. Contradicts confident ownership.</p></div>
+  <div class="co co-red"><div class="co-title" style="color:var(--red)">The Startup Disruptor</div><p class="strikethrough mb-8">"We're disrupting corporate governance with our cutting-edge, game-changing platform."</p><p class="text-sm mb-0">This is Majles's lane. Governance does not reward "disruption" language.</p></div>
+  <div class="co co-red"><div class="co-title" style="color:var(--red)">The Western Tech Mimic</div><p class="strikethrough mb-8">"Think of Musahm as the Notion + DocuSign + Boardvantage of Saudi Arabia."</p><p class="text-sm mb-0">Positions the Western brand as the original. Musahm is not the Saudi version of anything.</p></div>
+  <div class="co co-red"><div class="co-title" style="color:var(--red)">The Casual Buddy</div><p class="strikethrough mb-8">"Hey! Ready to level up your governance game? Let's gooo"</p><p class="text-sm mb-0">The ICP is Board Secretaries and C-suite. Warmth comes from understanding, not exclamation marks.</p></div>
+  <details class="mt-24"><summary>Prompt-Ready Voice Block (for AI Content Generation)</summary><div class="det-body"><div class="code">BRAND: Musahm. Saudi-built corporate governance platform + Musahm Vault (companion DMS).
+TAGLINE: "Saudi governance. World-class platform." / "حوكمة سعودية. منصة عالمية."
+VOICE: A confident Saudi company that has already won.
+PERSONALITY: Proud, Ambitious, Capable, Progressive, Rooted.
+REGISTER: Professional with progressive national pride.
+
+SIGNATURE VOCABULARY:
+EN: "built for," "from scratch," "governance that understands," "audit-ready," "one platform"
+AR: بنينا، من الصفر، تستحق، محوكم، سعودي/سعودية، تمكين، عالمي المعايير
+
+AVOID: "disruptive," "revolutionary," "game-changing," "supercharge," "magic," "MENA," "the [Western brand] of Saudi Arabia"</div></div></details>
+</div></div>
+
+<!-- BATTLE CARDS -->
+<div class="page" id="battlecards"><div class="pg">
+  <div class="pg-header">
+    <div class="pg-number"><img src="icons/sword.svg" alt="">Deliverable 03</div>
+    <h2 class="pg-title">Competitive Battle Cards</h2>
+    <p class="pg-desc">Four cards covering every competitive scenario. Extended 7-section framework with trap-setting questions. All claims verified.</p>
+  </div>
+  <div class="co co-gold mb-8"><div class="co-title">FIA Rule</div><p class="mb-0">Every claim follows the Fact-Impact-Act framework. Never trash a competitor. Acknowledge their strengths, then redirect.</p></div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="bc-majles">Majles.tech</button>
+    <button class="tab-btn" data-tab="bc-ebana">Ebana DMS</button>
+    <button class="tab-btn" data-tab="bc-diligent">Diligent</button>
+    <button class="tab-btn" data-tab="bc-wa">WhatsApp/Excel</button>
+  </div>
+  <div class="tab-panel active" id="bc-majles">
+    <div class="card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span class="badge b-dark">Card 1</span><h3 class="mt-0 mb-0">Majles.tech</h3></div><p class="text-muted text-sm">Modern governance platform. English-forward bilingual UX. Covers meeting management and resolutions but lacks shareholder management and document management.</p></div>
+    <div class="vs-grid mt-24"><div class="vs-side vs-them"><h4 class="mt-0">Their Pitch</h4><p class="text-sm mb-0">"We modernize board operations with real-time collaboration, task tracking, and performance analytics."</p></div><div class="vs-div">VS</div><div class="vs-side vs-us"><h4 class="mt-0">Our Counter</h4><p class="text-sm mb-0">"Majles is a solid meeting tool. But governance is bigger than meetings. When your board approves a capital increase, who tracks the share transfer? We don't just manage meetings. We manage the company."</p></div></div>
+    <h4>What We Have That They Don't</h4>
+    <table><thead><tr><th>Feature</th><th>Talking Point</th></tr></thead><tbody>
+      <tr><td><strong>Shareholder Registry</strong></td><td>The only platform in Saudi Arabia with a built-in shareholder registry.</td></tr>
+      <tr><td><strong>SMS Communications</strong></td><td>Formal shareholder notices sent directly from the platform. Tracked, timestamped.</td></tr>
+      <tr><td><strong>Vault (DMS)</strong></td><td>Governance documents organized in governance-themed workspaces with full workflow tracking.</td></tr>
+      <tr><td><strong>E-Signatures</strong></td><td>Sign resolutions and contracts inside Musahm. No third-party tool.</td></tr>
+      <tr><td><strong>Listed + Unlisted + LLC</strong></td><td>Majles focuses on listed companies. Musahm serves all entity types.</td></tr>
+    </tbody></table>
+    <div class="co co-gold"><div class="co-title">Killer Question</div><p class="mb-0">"When your board approves a capital increase or share transfer, how does that decision flow to your shareholder registry today? Is it the same system, or does someone manually update a separate record?"</p></div>
+  </div>
+  <div class="tab-panel" id="bc-ebana">
+    <div class="card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span class="badge b-dark">Card 2</span><h3 class="mt-0 mb-0">Ebana DMS</h3></div><p class="text-muted text-sm">Saudi IT consultancy. Custom-built DMS. SAR 100,000+ implementations. 3-6 month deploy. No governance context.</p></div>
+    <div class="vs-grid mt-24"><div class="vs-side vs-them"><h4 class="mt-0">Their Pitch</h4><p class="text-sm mb-0">"We build a DMS tailored to your exact requirements, with full customization and on-premise options."</p></div><div class="vs-div">VS</div><div class="vs-side vs-us"><h4 class="mt-0">Our Counter</h4><p class="text-sm mb-0">"Ebana's typical implementation takes months and costs over SAR 100,000 before you store your first document. Vault deploys in minutes. Ebana gives you a file cabinet. Vault gives you a governance record."</p></div></div>
+    <div class="co co-gold"><div class="co-title">Killer Question</div><p class="mb-0">"When you store a board-approved contract in your DMS, can you trace it back to the specific board resolution that authorized it, automatically?"</p></div>
+  </div>
+  <div class="tab-panel" id="bc-diligent">
+    <div class="card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span class="badge b-dark">Card 3</span><h3 class="mt-0 mb-0">Diligent</h3></div><p class="text-muted text-sm">Largest global governance provider. Fortune 500 focus. $50,000-$200,000+ annually. Not active in Saudi SMB market.</p></div>
+    <div class="vs-grid mt-24"><div class="vs-side vs-them"><h4 class="mt-0">Their Pitch</h4><p class="text-sm mb-0">"We are the global standard, trusted by 700,000+ board members worldwide."</p></div><div class="vs-div">VS</div><div class="vs-side vs-us"><h4 class="mt-0">Our Counter</h4><p class="text-sm mb-0">"For Saudi companies: do you need a platform designed for American regulatory frameworks, or one that understands your Companies Law, your CMA regulations, and your Board Secretary's workflow, in Arabic?"</p></div></div>
+    <div class="co co-gold"><div class="co-title">Killer Question</div><p class="mb-0">"What percentage of the platform's features are actually relevant to Saudi Companies Law? And will your Board Secretary, who works in Arabic, be comfortable using an English-first system daily?"</p></div>
+  </div>
+  <div class="tab-panel" id="bc-wa">
+    <div class="card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span class="badge b-dark">Card 4</span><h3 class="mt-0 mb-0">WhatsApp + Excel</h3><span class="badge b-gold">The Real Competitor</span></div><p class="text-muted text-sm">Not a company. The way 80%+ of Saudi SMBs manage governance. Free, familiar, "good enough" until it isn't.</p></div>
+    <div class="co co-dark mt-24"><p class="mb-0" style="font-size:15px">"It works until it doesn't. When CMA asks for a complete audit trail, can you produce it from a WhatsApp group? When a shareholder disputes a capital change, is the Excel spreadsheet your legal evidence?"</p></div>
+    <div class="co co-gold mt-16"><div class="co-title">Killer Question</div><p class="mb-0">"If a shareholder filed a legal complaint tomorrow claiming their shares were diluted without proper notification, what documented evidence could you produce within 24 hours?"</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Competitive Matrix</h3>
+  <div style="overflow-x:auto"><table><thead><tr><th>Dimension</th><th style="background:var(--gold)">Musahm</th><th>Majles</th><th>Ebana</th><th>Diligent</th><th>WhatsApp</th></tr></thead><tbody>
+    <tr><td><strong>Shareholder Registry</strong></td><td><span class="badge b-green">Exclusive</span></td><td>No</td><td>No</td><td>No</td><td>Excel</td></tr>
+    <tr><td><strong>Board Management</strong></td><td>Yes</td><td>Yes (strong)</td><td>No</td><td>Yes</td><td>WhatsApp</td></tr>
+    <tr><td><strong>DMS + Governance</strong></td><td><span class="badge b-green">Vault</span></td><td>No</td><td>Generic</td><td>Limited</td><td>Folders</td></tr>
+    <tr><td><strong>E-Signatures</strong></td><td>Yes</td><td>No</td><td>No</td><td>Yes</td><td>No</td></tr>
+    <tr><td><strong>SMS Comms</strong></td><td><span class="badge b-green">Exclusive</span></td><td>No</td><td>No</td><td>No</td><td>Informal</td></tr>
+    <tr><td><strong>Arabic-First</strong></td><td>Yes</td><td>Bilingual</td><td>English</td><td>English-first</td><td>N/A</td></tr>
+    <tr><td><strong>Deploy Speed</strong></td><td>Minutes</td><td>Days</td><td>3-6 months</td><td>1-3 months</td><td>N/A</td></tr>
+    <tr><td><strong>Saudi-Built</strong></td><td>Yes</td><td>Yes</td><td>Yes</td><td>No (US)</td><td>N/A</td></tr>
+  </tbody></table></div>
+</div></div>
+
+<!-- MEDDIC -->
+<div class="page" id="meddic"><div class="pg">
+  <div class="pg-header">
+    <div class="pg-number"><img src="icons/checklist.svg" alt="">Deliverable 04</div>
+    <h2 class="pg-title">MEDDIC Sales Qualification</h2>
+    <p class="pg-desc">Score every opportunity before committing resources. Minimum 60/100 to advance past discovery. Adapted for KSA governance buyers.</p>
+  </div>
+  <h3 class="mt-0">Scoring Model</h3>
+  <div class="g2">
+    <div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><strong>I - Identify Pain</strong><span class="text-gold fw-600">20 pts</span></div><div class="pbar"><div class="pfill" style="width:100%"></div></div><p class="text-xs text-muted mt-16 mb-0">Is the pain real, urgent, and acknowledged by the economic buyer?</p></div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><strong>M - Metrics</strong><span class="text-gold fw-600">15 pts</span></div><div class="pbar"><div class="pfill" style="width:75%"></div></div><p class="text-xs text-muted mt-16 mb-0">Can the prospect quantify governance costs?</p></div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><strong>E - Economic Buyer</strong><span class="text-gold fw-600">15 pts</span></div><div class="pbar"><div class="pfill" style="width:75%"></div></div><p class="text-xs text-muted mt-16 mb-0">Who writes the check, and do we have access?</p></div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><strong>D - Decision Criteria</strong><span class="text-gold fw-600">15 pts</span></div><div class="pbar"><div class="pfill" style="width:75%"></div></div><p class="text-xs text-muted mt-16 mb-0">What will they evaluate us on? Can we influence it?</p></div>
+    </div>
+    <div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><strong>C - Champion</strong><span class="text-gold fw-600">15 pts</span></div><div class="pbar"><div class="pfill" style="width:75%"></div></div><p class="text-xs text-muted mt-16 mb-0">Someone inside selling for us when we're not in the room?</p></div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><strong>D - Decision Process</strong><span class="text-gold fw-600">10 pts</span></div><div class="pbar"><div class="pfill" style="width:50%"></div></div><p class="text-xs text-muted mt-16 mb-0">Steps from "interested" to "signed contract"</p></div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><strong>C - Competition</strong><span class="text-gold fw-600">10 pts</span></div><div class="pbar"><div class="pfill" style="width:50%"></div></div><p class="text-xs text-muted mt-16 mb-0">Who else is in the deal? Can we win?</p></div>
+      <div class="co co-dark" style="margin-top:14px"><div class="co-title" style="color:var(--gold)">Total: 100 Points</div><p class="mb-0 text-sm">Minimum 60 to advance past discovery.</p></div>
+    </div>
+  </div>
+  <div class="gl"></div>
+  <h3>Score Interpretation</h3>
+  <div class="g4 mt-16">
+    <div class="card" style="border-top:3px solid var(--green);text-align:center"><div style="font-size:26px;font-weight:700;color:var(--green)">80-100</div><div class="text-xs upper fw-600 mt-16">Strong Deal</div><p class="text-xs text-muted mt-16 mb-0">Full resources, fast-track</p></div>
+    <div class="card" style="border-top:3px solid var(--blue);text-align:center"><div style="font-size:26px;font-weight:700;color:var(--blue)">60-79</div><div class="text-xs upper fw-600 mt-16">Qualified</div><p class="text-xs text-muted mt-16 mb-0">Standard sales cycle</p></div>
+    <div class="card" style="border-top:3px solid var(--gold);text-align:center"><div style="font-size:26px;font-weight:700;color:var(--gold)">40-59</div><div class="text-xs upper fw-600 mt-16">Weak</div><p class="text-xs text-muted mt-16 mb-0">Nurture only, no SE time</p></div>
+    <div class="card" style="border-top:3px solid var(--red);text-align:center"><div style="font-size:26px;font-weight:700;color:var(--red)">&lt;40</div><div class="text-xs upper fw-600 mt-16">Disqualify</div><p class="text-xs text-muted mt-16 mb-0">Marketing drip. Revisit 6mo.</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Deal Stage Gates</h3>
+  <div class="pipeline mt-24"><div class="pipe-stage"><div class="pipe-label">Stage 1</div><div class="pipe-title">Discovery</div><div class="pipe-score">Score: 30+</div></div><div class="pipe-stage"><div class="pipe-label">Stage 2</div><div class="pipe-title">Qualification</div><div class="pipe-score">Score: 50+</div></div><div class="pipe-stage"><div class="pipe-label">Stage 3</div><div class="pipe-title">Demo</div><div class="pipe-score">Score: 60+</div></div><div class="pipe-stage"><div class="pipe-label">Stage 4</div><div class="pipe-title">Proposal</div><div class="pipe-score">Score: 75+</div></div></div>
+  <details><summary>Champion Validation Tests</summary><div class="det-body"><table><thead><tr><th>Test</th><th>Question</th><th>Requirement</th></tr></thead><tbody>
+    <tr><td><strong>Access</strong></td><td>Can they get us a meeting with the economic buyer?</td><td><span class="badge b-red">Must Pass</span></td></tr>
+    <tr><td><strong>Pain</strong></td><td>Do they describe the problem from personal experience?</td><td><span class="badge b-red">Must Pass</span></td></tr>
+    <tr><td><strong>Advocacy</strong></td><td>Have they said "I want this" or "we need this"?</td><td><span class="badge b-red">Must Pass</span></td></tr>
+    <tr><td><strong>Influence</strong></td><td>Does the economic buyer listen to them?</td><td><span class="badge b-outline">Should Pass</span></td></tr>
+    <tr><td><strong>Urgency</strong></td><td>Are they pushing for a timeline?</td><td><span class="badge b-dark">Nice to Have</span></td></tr>
+  </tbody></table></div></details>
+</div></div>
+
+<!-- CXO VALUE STORY -->
+<div class="page" id="cxo"><div class="pg">
+  <div class="pg-header">
+    <div class="pg-number"><img src="icons/crown.svg" alt="">Deliverable 05</div>
+    <h2 class="pg-title">CXO Value Story</h2>
+    <p class="pg-desc">Headline impact by persona, three driver pillars, meeting structure, and objection handlers.</p>
+  </div>
+  <h3 class="mt-0">Headline Impact</h3>
+  <div class="tabs"><button class="tab-btn active" data-tab="cxo-ceo">CEO</button><button class="tab-btn" data-tab="cxo-cfo">CFO</button><button class="tab-btn" data-tab="cxo-bs">Board Secretary</button></div>
+  <div class="tab-panel active" id="cxo-ceo"><div class="quote">"Musahm makes your company ungovernable-proof. When CMA reviews your governance, when investors evaluate your professionalism, when a shareholder disputes a decision, you have a complete, auditable record produced in seconds, not days."</div><div class="quote ar">"مساهم تجعل حوكمة شركتكم غير قابلة للطعن. عندما تراجع هيئة السوق المالية حوكمتكم، عندما يقيّم المستثمرون احترافيتكم، لديكم سجل كامل وقابل للتدقيق يُنتج في ثوانٍ لا أيام."</div></div>
+  <div class="tab-panel" id="cxo-cfo"><div class="quote">"Your governance processes consume hours of manual work per board cycle, carry unmeasured legal exposure, and produce no auditable evidence when you need it most. Musahm replaces that with a system where every decision has a chain of custody, at a fraction of what a single regulatory fine would cost."</div></div>
+  <div class="tab-panel" id="cxo-bs"><div class="quote">"You coordinate board meetings over WhatsApp, write minutes in Word, track attendance in Excel, and chase signatures by email. Musahm turns all of that into one system. Setup takes 15 minutes."</div></div>
+  <div class="gl"></div>
+  <h3>Three Driver Pillars</h3>
+  <div class="card" style="border-left:3px solid var(--gold)"><div class="card-label">Pillar 1</div><div class="card-title">Regulatory Readiness</div><table><thead><tr><th>Metric</th><th>Without Musahm</th><th>With Musahm</th></tr></thead><tbody><tr><td>Audit trail compilation</td><td>Days to weeks</td><td>Seconds</td></tr><tr><td>Shareholder notification proof</td><td>WhatsApp screenshots</td><td>SMS with delivery tracking</td></tr><tr><td>Resolution chain of custody</td><td>PDF in someone's email</td><td>E-signed, versioned, audit-trailed</td></tr></tbody></table></div>
+  <div class="card" style="border-left:3px solid var(--gold)"><div class="card-label">Pillar 2</div><div class="card-title">Governance Consolidation</div><table><thead><tr><th>Metric</th><th>Without Musahm</th><th>With Musahm</th></tr></thead><tbody><tr><td>Tools for governance</td><td>4-6 disconnected</td><td>1 platform</td></tr><tr><td>Key-person dependency</td><td>Board Secretary holds everything</td><td>System holds everything</td></tr></tbody></table></div>
+  <div class="card" style="border-left:3px solid var(--gold)"><div class="card-label">Pillar 3</div><div class="card-title">Professional Image</div><table><thead><tr><th>Metric</th><th>Without Musahm</th><th>With Musahm</th></tr></thead><tbody><tr><td>Governance perception</td><td>"They use WhatsApp"</td><td>"They use a governance platform"</td></tr><tr><td>Vision 2030 alignment</td><td>Aspirational</td><td>Operational</td></tr></tbody></table></div>
+  <details><summary>Objection Handlers</summary><div class="det-body"><table><thead><tr><th>Objection</th><th>Response</th></tr></thead><tbody>
+    <tr><td>"We are too small."</td><td>"The Companies Law does not exempt small companies. Smaller companies have more concentrated risk."</td></tr>
+    <tr><td>"We already use SharePoint."</td><td>"SharePoint stores files. It does not know what a board resolution is."</td></tr>
+    <tr><td>"We will evaluate next quarter."</td><td>"Every board meeting between now and then is a meeting without an audit trail. We can set up a pilot in 15 minutes today."</td></tr>
+    <tr><td>"How do we know you'll still be here in 2 years?"</td><td>"Musahm is funded, operating, with 3 active clients. Your data is yours. Standard formats. You take everything if you leave."</td></tr>
+  </tbody></table></div></details>
+</div></div>
+
+<!-- DEMO SCRIPT -->
+<div class="page" id="demo"><div class="pg">
+  <div class="pg-header">
+    <div class="pg-number"><img src="icons/play.svg" alt="">Deliverable 06</div>
+    <h2 class="pg-title">Product Demo Script</h2>
+    <p class="pg-desc">25-minute scripted demo. Six scenes, problem-first, with built-in moments that prospects remember.</p>
+  </div>
+  <details><summary>Pre-Demo Checklist</summary><div class="det-body">
+    <div class="chk">Demo tenant loaded with sample company data</div><div class="chk">At least 5 sample shareholders in the registry</div><div class="chk">2 sample board meetings (one completed, one upcoming)</div><div class="chk">3-4 documents in Vault across different workspaces</div><div class="chk">SMS integration active</div><div class="chk">Prospect's phone number available (for the live SMS moment)</div><div class="chk">Arabic interface set as default</div><div class="chk">Browser zoomed to 125%</div>
+  </div></details>
+  <div class="scene mt-24"><div class="scene-num">Scene 1</div><div class="scene-title">The Hook</div><div class="scene-dur">3 minutes. Establish pain before showing product.</div><div class="quote">"Before I show you anything, let me describe what we hear from companies like yours. Board meetings coordinated over WhatsApp. Minutes in Word. Attendance in Excel. Does that sound familiar?"</div><p class="text-sm"><strong>Then pause.</strong> Let the prospect respond. Their answer becomes your anchor.</p></div>
+  <div class="scene"><div class="scene-num">Scene 2</div><div class="scene-title">The Dashboard</div><div class="scene-dur">2 minutes. First impression.</div><div class="quote">"This is your governance command center. Upcoming meetings, recent resolutions, shareholder overview, Vault documents. Notice the interface is Arabic-first."</div></div>
+  <div class="scene"><div class="scene-num">Scene 3</div><div class="scene-title">Shareholder Registry</div><div class="scene-dur">5 minutes. The differentiator.</div><div class="quote">"This is the feature no other Saudi governance platform offers. Every shareholder, ownership percentage, and every share transfer, logged and auditable."</div><div class="wow"><div class="co-title" style="color:var(--gold)">SMS Wow Moment</div><p class="text-sm mb-0">"Now watch this." Send an SMS notification to the prospect's phone during the meeting. <strong>The prospect's phone buzzes. This is the moment they remember.</strong></p></div></div>
+  <div class="scene"><div class="scene-num">Scene 4</div><div class="scene-title">Vault: Governance Documents</div><div class="scene-dur">5 minutes.</div><div class="quote">"Vault is not Dropbox. Six workspaces, pre-configured: Board Meetings, Decisions, Committees, Contracts, Policies, General."</div><div class="wow"><div class="co-title" style="color:var(--gold)">OTP Sharing</div><p class="text-sm mb-0">"External sharing uses OTP verification. Documents carry a watermark with the viewer's name and date. If it leaks, you know who shared it."</p></div></div>
+  <div class="scene"><div class="scene-num">Scene 5</div><div class="scene-title">Workflows and AI</div><div class="scene-dur">3 minutes.</div><div class="quote">"Submit a contract, workflow assigns it to reviewer, then approver. Every step logged. Skipping a step is blocked by the system."</div></div>
+  <div class="scene"><div class="scene-num">Scene 6</div><div class="scene-title">The Close</div><div class="scene-dur">4 minutes.</div><div class="quote">"Your WhatsApp coordination becomes one platform. Your Excel registry becomes a governed record. Your scattered documents become workspaces with full audit trail. We have 30 beta seats remaining."</div><table class="text-sm"><thead><tr><th>Persona</th><th>Close Line</th></tr></thead><tbody>
+    <tr><td>Board Secretary</td><td>"Would you like to run your next board meeting on Musahm?"</td></tr>
+    <tr><td>CEO</td><td>"Your governance just went from WhatsApp-grade to institutional-grade."</td></tr>
+    <tr><td>CFO</td><td>"The subscription costs less than one shareholder dispute."</td></tr>
+  </tbody></table></div>
+</div></div>
+
+<!-- ACCOUNT TIERING -->
+<div class="page" id="tiering"><div class="pg">
+  <div class="pg-header">
+    <div class="pg-number"><img src="icons/layers.svg" alt="">Deliverable 07</div>
+    <h2 class="pg-title">Account Tiering Matrix</h2>
+    <p class="pg-desc">4-Factor scoring model. Every prospect assigned T1 (high-touch), T2 (standard), or T3 (nurture).</p>
+  </div>
+  <h3 class="mt-0">4-Factor Scoring</h3>
+  <div class="g4 mt-16">
+    <div class="card" style="text-align:center;border-top:3px solid var(--gold)"><div style="font-size:30px;font-weight:800;color:var(--gold)">40</div><div class="text-xs upper fw-600 mt-16">Firmographic Fit</div><p class="text-xs text-muted mt-16 mb-0">Entity type, size, industry</p></div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--charcoal)"><div style="font-size:30px;font-weight:800">30</div><div class="text-xs upper fw-600 mt-16">Governance Maturity</div><p class="text-xs text-muted mt-16 mb-0">Current system, board activity</p></div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--blue)"><div style="font-size:30px;font-weight:800;color:var(--blue)">20</div><div class="text-xs upper fw-600 mt-16">Intent Signals</div><p class="text-xs text-muted mt-16 mb-0">Website, inbound, triggers</p></div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--green)"><div style="font-size:30px;font-weight:800;color:var(--green)">10</div><div class="text-xs upper fw-600 mt-16">Engagement</div><p class="text-xs text-muted mt-16 mb-0">Contact level, responsiveness</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Tier Assignment</h3>
+  <div class="g3 mt-16">
+    <div class="tier tier-t1"><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div class="score-ring t1">T1</div><div><div class="fw-600">High-Touch</div><div class="text-sm text-muted">70-100 pts</div></div></div><div class="text-xs upper fw-600 mb-8">10-15 Accounts</div><p class="text-sm mb-0">Personalized demo, CXO Value Story, dedicated AE, weekly follow-up. Close within 30 days.</p></div>
+    <div class="tier tier-t2"><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div class="score-ring t2">T2</div><div><div class="fw-600">Standard</div><div class="text-sm text-muted">45-69 pts</div></div></div><div class="text-xs upper fw-600 mb-8">30-50 Accounts</div><p class="text-sm mb-0">Group demo/webinar, standard sales cycle, bi-weekly follow-up. Close within 60 days.</p></div>
+    <div class="tier tier-t3"><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div class="score-ring t3">T3</div><div><div class="fw-600">Nurture</div><div class="text-sm text-muted">0-44 pts</div></div></div><div class="text-xs upper fw-600 mb-8">Unlimited</div><p class="text-sm mb-0">Marketing drip, content, events. Re-score quarterly.</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Beta Launch Waves</h3>
+  <div class="pipeline"><div class="pipe-stage" style="background:var(--gold-dim)"><div class="pipe-label" style="color:var(--gold)">Wave 1</div><div class="pipe-title">Immediate</div><div class="pipe-score">10 accounts</div></div><div class="pipe-stage"><div class="pipe-label">Wave 2</div><div class="pipe-title">Week 3-4</div><div class="pipe-score">15 accounts</div></div><div class="pipe-stage"><div class="pipe-label">Wave 3</div><div class="pipe-title">Month 2</div><div class="pipe-score">5 accounts</div></div></div>
+  <details><summary>Firmographic Scoring Detail</summary><div class="det-body"><table><thead><tr><th>Criterion</th><th>10 pts</th><th>7 pts</th><th>4 pts</th><th>0 pts</th></tr></thead><tbody>
+    <tr><td><strong>Entity Type</strong></td><td>Closed Joint-Stock</td><td>LLC 5+ shareholders</td><td>LLC 1-4</td><td>Sole proprietorship</td></tr>
+    <tr><td><strong>Employees</strong></td><td>50-500</td><td>20-49 or 501-1000</td><td>10-19</td><td>Under 10 or over 1000</td></tr>
+    <tr><td><strong>Industry</strong></td><td>Real Estate, Healthcare, Education, Family Holdings</td><td>Construction, Retail</td><td>Tech, Services</td><td>Low governance density</td></tr>
+    <tr><td><strong>Location</strong></td><td>Riyadh, Jeddah, Dammam</td><td>Other Saudi</td><td>GCC</td><td>Outside GCC</td></tr>
+  </tbody></table></div></details>
+</div></div>
+
+<!-- PRICING TIERS -->
+<div class="page" id="pricing"><div class="pg">
+  <div class="pg-header">
+    <div class="pg-number"><img src="icons/chart.svg" alt="">Deliverable 08</div>
+    <h2 class="pg-title">Pricing Tier Structure</h2>
+    <p class="pg-desc">Packaging framework: 3 tiers + add-ons. Segmentation, pricing pillars, feature comparison, competitive positioning. SAR amounts blocked on client decisions D1-D5.</p>
+  </div>
+  <h3 class="mt-0">Segmentation: Who Buys What</h3>
+  <table><thead><tr><th>Segment</th><th>Company Profile</th><th>Primary Need</th><th>Expected Tier</th></tr></thead><tbody>
+    <tr><td><strong>Starter</strong></td><td>LLC, 5-20 employees, 1-3 shareholders, no board committees</td><td>Basic governance + document storage</td><td><span class="badge b-dark">Starter</span></td></tr>
+    <tr><td><strong>Professional</strong></td><td>Closed JSC, 20-100 employees, active board, 5-20 shareholders</td><td>Full governance + Vault + shareholder registry</td><td><span class="badge b-gold">Professional</span></td></tr>
+    <tr><td><strong>Enterprise</strong></td><td>Listed or large closed JSC, 100-500 employees, multiple committees, 20+&nbsp;shareholders</td><td>Everything + advanced workflows + priority support</td><td><span class="badge b-green">Enterprise</span></td></tr>
+  </tbody></table>
+  <div class="gl"></div>
+  <h3>Pricing Pillars</h3>
+  <div class="g4 mt-16">
+    <div class="card" style="text-align:center;border-top:3px solid var(--gold)"><strong style="font-size:15px">Users</strong><p class="text-xs text-muted mt-16 mb-0">Named seats. Each user needs auth, storage, audit trail entries.</p></div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--charcoal)"><strong style="font-size:15px">Storage</strong><p class="text-xs text-muted mt-16 mb-0">Vault cost scales with document volume (GB).</p></div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--blue)"><strong style="font-size:15px">Features</strong><p class="text-xs text-muted mt-16 mb-0">Governance depth: modules unlocked per tier.</p></div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--green)"><strong style="font-size:15px">Support</strong><p class="text-xs text-muted mt-16 mb-0">Response SLA and channel.</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Feature Comparison</h3>
+  <div style="overflow-x:auto"><table><thead><tr><th>Feature</th><th style="background:var(--gray-700)">Starter</th><th style="background:var(--gold)">Professional</th><th style="background:var(--green);color:var(--white)">Enterprise</th></tr></thead><tbody>
+    <tr><td><strong>Minimum / Max Users</strong></td><td>3 / 10</td><td>5 / 50</td><td>10 / Unlimited</td></tr>
+    <tr><td colspan="4" style="font-weight:600;background:var(--cream-dark);letter-spacing:.5px;font-size:10.5px;text-transform:uppercase">Governance</td></tr>
+    <tr><td>Board management</td><td>Basic (meetings + minutes)</td><td>Full (agenda, voting, actions)</td><td>Full + custom workflows</td></tr>
+    <tr><td>Committee management</td><td>1 committee</td><td>Unlimited</td><td>Unlimited + sub-committees</td></tr>
+    <tr><td>General assembly</td><td>-</td><td>Included</td><td>Included + e-voting</td></tr>
+    <tr><td colspan="4" style="font-weight:600;background:var(--cream-dark);letter-spacing:.5px;font-size:10.5px;text-transform:uppercase">Vault (DMS)</td></tr>
+    <tr><td>Workspaces</td><td>2</td><td>All 6</td><td>All 6 + Custom</td></tr>
+    <tr><td>Access control levels</td><td>3</td><td>All 5</td><td>All 5 + custom roles</td></tr>
+    <tr><td>Audit trail</td><td>Basic</td><td>Full (15+ event types)</td><td>Full + export + API</td></tr>
+    <tr><td>External sharing (OTP)</td><td>-</td><td>Watermarked</td><td>Custom branding</td></tr>
+    <tr><td>Workflow approvals</td><td>-</td><td>Sequential</td><td>Parallel + conditional</td></tr>
+    <tr><td>AI field extraction</td><td>-</td><td>Included</td><td>Included + custom mapping</td></tr>
+    <tr><td colspan="4" style="font-weight:600;background:var(--cream-dark);letter-spacing:.5px;font-size:10.5px;text-transform:uppercase">Shareholder Registry</td></tr>
+    <tr><td>Shareholder registry</td><td>-</td><td>Included</td><td>Included (unlimited)</td></tr>
+    <tr><td>SMS communications</td><td>-</td><td>Included</td><td>Included</td></tr>
+    <tr><td>E-Signatures</td><td>-</td><td>Included</td><td>Included + bulk signing</td></tr>
+    <tr><td colspan="4" style="font-weight:600;background:var(--cream-dark);letter-spacing:.5px;font-size:10.5px;text-transform:uppercase">Support</td></tr>
+    <tr><td>Email support</td><td>Business hours</td><td>Business hours</td><td>Priority (extended)</td></tr>
+    <tr><td>Onboarding</td><td>Self-service</td><td>1-hour guided setup</td><td>Dedicated manager</td></tr>
+    <tr><td>SLA (response time)</td><td>48 hours</td><td>24 hours</td><td>4 hours</td></tr>
+  </tbody></table></div>
+  <div class="gl"></div>
+  <h3>Add-ons</h3>
+  <div class="g3 mt-16">
+    <div class="card"><div class="card-label">Storage</div><p class="card-body mb-0">Additional GB blocks</p></div>
+    <div class="card"><div class="card-label">SMS Credits</div><p class="card-body mb-0">Additional SMS blocks</p></div>
+    <div class="card"><div class="card-label">Data Migration</div><p class="card-body mb-0">Team-assisted from existing systems</p></div>
+    <div class="card"><div class="card-label">Custom Training</div><p class="card-body mb-0">On-site or virtual (2 hours)</p></div>
+    <div class="card"><div class="card-label">API Access</div><p class="card-body mb-0">REST API for internal integration</p></div>
+    <div class="card"><div class="card-label">White-Label</div><p class="card-body mb-0">Custom branding (Enterprise only)</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Competitive Price Positioning</h3>
+  <table><thead><tr><th>Competitor</th><th>Their Pricing</th><th>Our Position</th></tr></thead><tbody>
+    <tr><td><strong>Majles.tech</strong></td><td>Est. SAR 300-600/user/month (governance only)</td><td>Musahm Professional includes governance + Vault + shareholder registry at lower total cost</td></tr>
+    <tr><td><strong>Ebana DMS</strong></td><td>SAR 100,000+ implementation + licensing</td><td>Vault deploys in minutes. Subscription-based. No implementation fees.</td></tr>
+    <tr><td><strong>Diligent</strong></td><td>USD 25,000+ annual (enterprise only)</td><td>Musahm serves 20-500 employee companies at SMB-accessible pricing</td></tr>
+    <tr><td><strong>WhatsApp + Excel</strong></td><td>Free</td><td>Total cost of risk: one disputed transfer, one lost document, one failed audit</td></tr>
+  </tbody></table>
+  <details><summary>Objection Handling: Price</summary><div class="det-body"><table><thead><tr><th>Objection</th><th>Response</th></tr></thead><tbody>
+    <tr><td>"Too expensive"</td><td>"What does it cost when the auditor asks for a board resolution and you spend 3 days searching? One governance incident costs more than years of Musahm."</td></tr>
+    <tr><td>"We can use SharePoint / Google Drive"</td><td>"Those store files. Vault governs documents. Per-document access control, audit trail, approval workflows."</td></tr>
+    <tr><td>"Can we get a discount?"</td><td>"Annual billing saves [X]%. For 10+ seats, ask about volume pricing."</td></tr>
+    <tr><td>"We need to see value first"</td><td>"That is why we offer 30 beta seats. Full Professional features, no commitment."</td></tr>
+  </tbody></table></div></details>
+  <div class="co co-gold mt-24"><div class="co-title">Client Decisions Needed</div><p class="mb-0">D1: SAR amounts per tier (HIGH) / D2: Annual discount % (HIGH) / D3: Storage per tier (MEDIUM) / D4: SMS credits per tier (MEDIUM) / D5: API pricing (LOW). Once answered, one find-and-replace fills every bracket.</p></div>
+</div></div>
+
+<!-- CRISIS PLAYBOOK -->
+<div class="page" id="crisis"><div class="pg">
+  <div class="pg-header">
+    <div class="pg-number"><img src="icons/shield.svg" alt="">Deliverable 09</div>
+    <h2 class="pg-title">Crisis Communication Playbook</h2>
+    <p class="pg-desc">P1-P4 severity matrix with response times. Escalation tree. Bilingual communication templates. Post-incident report template. Beta-phase specifics.</p>
+  </div>
+  <div class="co co-dark mt-0"><p class="mb-0" style="font-size:15px;font-weight:500;">Voice during crisis: Transparent, factual, no hedging. Acknowledge first, explain second, fix third.</p></div>
+  <h3>Severity Matrix</h3>
+  <div class="sev sev-p1"><span class="sev-label" style="color:var(--red)">P1</span><span class="sev-name">Critical</span><span class="sev-time">15 min</span><span class="sev-desc">Service down for all tenants OR data breach OR data loss</span></div>
+  <div class="sev sev-p2"><span class="sev-label" style="color:#e67e22">P2</span><span class="sev-name">Major</span><span class="sev-time">1 hour</span><span class="sev-desc">Service degraded for multiple tenants OR single-tenant data exposure</span></div>
+  <div class="sev sev-p3"><span class="sev-label" style="color:#f1c40f">P3</span><span class="sev-name">Moderate</span><span class="sev-time">4 hours</span><span class="sev-desc">Feature broken for some tenants OR cosmetic data issue</span></div>
+  <div class="sev sev-p4"><span class="sev-label" style="color:var(--green)">P4</span><span class="sev-name">Minor</span><span class="sev-time">24 hours</span><span class="sev-desc">Cosmetic issue OR single-user workflow problem</span></div>
+  <div class="gl"></div>
+  <h3>Escalation Tree</h3>
+  <div class="g2 mt-16">
+    <div class="card" style="border-top:3px solid var(--red)">
+      <div class="card-label" style="color:var(--red)">P1: Critical (15 min)</div>
+      <div class="chk">CTO notified immediately (phone + WhatsApp)</div>
+      <div class="chk">CEO notified within 15 minutes</div>
+      <div class="chk">Engineering team pulled into war room</div>
+      <div class="chk">External communication drafted within 30 minutes</div>
+      <div class="chk">Affected clients contacted personally within 1 hour</div>
+      <div class="chk">Post-incident report within 48 hours</div>
+    </div>
+    <div class="card" style="border-top:3px solid #e67e22">
+      <div class="card-label" style="color:#e67e22">P2: Major (1 hour)</div>
+      <div class="chk">CTO notified within 30 minutes</div>
+      <div class="chk">Engineering lead begins investigation immediately</div>
+      <div class="chk">CEO notified within 1 hour if not resolved</div>
+      <div class="chk">Affected clients contacted within 2 hours</div>
+      <div class="chk">Post-incident report within 72 hours</div>
+    </div>
+    <div class="card" style="border-top:3px solid #f1c40f">
+      <div class="card-label" style="color:#d4a017">P3: Moderate (4 hours)</div>
+      <div class="chk">Engineering lead notified via ticket/Slack</div>
+      <div class="chk">Fix scheduled within current sprint</div>
+      <div class="chk">Affected clients notified via email</div>
+      <div class="chk">Resolution note added to release notes</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--green)">
+      <div class="card-label" style="color:var(--green)">P4: Minor (24 hours)</div>
+      <div class="chk">Ticket created in backlog</div>
+      <div class="chk">Fix included in next regular release</div>
+      <div class="chk">No client notification unless asked</div>
+    </div>
+  </div>
+  <div class="gl"></div>
+  <h3>Communication Templates</h3>
+  <div class="tabs"><button class="tab-btn active" data-tab="crisis-p1">P1: Service Down</button><button class="tab-btn" data-tab="crisis-breach">P1: Data Breach</button><button class="tab-btn" data-tab="crisis-p2">P2: Degradation</button><button class="tab-btn" data-tab="crisis-p3">P3: Feature Broken</button></div>
+  <div class="tab-panel active" id="crisis-p1">
+    <div class="code">@channel P1 INCIDENT: [brief description]
+Status: Investigating
+Impact: All tenants, [specific feature]
+War room: [channel/link]
+Incident commander: [name]</div>
+    <div class="quote ar">الموضوع: Vault, تحديث عاجل عن حالة الخدمة
+
+[اسم العميل],
+
+نعلمكم أن خدمة Vault تواجه حاليا [وصف المشكلة]. فريقنا الهندسي يعمل على حل المشكلة الآن.
+
+بياناتكم آمنة. لم يتأثر أي محتوى مخزّن.
+
+فريق مساهم</div>
+  </div>
+  <div class="tab-panel" id="crisis-breach">
+    <div class="code">@channel P1 SECURITY INCIDENT: Potential data breach
+Status: Investigating
+Impact: [tenant(s) affected, data type]
+DO NOT discuss outside this channel until CEO approves.</div>
+    <div class="quote ar">الموضوع: إشعار أمني مهم, Vault
+
+[اسم العميل],
+
+اكتشفنا [وصف مختصر للحادث]. نريد أن نكون شفافين معكم تماما.
+
+نتحمل المسؤولية الكاملة. سنرسل تقريرا مفصلا خلال 48 ساعة.
+
+[اسم CEO]
+الرئيس التنفيذي، مساهم</div>
+  </div>
+  <div class="tab-panel" id="crisis-p2">
+    <div class="quote ar">الموضوع: أداء Vault, تحديث
+
+[اسم العميل],
+
+لاحظنا بطئا في أداء Vault يؤثر على [الميزة المتأثرة]. الخدمة تعمل لكن بسرعة أقل من المعتاد.
+
+الوظائف الأساسية (تحميل الوثائق، عرض الملفات، سجل التدقيق) تعمل بشكل طبيعي.
+
+فريق مساهم</div>
+  </div>
+  <div class="tab-panel" id="crisis-p3">
+    <div class="quote ar">الموضوع: تحديث عن [اسم الميزة]
+
+[اسم العميل],
+
+شكرا لإبلاغنا عن [المشكلة]. تأكدنا من المشكلة وفريقنا يعمل على إصلاحها.
+
+الحل المتوقع: [تاريخ/مدة]
+
+فريق مساهم</div>
+  </div>
+  <div class="gl"></div>
+  <h3>Crisis Decision Framework</h3>
+  <table><thead><tr><th>Question</th><th>If YES</th><th>If NO</th></tr></thead><tbody>
+    <tr><td>Can ANY user access another tenant's data?</td><td><span class="badge b-red">P1</span> stop everything</td><td>Continue assessment</td></tr>
+    <tr><td>Is the service completely inaccessible?</td><td><span class="badge b-red">P1</span></td><td>Check partial degradation</td></tr>
+    <tr><td>Are multiple tenants affected?</td><td><span class="badge" style="background:#e67e22;color:white">P2 min</span></td><td>Check single-tenant</td></tr>
+    <tr><td>Is audit trail integrity compromised?</td><td><span class="badge" style="background:#e67e22;color:white">P2 min</span></td><td>Check feature-level</td></tr>
+    <tr><td>Client demo or board meeting happening now?</td><td>Escalate one level</td><td>Standard severity</td></tr>
+    <tr><td>Client already contacted us?</td><td>Escalate one level</td><td>Standard severity</td></tr>
+  </tbody></table>
+  <div class="co co-gold"><div class="co-title">Default Rule</div><p class="mb-0">When in doubt, escalate. Downgrading is better than under-responding.</p></div>
+  <details><summary>Beta-Phase Specifics</summary><div class="det-body"><table><thead><tr><th>Consideration</th><th>Approach</th></tr></thead><tbody>
+    <tr><td>Team size</td><td>Small. Everyone is on-call during beta.</td></tr>
+    <tr><td>Client count</td><td>30 max. Personal outreach is feasible for P1/P2.</td></tr>
+    <tr><td>SLA expectations</td><td>Not contractual yet, but treat commitments as binding.</td></tr>
+    <tr><td>Regulatory reporting</td><td>No mandatory breach notification yet, but treat every data incident as if reporting were required.</td></tr>
+    <tr><td>Rollback capability</td><td>Every deployment can be rolled back within 15 minutes.</td></tr>
+  </tbody></table></div></details>
+  <details><summary>Post-Incident Report Template</summary><div class="det-body"><div class="code">POST-INCIDENT REPORT
+====================
+
+Incident ID: [YYYY-MM-DD-###]
+Severity: P[1/2]
+Duration: [start] to [end] ([total minutes])
+Affected tenants: [count and names]
+Incident commander: [name]
+
+1. SUMMARY
+   [2-3 sentence summary]
+
+2. TIMELINE
+   [HH:MM] [Event 1]
+   [HH:MM] [Event 2]
+   [HH:MM] Resolution confirmed
+
+3. ROOT CAUSE
+   [Clear, non-technical explanation]
+
+4. IMPACT
+   Users affected: [count]
+   Data affected: [none / description]
+
+5. RESOLUTION
+   [What was done to fix it]
+
+6. PREVENTION
+   [Changes to prevent recurrence]
+
+7. LESSONS LEARNED
+   [What went well / what to improve]</div></div></details>
+</div></div>
+
+<!-- BRAND GOVERNANCE CHECKLIST -->
+<div class="page" id="brand"><div class="pg">
+  <div class="pg-header">
+    <div class="pg-number"><img src="icons/check-circle.svg" alt="">Deliverable 10</div>
+    <h2 class="pg-title">Brand Governance Checklist</h2>
+    <p class="pg-desc">14-item pre-publish gate. 4 accuracy checks + 4 voice/brand checks + 3 regulatory/legal checks + 3 technical/format checks. Pass threshold: 14/14.</p>
+  </div>
+  <div class="co co-dark mt-0"><p class="mb-0" style="font-size:15px;font-weight:500;">Every piece of customer-facing content passes this gate before it goes live. No exceptions.</p></div>
+  <h3>Section A: Accuracy (Items 1-4)</h3>
+  <p class="text-sm text-muted">These protect against false claims. One slip here can invalidate the entire GTM effort.</p>
+  <div class="g2 mt-16">
+    <div class="card" style="border-left:3px solid var(--red)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>1. No false product claims</strong><span class="badge b-red">Critical</span></div><p class="card-body mb-0">Every feature mentioned exists in the current build. Cross-check against product truth table.</p></div>
+    <div class="card" style="border-left:3px solid var(--red)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>2. No unsourced statistics</strong><span class="badge b-red">Critical</span></div><p class="card-body mb-0">Every number has a verifiable source. If you cannot cite it, remove it.</p></div>
+    <div class="card" style="border-left:3px solid var(--red)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>3. Correct product terminology</strong><span class="badge b-red">Critical</span></div><p class="card-body mb-0">Use exact feature names. No synonyms that imply different capabilities.</p></div>
+    <div class="card" style="border-left:3px solid var(--red)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>4. Beta status honest</strong><span class="badge b-red">Critical</span></div><p class="card-body mb-0">Content clearly communicates beta state. No implying GA availability.</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Section B: Voice &amp; Brand (Items 5-8)</h3>
+  <p class="text-sm text-muted">These protect brand consistency and prevent AI-generated tone from leaking through.</p>
+  <div class="g2 mt-16">
+    <div class="card" style="border-left:3px solid var(--gold)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>5. Voice guide compliance</strong><span class="badge b-gold">Brand</span></div><p class="card-body mb-0">No "revolutionary," "game-changing," "leverage," "supercharge," "optimal," "best-in-class."</p></div>
+    <div class="card" style="border-left:3px solid var(--gold)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>6. Zero AI writing patterns</strong><span class="badge b-gold">Brand</span></div><p class="card-body mb-0">No "Not X, but Y." No Rule of Three. No triple-adjective pileups. Max 2 em dashes per piece.</p></div>
+    <div class="card" style="border-left:3px solid var(--gold)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>7. Arabic quality</strong><span class="badge b-gold">Brand</span></div><p class="card-body mb-0">MSA only. No colloquial. No literal translation. Western numerals (0-9).</p></div>
+    <div class="card" style="border-left:3px solid var(--gold)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>8. Tagline present</strong><span class="badge b-gold">Brand</span></div><p class="card-body mb-0">Every major piece ends with the tagline in the appropriate language.</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Section C: Regulatory &amp; Legal (Items 9-11)</h3>
+  <p class="text-sm text-muted">These protect against legal exposure in the Saudi market.</p>
+  <div class="g3 mt-16">
+    <div class="card" style="border-left:3px solid var(--blue)"><strong>9. No "first" or "only" claims</strong><p class="card-body mb-0">Unless legally defensible with documented evidence.</p></div>
+    <div class="card" style="border-left:3px solid var(--blue)"><strong>10. Regulatory references accurate</strong><p class="card-body mb-0">Companies Law articles correct. CMA references current. No implying certification.</p></div>
+    <div class="card" style="border-left:3px solid var(--blue)"><strong>11. No banned hashtags</strong><p class="card-body mb-0">Do not use #Vision2030 or imply government endorsement.</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Section D: Technical &amp; Format (Items 12-14)</h3>
+  <div class="g3 mt-16">
+    <div class="card" style="border-left:3px solid var(--green)"><strong>12. Links work</strong><p class="card-body mb-0">Every URL resolves. No placeholders in published content.</p></div>
+    <div class="card" style="border-left:3px solid var(--green)"><strong>13. Bilingual consistency</strong><p class="card-body mb-0">AR and EN versions match. Feature names consistent across languages.</p></div>
+    <div class="card" style="border-left:3px solid var(--green)"><strong>14. Contact info current</strong><p class="card-body mb-0">Phone, email, WhatsApp, Cal.com links all tested and working.</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Common Failures (From M0-M4 Audit History)</h3>
+  <p class="text-sm text-muted">These patterns were found and fixed during the GTM build. Watch for recurrence.</p>
+  <table><thead><tr><th>Pattern</th><th>Where Found</th><th>Fix Applied</th></tr></thead><tbody>
+    <tr><td>"Semantic search" claimed</td><td>Blog, landing page, sales deck</td><td>Changed to "keyword search" (semantic is a stub)</td></tr>
+    <tr><td>IP address logging claimed</td><td>Video script</td><td>Removed entirely (not implemented)</td></tr>
+    <tr><td>OTP described as SMS</td><td>Multiple files</td><td>Changed to "email OTP" (current implementation)</td></tr>
+    <tr><td>First Saudi platform claimed</td><td>Landing page, social posts</td><td>Removed (unprovable)</td></tr>
+    <tr><td>95% statistic unsourced</td><td>Google ads, social</td><td>Removed or replaced with descriptive language</td></tr>
+    <tr><td>"30 beta seats" vs "50"</td><td>Conflicting across files</td><td>Standardized to 30 everywhere</td></tr>
+    <tr><td>#Vision2030 hashtag</td><td>LinkedIn, social</td><td>Removed (government-owned)</td></tr>
+  </tbody></table>
+  <details><summary>Review Process</summary><div class="det-body"><table><thead><tr><th>Step</th><th>Action</th><th>Owner</th><th>Time</th></tr></thead><tbody>
+    <tr><td>1</td><td>Author self-checks all 14 items</td><td>Content creator</td><td>Before submission</td></tr>
+    <tr><td>2</td><td>Peer review: accuracy (items 1-4)</td><td>Another team member</td><td>30 minutes</td></tr>
+    <tr><td>3</td><td>Marketing lead reviews voice + brand (5-8)</td><td>Marketing lead</td><td>30 minutes</td></tr>
+    <tr><td>4</td><td>Legal/regulatory check (9-11)</td><td>Marketing lead / counsel</td><td>1-2 hours</td></tr>
+    <tr><td>5</td><td>Technical check (12-14)</td><td>Content creator</td><td>15 minutes</td></tr>
+    <tr><td>6</td><td>Final sign-off</td><td>Marketing lead or CEO</td><td>15 minutes</td></tr>
+  </tbody></table></div></details>
+</div></div>
+
+<!-- WIN/LOSS ANALYSIS -->
+<div class="page" id="winloss"><div class="pg">
+  <div class="pg-header">
+    <div class="pg-number"><img src="icons/strategy.svg" alt="">Deliverable 11</div>
+    <h2 class="pg-title">Win/Loss Analysis Template</h2>
+    <p class="pg-desc">9-field data model. Analysis tags for pattern detection. Quarterly review process. Interview guides for wins, losses, and no-decisions.</p>
+  </div>
+  <h3 class="mt-0">9-Field Analysis Model</h3>
+  <div class="g3 mt-16">
+    <div class="card" style="border-top:3px solid var(--gold);text-align:center"><div style="font-size:26px;font-weight:800;color:var(--gold)">1</div><div class="text-xs upper fw-600 mt-16">Decision Maker Profile</div><p class="text-xs text-muted mt-16 mb-0">Who had final sign-off?</p></div>
+    <div class="card" style="border-top:3px solid var(--gold);text-align:center"><div style="font-size:26px;font-weight:800;color:var(--gold)">2</div><div class="text-xs upper fw-600 mt-16">Trigger Event</div><p class="text-xs text-muted mt-16 mb-0">What made them start looking now?</p></div>
+    <div class="card" style="border-top:3px solid var(--gold);text-align:center"><div style="font-size:26px;font-weight:800;color:var(--gold)">3</div><div class="text-xs upper fw-600 mt-16">Evaluation Criteria</div><p class="text-xs text-muted mt-16 mb-0">What requirements did the buyer use?</p></div>
+    <div class="card" style="border-top:3px solid var(--charcoal);text-align:center"><div style="font-size:26px;font-weight:800">4</div><div class="text-xs upper fw-600 mt-16">Competitive Landscape</div><p class="text-xs text-muted mt-16 mb-0">Which alternatives did they evaluate?</p></div>
+    <div class="card" style="border-top:3px solid var(--charcoal);text-align:center"><div style="font-size:26px;font-weight:800">5</div><div class="text-xs upper fw-600 mt-16">Musahm Strengths</div><p class="text-xs text-muted mt-16 mb-0">What worked, in their own words?</p></div>
+    <div class="card" style="border-top:3px solid var(--charcoal);text-align:center"><div style="font-size:26px;font-weight:800">6</div><div class="text-xs upper fw-600 mt-16">Musahm Weaknesses</div><p class="text-xs text-muted mt-16 mb-0">What concerned or held them back?</p></div>
+    <div class="card" style="border-top:3px solid var(--blue);text-align:center"><div style="font-size:26px;font-weight:800;color:var(--blue)">7</div><div class="text-xs upper fw-600 mt-16">Decision Process</div><p class="text-xs text-muted mt-16 mb-0">How many meetings to close?</p></div>
+    <div class="card" style="border-top:3px solid var(--blue);text-align:center"><div style="font-size:26px;font-weight:800;color:var(--blue)">8</div><div class="text-xs upper fw-600 mt-16">Pricing &amp; Commercial</div><p class="text-xs text-muted mt-16 mb-0">Was pricing competitive?</p></div>
+    <div class="card" style="border-top:3px solid var(--blue);text-align:center"><div style="font-size:26px;font-weight:800;color:var(--blue)">9</div><div class="text-xs upper fw-600 mt-16">Outcome Narrative</div><p class="text-xs text-muted mt-16 mb-0">Why did we win or lose?</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Analysis Tags</h3>
+  <div class="g2 mt-16">
+    <div class="card"><div class="card-label" style="color:var(--green)">Win Themes</div>
+      <div class="chk">Saudi-built</div><div class="chk">Governance integration</div><div class="chk">Audit readiness</div><div class="chk">Shareholder Registry</div><div class="chk">Price</div><div class="chk">Relationship</div>
+    </div>
+    <div class="card"><div class="card-label" style="color:var(--red)">Loss Reasons</div>
+      <div class="chk">Price</div><div class="chk">Missing feature</div><div class="chk">Competitor</div><div class="chk">No decision / timing</div><div class="chk">Political</div><div class="chk">Implementation concern</div>
+    </div>
+  </div>
+  <div class="gl"></div>
+  <h3>Quarterly Review Process</h3>
+  <div class="pipeline"><div class="pipe-stage"><div class="pipe-label">Step 1</div><div class="pipe-title">Aggregate</div><div class="pipe-score">All records</div></div><div class="pipe-stage"><div class="pipe-label">Step 2</div><div class="pipe-title">Calculate</div><div class="pipe-score">Win rate by sector</div></div><div class="pipe-stage"><div class="pipe-label">Step 3</div><div class="pipe-title">Identify</div><div class="pipe-score">Top 3 themes</div></div><div class="pipe-stage"><div class="pipe-label">Step 4</div><div class="pipe-title">Distribute</div><div class="pipe-score">Product + Sales + CEO</div></div></div>
+  <div class="gl"></div>
+  <h3>Interview Guides</h3>
+  <div class="tabs"><button class="tab-btn active" data-tab="wl-win">Wins</button><button class="tab-btn" data-tab="wl-loss">Losses</button><button class="tab-btn" data-tab="wl-nd">No-Decision</button></div>
+  <div class="tab-panel active" id="wl-win">
+    <div class="card">
+      <div class="chk">What was the deciding factor?</div>
+      <div class="chk">What almost made you choose someone else?</div>
+      <div class="chk">Which feature sealed the deal?</div>
+      <div class="chk">Would you recommend Musahm to a peer? What would you say?</div>
+    </div>
+  </div>
+  <div class="tab-panel" id="wl-loss">
+    <div class="card">
+      <div class="chk">Can you share what ultimately drove the decision?</div>
+      <div class="chk">What did the winning vendor offer that we did not?</div>
+      <div class="chk">Was there something we could have done differently during the sales process?</div>
+      <div class="chk">Would you consider Musahm for a future initiative?</div>
+    </div>
+  </div>
+  <div class="tab-panel" id="wl-nd">
+    <div class="card">
+      <div class="chk">What caused the project to stall?</div>
+      <div class="chk">Is the need still there, or has the priority shifted?</div>
+      <div class="chk">What would need to change for you to revisit this?</div>
+    </div>
+  </div>
+</div></div>
+
+<!-- THANK-YOU PAGE -->
+<div class="page" id="thankyou"><div class="pg">
+  <div class="pg-header">
+    <div class="pg-number"><img src="icons/heart.svg" alt="">Deliverable 12</div>
+    <h2 class="pg-title">Thank-You Page</h2>
+    <p class="pg-desc">Post-signup confirmation page. 7 sections: confirmation, timeline, prep checklist, resources, contact, social proof, tagline. Reduces buyer's remorse.</p>
+  </div>
+  <h3 class="mt-0">Page Structure</h3>
+  <div class="g2 mt-16">
+    <div>
+      <div class="card" style="border-left:3px solid var(--gold)"><div class="card-label">1. Confirmation Header</div><h4 class="mt-0" style="font-size:18px">You are registered.</h4><p class="card-body mb-0">Your company is now on the Musahm Vault beta access list. We will contact you within two business days to activate your account.</p></div>
+      <div class="card" style="border-left:3px solid var(--gold)"><div class="card-label">Arabic</div><h4 class="mt-0" style="font-family:var(--font-ar);direction:rtl;font-size:18px">تم تسجيلك بنجاح.</h4><p class="card-body mb-0" style="direction:rtl;font-family:var(--font-ar)">شركتك الآن ضمن قائمة الوصول التجريبي لمساهم Vault. سنتواصل معك خلال يومي عمل لتفعيل حسابك.</p></div>
+    </div>
+    <div>
+      <div class="card" style="border-left:3px solid var(--green)"><div class="card-label" style="color:var(--green)">6. Social Proof</div><div class="quote" style="margin:0;border-left:none;padding:12px 0;">You have joined companies like Al-Ufuq Educational, Miral Medical, and Amwaj that trust Musahm to govern their operations.</div></div>
+      <div class="card" style="border-left:3px solid var(--charcoal)"><div class="card-label">7. Closing Tagline</div><p class="card-body mb-0" style="font-size:15px;font-weight:500">Saudi governance. World-class platform.</p><p class="card-body mb-0" style="font-family:var(--font-ar);direction:rtl;font-size:16px;color:var(--gold)">حوكمة سعودية. منصة عالمية.</p></div>
+    </div>
+  </div>
+  <div class="gl"></div>
+  <h3>2. What Happens Next (Timeline)</h3>
+  <table><thead><tr><th>Step</th><th>Timeline</th><th>Details</th></tr></thead><tbody>
+    <tr><td><strong>Email confirmation</strong></td><td>Immediate</td><td>Confirmation email at your registered address</td></tr>
+    <tr><td><strong>Musahm team outreach</strong></td><td>Within 2 business days</td><td>15-minute introductory call to understand your needs</td></tr>
+    <tr><td><strong>Vault activation</strong></td><td>Within 3 business days</td><td>Six workspaces ready, your data loaded</td></tr>
+    <tr><td><strong>Onboarding session</strong></td><td>Within 1 week</td><td>Live session with your team for permissions and workflows</td></tr>
+  </tbody></table>
+  <div class="gl"></div>
+  <h3>3. While You Wait (Prep Checklist)</h3>
+  <div class="card">
+    <div class="chk">Gather board meeting minutes from the last 12 months</div>
+    <div class="chk">Identify 3-5 core users: Board Secretary, Legal Counsel, CFO</div>
+    <div class="chk">Review current access permissions: who accesses governance documents today?</div>
+  </div>
+  <div class="gl"></div>
+  <h3>4. Quick-Start Resources</h3>
+  <div class="g3 mt-16">
+    <div class="card" style="text-align:center"><img src="icons/book.svg" style="width:28px;height:28px;margin-bottom:8px;filter:brightness(0) saturate(100%) invert(63%) sepia(30%) saturate(600%) hue-rotate(3deg) brightness(95%)" alt=""><div class="fw-600" style="font-size:13px">Quick Start Guide</div><p class="text-xs text-muted mt-16 mb-0">5 minutes to understand Vault</p></div>
+    <div class="card" style="text-align:center"><img src="icons/chat.svg" style="width:28px;height:28px;margin-bottom:8px;filter:brightness(0) saturate(100%) invert(63%) sepia(30%) saturate(600%) hue-rotate(3deg) brightness(95%)" alt=""><div class="fw-600" style="font-size:13px">FAQ</div><p class="text-xs text-muted mt-16 mb-0">28 most common questions answered</p></div>
+    <div class="card" style="text-align:center"><img src="icons/play.svg" style="width:28px;height:28px;margin-bottom:8px;filter:brightness(0) saturate(100%) invert(63%) sepia(30%) saturate(600%) hue-rotate(3deg) brightness(95%)" alt=""><div class="fw-600" style="font-size:13px">Product Video</div><p class="text-xs text-muted mt-16 mb-0">90 seconds. Watch Vault in action.</p></div>
+  </div>
+  <div class="co co-gold mt-24"><div class="co-title">Design Notes</div><p class="mb-0 text-sm">Clean single-column layout. No sidebar. No upsell. White background with <code>#c3924d</code> accent on timeline steps. Mobile: full-width, large touch targets (min 44px). Fire <code>vault_beta_signup</code> conversion event on page load.</p></div>
+</div></div>
+
+<!-- HUMANIZER SCORE REPORT -->
+<div class="page" id="humanizer"><div class="pg">
+  <div class="pg-header">
+    <div class="pg-number"><img src="icons/eye.svg" alt="">Deliverable 13</div>
+    <h2 class="pg-title">Humanizer Score Report</h2>
+    <p class="pg-desc">Per-file AI detection scores (before/after). 21 files assessed. 15 edits across 8 files. Average score: 8.9/10.</p>
+  </div>
+  <h3 class="mt-0">Methodology</h3>
+  <p>Each file scored on 5 dimensions (2 points each, 10 total):</p>
+  <div class="g3 mt-16">
+    <div class="card" style="text-align:center;border-top:3px solid var(--gold)"><strong>Em Dash Budget</strong><p class="text-xs text-muted mt-16 mb-0">Zero em dashes in prose</p></div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--gold)"><strong>AI Vocabulary</strong><p class="text-xs text-muted mt-16 mb-0">Zero banned words</p></div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--gold)"><strong>Contrast Patterns</strong><p class="text-xs text-muted mt-16 mb-0">"Not X, but Y" max 1/500 words</p></div>
+  </div>
+  <div class="g2 mt-16">
+    <div class="card" style="text-align:center;border-top:3px solid var(--charcoal)"><strong>Structural Repetition</strong><p class="text-xs text-muted mt-16 mb-0">Rule of Three / anaphoric triads max 1 per file</p></div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--charcoal)"><strong>Meta Exposure</strong><p class="text-xs text-muted mt-16 mb-0">No audit logs or editorial metadata visible</p></div>
+  </div>
+  <div class="gl"></div>
+  <h3>Global Results (Post-M3)</h3>
+  <table><thead><tr><th>Metric</th><th>Before M3</th><th>After M3</th><th>Target</th></tr></thead><tbody>
+    <tr><td>Em dashes in content</td><td>0</td><td style="color:var(--green);font-weight:600">0</td><td>0</td></tr>
+    <tr><td>AI vocabulary words</td><td>0</td><td style="color:var(--green);font-weight:600">0</td><td>0</td></tr>
+    <tr><td>"Not X, but Y" instances</td><td>11 (5 files)</td><td style="color:var(--green);font-weight:600">1</td><td>&lt;3</td></tr>
+    <tr><td>Rule of Three / triads</td><td>6 (3 files)</td><td style="color:var(--green);font-weight:600">0</td><td>&lt;2</td></tr>
+    <tr><td>Meta AI-cleaning notes</td><td>2 files</td><td style="color:var(--green);font-weight:600">0</td><td>0</td></tr>
+    <tr><td>Banned hashtag #Vision2030</td><td>1 file</td><td style="color:var(--green);font-weight:600">0</td><td>0</td></tr>
+  </tbody></table>
+  <div class="co co-green"><div class="co-title">Average Score: 8.9/10</div><p class="mb-0">Target was 8+. All 21 files at or above target.</p></div>
+  <div class="gl"></div>
+  <h3>Per-File Scores</h3>
+  <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>File</th><th>Before</th><th>After</th><th>Notes</th></tr></thead><tbody>
+    <tr><td>1</td><td>landing-page.md</td><td>8</td><td><strong>9</strong></td><td>Fixed triple adjective in AR+EN subheadline</td></tr>
+    <tr><td>2</td><td>sales-deck.md</td><td>7</td><td><strong>9</strong></td><td>Fixed triad, removed 2x contrast pattern</td></tr>
+    <tr><td>3</td><td>blog-posts.md</td><td>7</td><td><strong>9</strong></td><td>Removed all 3x "Not X, but Y"</td></tr>
+    <tr><td>4</td><td>linkedin-strategy.md</td><td>7</td><td><strong>9</strong></td><td>Removed contrast, triads, banned hashtag</td></tr>
+    <tr><td>5</td><td>press-release.md</td><td>7</td><td><strong>9</strong></td><td>Rephrased contrast as direct statement</td></tr>
+    <tr><td>6</td><td>nurture-sequence.md</td><td>8</td><td><strong>9</strong></td><td>Rephrased mild contrast</td></tr>
+    <tr><td>7</td><td>video-script.md</td><td>8</td><td><strong>9</strong></td><td>Removed AI-pattern meta note</td></tr>
+    <tr><td>8</td><td>social-posts.md</td><td>8</td><td><strong>10</strong></td><td>Removed entire Audit Fix Log section</td></tr>
+    <tr><td>9</td><td>cold-outreach.md</td><td>9</td><td>9</td><td>Already clean from M2</td></tr>
+    <tr><td>10</td><td>launch-email.md</td><td>9</td><td>9</td><td>Already clean from M2</td></tr>
+    <tr><td>11</td><td>social-calendar.md</td><td>8</td><td>8</td><td>Minor formulaic structure acceptable</td></tr>
+    <tr><td>12</td><td>google-ads.md</td><td>8</td><td>8</td><td>Ad copy inherently formulaic</td></tr>
+    <tr><td>13</td><td>sms-blast.md</td><td>9</td><td>9</td><td>Short-form, naturally human</td></tr>
+    <tr><td>14</td><td>poster-copy.md</td><td>9</td><td>9</td><td>Minimal prose, design-focused</td></tr>
+    <tr><td>15</td><td>whatsapp-library.md</td><td>9</td><td>9</td><td>Conversational tone</td></tr>
+    <tr><td>16</td><td>faq.md</td><td>9</td><td>9</td><td>Q&amp;A format avoids AI patterns</td></tr>
+    <tr><td>17</td><td>partner-kit.md</td><td>8</td><td>8</td><td>Fixed in M0/M2</td></tr>
+    <tr><td>18</td><td>seo-keywords.md</td><td>9</td><td>9</td><td>1x natural contrast (acceptable)</td></tr>
+    <tr><td>19</td><td>quick-start-guide.md</td><td>8</td><td>8</td><td>Instructional format</td></tr>
+    <tr><td>20</td><td>onboarding-sequence.md</td><td>9</td><td>9</td><td>Clean</td></tr>
+    <tr><td>21</td><td>case-study-template.md</td><td>9</td><td>9</td><td>Template format</td></tr>
+  </tbody></table></div>
+  <details><summary>Fixes Applied in M3 (15 edits across 8 files)</summary><div class="det-body">
+    <h4>blog-posts.md (3 fixes)</h4>
+    <p class="text-sm">Line 168: "Not at the folder level only, but per individual document" changed to direct statement. Line 550: "Not because the company distrusts" changed to direct causal. Line 802: "Not because a penalty is coming" changed to direct benefit.</p>
+    <h4>linkedin-strategy.md (6 fixes)</h4>
+    <p class="text-sm">Removed 3x contrast patterns, 2x Rule of Three, banned hashtag #Vision2030.</p>
+    <h4>sales-deck.md (3 fixes)</h4>
+    <p class="text-sm">"No X. No Y. No Z." broken into non-triad. Contrast rephrased. Scope widened from niche to "sectors and company types."</p>
+    <h4>press-release.md, nurture-sequence.md, landing-page.md, video-script.md, social-posts.md</h4>
+    <p class="text-sm">1-2 fixes each: contrast patterns, triple adjectives, and meta content removed.</p>
+  </div></details>
+</div></div>
+
+</main>
+
+<footer class="footer">
+  <p>Musahm GTM Playbook / Internal Document / April 2026</p>
+  <p style="color:var(--gold);margin-top:8px">Saudi governance. World-class platform.</p>
+</footer>
+
+<script>
+(function(){
+  // SPA Navigation
+  var navItems = document.querySelectorAll('.nav-item[data-page]');
+  var pages = document.querySelectorAll('.page');
+
+  function showPage(id) {
+    pages.forEach(function(p){ p.classList.remove('active'); });
+    navItems.forEach(function(n){ n.classList.remove('active'); });
+    var target = document.getElementById(id);
+    if (target) target.classList.add('active');
+    var nav = document.querySelector('.nav-item[data-page="'+id+'"]');
+    if (nav) nav.classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  navItems.forEach(function(item){
+    item.addEventListener('click', function(){
+      showPage(this.getAttribute('data-page'));
+    });
+  });
+
+  // Tab switching (scoped to nearest parent section)
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    var tabs = btn.closest('.tabs') || btn.parentElement;
+    var container = tabs.parentElement;
+    // Deactivate siblings
+    tabs.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    // Show target panel
+    var targetId = btn.getAttribute('data-tab');
+    container.querySelectorAll('.tab-panel').forEach(function(p){
+      p.classList.toggle('active', p.id === targetId);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

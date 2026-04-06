@@ -1,0 +1,182 @@
+.add-member-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.add-member-btn:hover {
+    background-color: #1d4ed8;
+}
+
+
+.members-container {
+    width: 100%;
+    padding: 24px;
+    margin: 0;
+}
+
+.members-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.header-info h1 {
+    font-size: 24px;
+    margin: 0 0 8px 0;
+    color: var(--text-primary);
+}
+
+.workspace-id {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin: 0;
+}
+
+
+
+.members-list-card {
+    background: var(--bg-surface);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.members-list-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 100px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.member-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 100px;
+    padding: 16px 24px;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s;
+}
+
+.member-item:last-child {
+    border-bottom: none;
+}
+
+.member-item:hover {
+    background-color: var(--bg-hover);
+}
+
+.member-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.member-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.member-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.member-name {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.member-email {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.member-role {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.role-owner {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.role-admin {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.role-member {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.member-joined {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.actions-cell {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: var(--text-tertiary);
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.btn-primary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+}

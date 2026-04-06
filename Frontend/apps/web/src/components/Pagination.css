@@ -1,0 +1,101 @@
+/* src/components/Pagination.css */
+
+.pagination-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: white;
+    border-top: 1px solid #f1f5f9;
+}
+
+.pagination-info {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pagination-numbers {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pagination-btn,
+.pagination-number {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
+}
+
+.pagination-btn:hover:not(:disabled),
+.pagination-number:hover:not(.active) {
+    background: #f8fafc;
+    border-color: #c3924d;
+    color: #c3924d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(195, 146, 77, 0.1);
+}
+
+.pagination-btn:focus,
+.pagination-number:focus {
+    border-color: #c3924d;
+    box-shadow: 0 0 0 3px rgba(195, 146, 77, 0.2);
+}
+
+.pagination-number.active {
+    background: #c3924d;
+    border-color: #c3924d;
+    color: white;
+    box-shadow: 0 4px 12px rgba(195, 146, 77, 0.3);
+}
+
+.pagination-ellipsis {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: #f1f5f9;
+}
+
+.pagination-btn svg {
+    transition: transform 0.2s;
+}
+
+.pagination-btn:hover:not(:disabled) svg {
+    transform: scale(1.1);
+}
+
+/* RTL Support */
+.rtl .pagination-btn svg {
+    transform: scaleX(-1);
+}
+
+.rtl .pagination-btn:hover:not(:disabled) svg {
+    transform: scaleX(-1) scale(1.1);
+}

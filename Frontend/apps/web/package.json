@@ -1,0 +1,35 @@
+{
+  "name": "@musahm/web",
+  "version": "0.1.0",
+  "description": "Musahm Vault Web App",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@musahm/core": "file:../../packages/core",
+    "@posthog/react": "^1.8.0",
+    "axios": "^1.6.0",
+    "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.562.0",
+    "posthog-js": "^1.353.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.0",
+    "react-select": "^5.10.2",
+    "reactflow": "^11.11.4",
+    "swiper": "^12.1.0",
+    "ts-morph": "^27.0.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.0",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "^5.3.3",
+    "vite": "^7.3.1"
+  }
+}

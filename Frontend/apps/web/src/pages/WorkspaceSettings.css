@@ -1,0 +1,107 @@
+.workspace-settings {
+    padding: 24px;
+}
+
+.settings-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.settings-header {
+    padding: 0px 20px;
+}
+
+.settings-header h1 {
+    font-size: 24px;
+    color: var(--text-primary);
+    margin: 0 0 8px 0;
+}
+
+.settings-section {
+    background: var(--bg-surface);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.settings-section h3 {
+    font-size: 18px;
+    margin: 0 0 16px 0;
+    color: var(--text-primary);
+}
+
+.danger-zone {
+    border-color: #fee2e2;
+}
+
+.danger-zone h3 {
+    color: #ef4444;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-input {
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color-alpha);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.btn-save {
+    padding: 10px 24px;
+    background-color: #c3924d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-danger {
+    padding: 10px 24px;
+    background-color: white;
+    color: #ef4444;
+    border: 1px solid #fee2e2;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-danger:hover {
+    background-color: #fef2f2;
+    border-color: #fecaca;
+}

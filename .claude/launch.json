@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Vault API (.NET)",
+      "runtimeExecutable": "C:\\Users\\LENOVO\\.dotnet\\dotnet.exe",
+      "runtimeArgs": ["run", "--project", "Backend/Vault/API"],
+      "port": 5042
+    },
+    {
+      "name": "Vault Web (Vite)",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--prefix", "Frontend/apps/web", "vite", "--port", "5173"],
+      "port": 5173
+    }
+  ]
+}

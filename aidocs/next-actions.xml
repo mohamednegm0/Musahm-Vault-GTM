@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nextActions generatedAt="2026-04-01" mode="investigation-only" repo="e:\555555555555555555555555555">
+  <verification>
+    <check name="backend-build" status="passed" command="dotnet build Backend\Vault\Vault.slnx -nologo">
+      <note>Build succeeded. Warnings remain for System.Security.Cryptography.Pkcs 6.0.0 (NU1903).</note>
+    </check>
+    <check name="frontend-build" status="passed" command="npm run build">
+      <note>Build succeeded (vite v7.3.1, 2181 modules, 17s). Chunk size warning only.</note>
+    </check>
+  </verification>
+
+  <summary>
+    <bucket status="implemented">MUS-730, MUS-736, MUS-707, MUS-732, MUS-724, MUS-729, MUS-753, MUS-754, MUS-755</bucket>
+    <bucket status="likely-implemented">MUS-713</bucket>
+    <bucket status="partial">MUS-737, MUS-751, MUS-748, MUS-718</bucket>
+    <bucket status="open">MUS-710, MUS-752, MUS-749</bucket>
+    <bucket status="needs-verification">MUS-728</bucket>
+  </summary>
+
+  <ticket id="MUS-732" tier="1" status="implemented">
+    <finding>All file inputs now have accept attributes matching the backend AllowedExtensions policy.</finding>
+    <evidence file="Frontend/apps/web/src/pages/AIChat.tsx">Added accept attribute to file input.</evidence>
+    <evidence file="Frontend/apps/web/src/pages/WorkspaceExplorer.tsx">Added accept attribute to file input.</evidence>
+    <evidence file="Frontend/apps/web/src/components/DashboardUploadModal.tsx">Already had accept attribute.</evidence>
+    <evidence file="Frontend/apps/web/src/pages/DocumentUpload.tsx">Already had accept attribute.</evidence>
+    <evidence file="Frontend/apps/web/src/pages/DocumentVersions.tsx">Already had accept attribute.</evidence>
+    <evidence file="Frontend/apps/web/src/pages/DocumentDetails.tsx">Already had accept attribute.</evidence>
+    <nextAction>None — implemented.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-737" tier="1" status="partial">
+    <finding>Workspace deletion now soft-deletes direct documents and immediate child workspaces, but it is not recursive and can still orphan documents inside deleted child workspaces.</finding>
+    <evidence file="Backend/Vault/Service/Services/WorkspaceService.cs" line="299">DeleteWorkspaceAsync soft-deletes documents whose WorkspaceId matches the deleted workspace.</evidence>
+    <evidence file="Backend/Vault/Service/Services/WorkspaceService.cs" line="311">DeleteWorkspaceAsync also soft-deletes immediate child workspaces.</evidence>
+    <nextAction>Make the delete cascade recursive or explicitly walk descendants and soft-delete their documents too.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-736" tier="1" status="implemented">
+    <finding>Task completion now blocks actions when the referenced workspace is missing or deleted.</finding>
+    <evidence file="Backend/Vault/Service/Services/TaskEntityService.cs" line="154">CompleteTaskAsync checks task.WorkspaceId before processing.</evidence>
+    <evidence file="Backend/Vault/Service/Services/TaskEntityService.cs" line="158">The method stops when the workspace lookup returns null or IsDeleted is true.</evidence>
+    <nextAction>Regression-test approve/reject/complete against deleted workspaces and deleted parent-workspace scenarios.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-730" tier="1" status="implemented">
+    <finding>Workspace storage limits are now enforced during upload.</finding>
+    <evidence file="Backend/Vault/Service/Services/DocumentService.cs" line="106">UploadDocumentAsync checks workspace.Settings.StorageLimitMb.</evidence>
+    <evidence file="Backend/Vault/Service/Services/DocumentService.cs" line="119">The method converts the configured limit to bytes and compares it to current usage plus the incoming file.</evidence>
+    <evidence file="Backend/Vault/Service/Services/DocumentService.cs" line="124">The upload returns a storage limit exceeded response when the limit would be breached.</evidence>
+    <nextAction>None — implemented.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-724" tier="1" status="implemented">
+    <finding>The 401/403 interceptor route allowlist now covers all auth entry points: /login, /login/admin, /login/adminP, /registration, /forgot-password, /reset-password.</finding>
+    <evidence file="Frontend/apps/web/src/api/apiClient.ts" line="106">authPages array includes all auth routes for 401 handling.</evidence>
+    <evidence file="Frontend/apps/web/src/api/apiClient.ts" line="127">authPages array includes all auth routes for 403 handling.</evidence>
+    <nextAction>Refresh-token mechanism is still absent — consider implementing for production hardening.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-751" tier="2" status="partial">
+    <finding>Workflow CRUD activity logging was added, but trigger evaluation and workflow-instance operations still have audit gaps.</finding>
+    <evidence file="Backend/Vault/Service/Services/WorkflowService.cs" line="61">CreateAsync now writes an Activity record.</evidence>
+    <evidence file="Backend/Vault/Service/Services/WorkflowService.cs" line="96">UpdateAsync now writes an Activity record.</evidence>
+    <evidence file="Backend/Vault/Service/Services/WorkflowService.cs" line="131">DeleteAsync now writes an Activity record.</evidence>
+    <evidence file="Backend/Vault/Service/Services/WorkflowService.cs" line="224">EvaluateTriggersAsync exists, but there is no matching Activities.AddAsync call in that path before StartWorkflowAsync is invoked.</evidence>
+    <evidence file="Backend/Vault/Service/Services/WorkflowInstanceService.cs" line="353">EvaluateConfidenceAsync still contains no LogActivity call.</evidence>
+    <evidence file="Backend/Vault/Service/Services/WorkflowInstanceService.cs" line="695">StartStepAsync still contains no LogActivity call.</evidence>
+    <nextAction>Finish the missing Activity coverage for trigger evaluation, confidence-based branching, step starts, and termination paths.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-748" tier="2" status="partial">
+    <finding>The integration default was changed from Active to Final, but status handling is still inconsistent across the upload path and the rest of Vault largely expects Active/Draft/Pending.</finding>
+    <evidence file="Backend/Vault/Service/Services/IntegrationService.cs" line="98">GRC upload DTOs now default Status to Final.</evidence>
+    <evidence file="Backend/Vault/Service/Services/IntegrationService.cs" line="111">The returned summary still falls back to Active.</evidence>
+    <evidence file="Backend/Vault/Service/Services/DocumentService.cs" line="154">DocumentService still persists dto.Status or Draft when no blocking workflow exists.</evidence>
+    <evidence file="Backend/Vault/Core/Entities/Document.cs" line="44">The core document model still defaults Status to Active.</evidence>
+    <nextAction>Define an explicit GRC-to-Vault status map and normalize both persistence and UI expectations around the same allowed values.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-710" tier="2" status="open">
+    <finding>Name updates still proxy to GRC and mirror fields locally, but there is no visible name-change detection, deactivation workflow, or authorization-letter trigger logic.</finding>
+    <evidence file="Backend/Vault/Service/Services/GRCService.cs" line="1062">UpdateExternalUserAsync is a straight external PUT wrapper.</evidence>
+    <evidence file="Backend/Vault/Service/Services/UserService.cs" line="439">UserService forwards the external update call.</evidence>
+    <evidence file="Backend/Vault/Service/Services/UserService.cs" line="462">UserService then mirrors NameAr/NameEn locally without triggering any extra business flow.</evidence>
+    <nextAction>Introduce explicit old-vs-new name comparison and wire the required deactivation/auth-letter business process.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-752" tier="3" status="open">
+    <finding>The workflow editor is still configured for a single trigger selection on the start edge.</finding>
+    <evidence file="Frontend/apps/web/src/components/workflow/WorkflowEditor.tsx">WorkflowTriggerBuilder is still passed singleSelect=true.</evidence>
+    <evidence file="Frontend/apps/web/src/components/WorkflowTriggerBuilder.tsx" line="49">WorkflowTriggerBuilder has logic to enforce single-select mode when that prop is true.</evidence>
+    <nextAction>Clarify the intended product behavior first, then either switch to multi-select or keep the current behavior intentionally.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-753" tier="3" status="implemented">
+    <finding>A visible Trash2 delete button is now rendered next to the close button in the edge-properties panel header.</finding>
+    <evidence file="Frontend/apps/web/src/components/workflow/WorkflowEditor.tsx">Edge properties title bar now contains a Trash2 button that removes the edge from state and deselects it.</evidence>
+    <evidence file="Frontend/apps/web/src/contexts/LanguageContext.tsx">Added deleteConnection translation key in both AR and EN.</evidence>
+    <nextAction>None — implemented.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-749" tier="3" status="open">
+    <finding>Task actions are still immediately actionable without a required preview step.</finding>
+    <evidence file="Frontend/apps/web/src/components/TaskActionModal.tsx" line="112">The modal exposes View Workspace/View Document as an optional link.</evidence>
+    <evidence file="Frontend/apps/web/src/components/TaskActionModal.tsx" line="182">Reject remains enabled unless loading is true.</evidence>
+    <evidence file="Frontend/apps/web/src/components/TaskActionModal.tsx" line="185">Approve remains enabled unless loading is true.</evidence>
+    <nextAction>Add a preview-confirmed flag or a stronger confirmation gate before action buttons become available.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-707" tier="3" status="implemented">
+    <finding>TokenAuth now preserves language from query string or token and applies it to storage and document direction.</finding>
+    <evidence file="Frontend/apps/web/src/pages/TokenAuth.tsx" line="50">TokenAuth reads lang from the query string.</evidence>
+    <evidence file="Frontend/apps/web/src/pages/TokenAuth.tsx" line="73">TokenAuth reads lang/Language from the decoded token.</evidence>
+    <evidence file="Frontend/apps/web/src/pages/TokenAuth.tsx" line="90">TokenAuth writes the resolved language into localStorage and updates the document language/direction.</evidence>
+    <nextAction>None — implemented.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-713" tier="3" status="likely-implemented">
+    <finding>The TokenAuth transition screen has been reworked toward Musahm branding and localization, although this pass did not include a visual browser check.</finding>
+    <evidence file="Frontend/apps/web/src/pages/TokenAuth.tsx" line="176">The page now defines brand-aligned styling around Musahm gold (#c3924d).</evidence>
+    <evidence file="Frontend/apps/web/src/pages/TokenAuth.tsx" line="121">The component is language-aware and renders based on the resolved locale.</evidence>
+    <nextAction>Do a quick browser comparison against the design system before treating this ticket as fully done.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-718" tier="3" status="partial">
+    <finding>Login now keeps a local isSubmitting state, but the global loader still depends only on requestCount, so the original blank-gap problem can still happen between sequential auth requests and navigation.</finding>
+    <evidence file="Frontend/apps/web/src/pages/Login.tsx" line="49">Login now tracks isSubmitting explicitly.</evidence>
+    <evidence file="Frontend/apps/web/src/pages/Login.tsx" line="669">The submit button reflects isSubmitting, but that state only affects the local page UI.</evidence>
+    <evidence file="Frontend/apps/web/src/components/Loader.tsx" line="6">The global Loader only reads isLoading from LoadingContext.</evidence>
+    <evidence file="Frontend/apps/web/src/contexts/LoadingContext.tsx" line="35">isLoading is derived solely from requestCount &gt; 0.</evidence>
+    <evidence file="Frontend/apps/web/src/api/apiClient.ts" line="36">The loader is still request-based via interceptor increment/decrement calls.</evidence>
+    <nextAction>Either drive the global loader from the full login workflow state or keep a dedicated auth-transition overlay mounted until navigation completes.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-754" tier="3" status="implemented">
+    <finding>The workflow name and description inputs are now always visible above the conditional edge/node properties panels.</finding>
+    <evidence file="Frontend/apps/web/src/components/workflow/WorkflowEditor.tsx">Workflow settings (name + description) are rendered in a separate always-visible we-properties div before the conditional ternary.</evidence>
+    <nextAction>None — implemented.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-729" tier="3" status="implemented">
+    <finding>The storage-limit input now allows empty intermediate state and coerces to a number only on submit.</finding>
+    <evidence file="Frontend/apps/web/src/components/CreateWorkspaceModal.tsx">State type changed to number|string, onChange allows empty string, submit uses Number() || 0.</evidence>
+    <nextAction>None — implemented.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-728" tier="3" status="needs-verification">
+    <finding>The current pass did not locate the exact Rules and Exceptions modal implementation quickly enough to re-verify the reported checkbox-spacing issue from code alone.</finding>
+    <nextAction>Locate the exact modal component, inspect the checkbox/label spacing styles in-browser, and then decide whether the fix is CSS-only or a design-spec mismatch.</nextAction>
+  </ticket>
+
+  <ticket id="MUS-755" tier="3" status="implemented">
+    <finding>The start-edge field label now uses the specific t('connectionName') key instead of t('name').</finding>
+    <evidence file="Frontend/apps/web/src/components/workflow/WorkflowEditor.tsx">Label changed from t('name') to t('connectionName').</evidence>
+    <evidence file="Frontend/apps/web/src/contexts/LanguageContext.tsx">Added connectionName: "Connection Name" (EN) and connectionName: "اسم الرابط" (AR).</evidence>
+    <nextAction>None — implemented.</nextAction>
+  </ticket>
+</nextActions>

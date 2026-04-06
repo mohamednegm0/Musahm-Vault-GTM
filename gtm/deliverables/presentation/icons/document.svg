@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Document--Streamline-Solar">
+  <desc>
+    Document Streamline Icon: https://streamlinehq.com
+  </desc>
+  <g id="Line Duotone/Notes/Document">
+    <path id="Vector" stroke="#737373" d="M3 10c0 -3.77124 0 -5.65685 1.17157 -6.82843C5.34315 2 7.22876 2 11 2h2c3.7712 0 5.6569 0 6.8284 1.17157C21 4.34315 21 6.22876 21 10v4c0 3.7712 0 5.6569 -1.1716 6.8284C18.6569 22 16.7712 22 13 22h-2c-3.77124 0 -5.65685 0 -6.82843 -1.1716C3 19.6569 3 17.7712 3 14v-4Z" stroke-width="1"></path>
+    <path id="Vector_2" stroke="#000000" stroke-linecap="round" d="M8 10h8" stroke-width="1"></path>
+    <path id="Vector_3" stroke="#000000" stroke-linecap="round" d="M8 14h5" stroke-width="1"></path>
+  </g>
+</svg>

@@ -1,0 +1,409 @@
+.ai-chat-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 80px);
+  /* Adjust based on header height */
+  background-color: #fff;
+  color: var(--text-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  justify-content: center;
+  /* Center content vertically by default (for empty state) */
+}
+
+.ai-chat-main.has-messages {
+  justify-content: flex-start;
+}
+
+/* Empty State: Centered Greeting */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  width: 100%;
+}
+
+.greeting-text {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Chat Area (Active State) */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding-bottom: 120px;
+  /* Space for fixed input */
+}
+
+/* Message Bubbles */
+.message {
+  display: flex;
+  gap: 1rem;
+  max-width: 85%;
+}
+
+.message.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.message.ai {
+  align-self: flex-start;
+}
+
+.message-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.message.user .message-avatar {
+  background-color: #00295B;
+  color: white;
+}
+
+.message.ai .message-avatar {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.message-content {
+  padding: 0.8rem 1.2rem;
+  border-radius: 1.5rem;
+  line-height: 1.5;
+  font-size: 1rem;
+}
+
+.message.user .message-content {
+  background-color: #f4f4f4;
+  color: #333;
+  border-bottom-right-radius: 0.2rem;
+}
+
+.message.ai .message-content {
+  background-color: transparent;
+  padding-left: 0;
+  padding-top: 0;
+  color: #333;
+}
+
+/* Suggestions Grid (Optional in Empty State) */
+.suggestions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 600px) {
+  .suggestions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.suggestion-card {
+  padding: 1rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.9rem;
+  color: #555;
+  text-align: left;
+}
+
+.suggestion-card:hover {
+  background-color: #f9f9f9;
+}
+
+.suggestion-title {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.2rem;
+  color: #333;
+}
+
+/* Input Area Container */
+.input-container-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 100;
+}
+
+/* When chat is active, fix it to bottom */
+.ai-chat-main.has-messages .input-container-wrapper {
+  position: absolute;
+  bottom: 0;
+  background: white;
+  /* overlay content behind */
+}
+
+.chat-input-box {
+  background: #f4f4f4;
+  border-radius: 26px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+  box-shadow: 0 0 transparent;
+  transition: box-shadow 0.2s;
+  border: 1px solid transparent;
+}
+
+.chat-input-box:focus-within {
+  border-color: #d0d0d0;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.plus-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  color: #555;
+  transition: background-color 0.2s;
+}
+
+.plus-btn:hover {
+  background-color: #d0d0d0;
+  color: #333;
+}
+
+.chat-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0.8rem;
+  font-size: 1rem;
+  resize: none;
+  max-height: 200px;
+  outline: none;
+  min-height: 24px;
+  margin-bottom: -4px;
+  /* Fix vertical align */
+}
+
+.send-btn-round {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #000;
+  /* ChatGPT style black button */
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  opacity: 0.3;
+  transition: opacity 0.2s;
+}
+
+.send-btn-round.active {
+  opacity: 1;
+}
+
+/* Plus Menu Popup */
+.plus-menu-popover {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 10px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  width: 260px;
+  z-index: 1000;
+  overflow: hidden;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-section {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.menu-section:last-child {
+  border-bottom: none;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.menu-label {
+  font-size: 0.75rem;
+  color: #888;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  cursor: pointer;
+  border-radius: 6px;
+  color: #333;
+  font-size: 0.95rem;
+  transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+  background-color: #f5f5f5;
+}
+
+.menu-item.active {
+  background-color: #e0e7ff;
+  color: #00295B;
+}
+
+.menu-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+}
+
+/* File Attachment Preview */
+.attachment-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #f0f0f0;
+  border-radius: 6px;
+  margin: 0.5rem 0 0.5rem 3rem;
+  font-size: 0.9rem;
+  width: fit-content;
+  color: #333;
+}
+
+.remove-attachment {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #999;
+
+  .remove-attachment:hover {
+    color: #ef4444;
+  }
+
+  /* RTL Support Utilities */
+  [dir="rtl"] .mirror-rtl {
+    transform: scaleX(-1);
+  }
+
+  [dir="rtl"] .chat-input {
+    text-align: right;
+  }
+
+  [dir="rtl"] .plus-menu-popover {
+    left: auto;
+    right: 0;
+  }
+
+  [dir="rtl"] .message.user {
+    flex-direction: row-reverse;
+    /* Usually row-reverse in LTR places avatar on right. In RTL with row-reverse, it stays right? Wait. */
+    /* 
+    LTR:
+    user msg: flex-direction: row-reverse  -> Avatar(Right) Content(Left)
+    
+    RTL:
+    user msg: flex-direction: row-reverse  -> Avatar(Left) Content(Right) -- This is WRONG for user msg in RTL.
+    User msg in RTL should be on Left? No, User is usually Right side.
+    
+    Let's rely on standard flux.
+    In RTL:
+    flex-direction: row (default) -> Start is Right.
+    flex-direction: row-reverse -> Start is Left.
+    
+    .message.user uses row-reverse. In LTR, it puts items right-to-left. 
+    In RTL, row-reverse puts items left-to-right. So Avatar is on Left, Content on Right.
+    This creates the "User on Left" effect in RTL if we don't change anything.
+    Usually Chat apps keep User on Right regardless of language?
+    Whatsapp: User IS on Right in RTL.
+    So we need the SAME visual layout.
+    
+    In RTL, 'flex-end' is Left.
+    We need 'align-self: flex-end' (Left in RTL).
+    Wait, 'flex-end' in RTL is LEFT side of container.
+    So .message.user { align-self: flex-end } puts it on LEFT.
+    But we want user on RIGHT.
+    So we need to force direction or swap logic.
+    */
+  }
+
+  [dir="rtl"] .plus-btn {
+    margin-right: 0;
+    margin-left: 0.5rem;
+  }
+
+  [dir="rtl"] .send-btn-round {
+    margin-left: 0;
+    margin-right: 0.5rem;
+  }
+
+  [dir="rtl"] .suggestion-card {
+    text-align: right;
+  }
+
+  [dir="rtl"] .attachment-preview {
+    margin: 0.5rem 3rem 0.5rem 0;
+    /* Flip margin */
+  }
+}

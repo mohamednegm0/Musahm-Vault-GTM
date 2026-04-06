@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>Musahm Vault - Launch Content Review Dashboard</title>
+<style>
+  :root {
+    --navy: #1F2937;
+    --navy-light: #374151;
+    --gold: #c3924d;
+    --gold-light: #d4a96a;
+    --gold-bg: #fdf6ed;
+    --white: #ffffff;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-500: #6b7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --red: #dc2626;
+    --red-bg: #fef2f2;
+    --amber: #d97706;
+    --amber-bg: #fffbeb;
+    --emerald: #059669;
+    --emerald-bg: #ecfdf5;
+    --blue: #2563eb;
+    --blue-bg: #eff6ff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--gray-50); color: var(--gray-900); line-height: 1.6; }
+
+  .header { background: linear-gradient(135deg, var(--navy) 0%, #111827 100%); color: var(--white); padding: 2rem; position: relative; }
+  .header-inner { max-width: 1200px; margin: 0 auto; }
+  .header h1 { font-size: 1.6rem; font-weight: 700; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+  .vault-badge { background: var(--gold); color: var(--navy); padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 800; }
+  .header-sub { color: var(--gold); margin-top: 0.3rem; font-size: 0.95rem; font-weight: 600; }
+  .header-desc { color: var(--gray-300); font-size: 0.82rem; margin-top: 0.3rem; }
+
+  /* PROGRESS BAR */
+  .progress-section { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 1.25rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .progress-inner { max-width: 1200px; margin: 0 auto; }
+  .progress-stats { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .progress-stat { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; font-weight: 600; }
+  .progress-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-approved { background: var(--emerald); }
+  .dot-edits { background: var(--amber); }
+  .dot-rejected { background: var(--red); }
+  .dot-pending { background: var(--gray-300); }
+  .progress-bar-wrap { height: 8px; background: var(--gray-100); border-radius: 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--emerald) 0%, var(--gold) 100%); border-radius: 4px; transition: width 0.4s ease; }
+  .export-btn { background: var(--navy); color: var(--white); border: none; padding: 0.5rem 1.2rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; margin-left: auto; transition: background 0.2s; }
+  .export-btn:hover { background: var(--gold); color: var(--navy); }
+
+  /* NAV */
+  .nav { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 0 2rem; overflow-x: auto; white-space: nowrap; }
+  .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; }
+  .nav a { padding: 0.75rem 1rem; color: var(--gray-500); text-decoration: none; font-size: 0.82rem; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .nav a:hover, .nav a.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  .main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+  /* SECTION */
+  .section { margin-bottom: 3rem; scroll-margin-top: 130px; }
+  .section-title { font-size: 1.25rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+  .section-count { background: var(--gold-bg); color: var(--gold); padding: 0.15rem 0.6rem; border-radius: 20px; font-size: 0.72rem; font-weight: 700; }
+
+  /* REVIEW CARD */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(520px, 1fr)); gap: 1.25rem; }
+  .review-card { background: var(--white); border-radius: 12px; border: 1px solid var(--gray-200); overflow: hidden; transition: box-shadow 0.2s; }
+  .review-card:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+  .review-card.status-approved { border-left: 4px solid var(--emerald); }
+  .review-card.status-edits { border-left: 4px solid var(--amber); }
+  .review-card.status-rejected { border-left: 4px solid var(--red); }
+  .review-card.status-pending { border-left: 4px solid var(--gray-300); }
+
+  .card-top { padding: 1.1rem 1.25rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; cursor: pointer; }
+  .card-info { flex: 1; }
+  .card-id { font-size: 0.7rem; color: var(--gray-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+  .card-title { font-size: 0.95rem; font-weight: 700; color: var(--gray-900); margin-top: 0.1rem; }
+  .card-summary { font-size: 0.8rem; color: var(--gray-500); margin-top: 0.25rem; line-height: 1.5; }
+  .card-tags { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.4rem; }
+  .tag { padding: 0.12rem 0.45rem; border-radius: 4px; font-size: 0.68rem; font-weight: 600; }
+  .tag-ar { background: var(--emerald-bg); color: var(--emerald); }
+  .tag-en { background: var(--blue-bg); color: var(--blue); }
+  .tag-li { background: #eef2ff; color: #4f46e5; }
+  .tag-tw { background: #f0f9ff; color: #0284c7; }
+  .expand-arrow { color: var(--gray-300); font-size: 0.9rem; transition: transform 0.2s; flex-shrink: 0; margin-top: 0.3rem; }
+  .review-card.open .expand-arrow { transform: rotate(90deg); color: var(--gold); }
+
+  /* EXPANDABLE CONTENT */
+  .card-body { display: none; padding: 0 1.25rem; border-top: 1px solid var(--gray-100); }
+  .review-card.open .card-body { display: block; }
+  .content-block { padding: 1rem 0; font-size: 0.84rem; line-height: 1.8; color: var(--gray-700); white-space: pre-wrap; }
+  .content-block strong { color: var(--navy); }
+  .content-block .hashtags { color: var(--blue); font-size: 0.78rem; }
+  .ar-label { font-size: 0.7rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.3rem; }
+  .ar-label::before { content: ''; width: 8px; height: 8px; border-radius: 2px; background: var(--emerald); display: inline-block; }
+  .en-label::before { background: var(--blue); }
+
+  /* REVIEW CONTROLS */
+  .review-controls { padding: 1rem 1.25rem; background: var(--gray-50); border-top: 1px solid var(--gray-100); display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap; }
+  .control-group { display: flex; flex-direction: column; gap: 0.3rem; }
+  .control-group label { font-size: 0.72rem; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.3px; }
+  .status-select { padding: 0.45rem 0.7rem; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer; background: var(--white); min-width: 140px; }
+  .status-select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 2px rgba(195,146,77,0.15); }
+  .comment-input { flex: 1; min-width: 250px; padding: 0.45rem 0.7rem; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 0.82rem; font-family: inherit; resize: none; height: 2.5rem; }
+  .comment-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 2px rgba(195,146,77,0.15); }
+  .comment-input::placeholder { color: var(--gray-300); }
+
+  /* DECISIONS */
+  .decision-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.75rem; }
+  .decision-card { background: var(--white); border-radius: 10px; border: 1px solid var(--gray-200); padding: 1rem 1.25rem; border-left: 4px solid var(--red); }
+  .decision-card.warning { border-left-color: var(--amber); }
+  .decision-card .d-id { font-weight: 800; color: var(--red); font-size: 0.78rem; }
+  .decision-card.warning .d-id { color: var(--amber); }
+  .decision-card .d-title { font-weight: 700; color: var(--gray-900); margin-top: 0.2rem; }
+  .decision-card .d-desc { font-size: 0.8rem; color: var(--gray-500); margin-top: 0.25rem; }
+
+  .alert { background: var(--red-bg); border: 1px solid #fecaca; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; font-size: 0.85rem; color: #991b1b; }
+  .alert-amber { background: var(--amber-bg); border-color: #fde68a; color: #92400e; }
+  .alert strong { display: block; margin-bottom: 0.25rem; }
+
+  /* PERSONA / WAVE / TIMELINE */
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  .info-card { background: var(--white); border-radius: 12px; border: 1px solid var(--gray-200); padding: 1.25rem; }
+  .info-card .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: var(--gold); margin-bottom: 0.15rem; }
+  .info-card .title { font-weight: 700; color: var(--navy); font-size: 1rem; }
+  .info-card .desc { font-size: 0.82rem; color: var(--gray-500); margin-top: 0.35rem; line-height: 1.5; }
+
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before { content: ''; position: absolute; left: 0.5rem; top: 0; bottom: 0; width: 2px; background: var(--gray-200); }
+  .timeline-item { position: relative; padding: 0 0 1.5rem 2rem; }
+  .timeline-item::before { content: ''; position: absolute; left: 0.15rem; top: 0.35rem; width: 12px; height: 12px; border-radius: 50%; background: var(--gold); border: 2px solid var(--white); box-shadow: 0 0 0 2px var(--gold); }
+  .timeline-date { font-weight: 700; color: var(--navy); font-size: 0.85rem; }
+  .timeline-text { font-size: 0.82rem; color: var(--gray-500); margin-top: 0.2rem; }
+
+  .sched-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; background: var(--white); border-radius: 12px; overflow: hidden; border: 1px solid var(--gray-200); }
+  .sched-table th { background: var(--navy); color: var(--white); padding: 0.7rem 1rem; text-align: left; font-weight: 600; }
+  .sched-table td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--gray-100); }
+
+  .footer { text-align: center; padding: 2rem; color: var(--gray-500); font-size: 0.78rem; border-top: 1px solid var(--gray-200); margin-top: 2rem; }
+
+  @media (max-width: 768px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .review-controls { flex-direction: column; }
+    .comment-input { min-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <h1>Musahm <span class="vault-badge">VAULT</span> Content Review</h1>
+    <div class="header-sub">Launch Content Approval Dashboard</div>
+    <div class="header-desc" data-i18n="header-desc">Review each content piece below. Set status and add comments. Decisions are saved automatically.</div>
+  </div>
+  <button id="lang-toggle" onclick="toggleLang()" style="position:absolute;top:1.5rem;right:2rem;background:var(--gold);color:var(--navy);border:none;padding:0.4rem 1rem;border-radius:6px;font-size:0.85rem;font-weight:700;cursor:pointer;letter-spacing:0.5px">عربي</button>
+</div>
+
+<div class="progress-section">
+  <div class="progress-inner">
+    <div class="progress-stats">
+      <div class="progress-stat"><span class="progress-dot dot-approved"></span> Approved: <span id="count-approved">0</span></div>
+      <div class="progress-stat"><span class="progress-dot dot-edits"></span> Needs Edits: <span id="count-edits">0</span></div>
+      <div class="progress-stat"><span class="progress-dot dot-rejected"></span> Rejected: <span id="count-rejected">0</span></div>
+      <div class="progress-stat"><span class="progress-dot dot-pending"></span> Pending: <span id="count-pending">25</span></div>
+      <div class="progress-stat" style="margin-left:auto;color:var(--navy)"><strong id="pct-reviewed">0%</strong> reviewed</div>
+      <button class="export-btn" onclick="exportDecisions()">Export Decisions (CSV)</button>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+</div>
+
+<div class="nav">
+  <div class="nav-inner">
+    <a href="#decisions" class="active" data-i18n="nav-decisions">Blocking Decisions</a>
+    <a href="#linkedin" data-i18n="nav-linkedin">LinkedIn Posts</a>
+    <a href="#twitter" data-i18n="nav-twitter">Twitter Posts</a>
+    <a href="#email" data-i18n="nav-email">Email</a>
+    <a href="#sms" data-i18n="nav-sms">SMS</a>
+    <a href="#visuals" data-i18n="nav-visuals">Visuals</a>
+    <a href="#video" data-i18n="nav-video">Video Scripts</a>
+    <a href="#schedule" data-i18n="nav-schedule">Schedule</a>
+    <a href="#personas" data-i18n="nav-personas">Personas</a>
+    <a href="#rollout" data-i18n="nav-rollout">Rollout</a>
+    <a href="#timeline" data-i18n="nav-timeline">Timeline</a>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- GENERAL REVIEW -->
+  <div id="general-review" class="section" style="margin-bottom:2rem">
+    <div style="background:var(--white);border-radius:12px;border:2px solid var(--gold);padding:1.5rem;box-shadow:0 4px 15px rgba(195,146,77,0.1)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+        <div>
+          <div style="font-size:1.15rem;font-weight:800;color:var(--navy)">General Review Notes</div>
+          <div style="font-size:0.82rem;color:var(--gray-500);margin-top:0.15rem">Overall feedback, strategic direction, or questions for the team. Saved automatically.</div>
+        </div>
+        <div style="display:flex;gap:0.5rem;align-items:center">
+          <select id="overall-verdict" onchange="saveGeneralReview()" style="padding:0.45rem 0.7rem;border:2px solid var(--gray-200);border-radius:8px;font-size:0.85rem;font-weight:700;cursor:pointer;background:var(--white)">
+            <option value="pending">Overall: Pending Review</option>
+            <option value="approved">Overall: Approved to Launch</option>
+            <option value="edits">Overall: Needs Revisions</option>
+            <option value="rejected">Overall: Not Ready</option>
+          </select>
+        </div>
+      </div>
+      <textarea id="general-notes" oninput="saveGeneralReview()" placeholder="Write your overall review here... Strategy feedback, concerns, approvals, questions for the marketing team..." style="width:100%;min-height:120px;padding:0.9rem;border:1px solid var(--gray-200);border-radius:8px;font-size:0.88rem;font-family:inherit;resize:vertical;line-height:1.7;color:var(--gray-900)"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.6rem">
+        <span id="general-saved" style="font-size:0.72rem;color:var(--gray-300)"></span>
+        <span style="font-size:0.72rem;color:var(--gray-500)">Included in CSV export</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCKING DECISIONS -->
+  <div id="decisions" class="section">
+    <div class="section-title">Blocking Client Decisions <span class="section-count" style="background:var(--amber-bg);color:var(--amber)">3 REMAINING</span></div>
+    <div class="alert alert-amber"><strong>3 decisions still pending.</strong> Remaining blockers: Launch Date (depends on product), WhatsApp Number (will be set up), LinkedIn/Twitter access (need credentials).</div>
+    <div class="decision-grid">
+      <div class="decision-card"><div class="d-id">D4 PENDING</div><div class="d-title">Launch Date</div><div class="d-desc">Depends on product readiness. Timeline uses T-14/T-7/T+0 template format.</div></div>
+      <div class="decision-card"><div class="d-id">D5 PENDING</div><div class="d-title">WhatsApp Number</div><div class="d-desc">Will be set up before launch. Placeholder kept in content.</div></div>
+      <div class="decision-card"><div class="d-id">PENDING</div><div class="d-title">LinkedIn/Twitter Access</div><div class="d-desc">Need credentials to post the 48 social pieces on schedule.</div></div>
+    </div>
+  </div>
+
+  <!-- LINKEDIN POSTS -->
+  <div id="linkedin" class="section">
+    <div class="section-title">LinkedIn Posts <span class="section-count">5 VARIANTS</span></div>
+    <div class="card-grid">
+
+      <div class="review-card status-pending" data-id="li-primary-ar">
+        <div class="card-top" onclick="toggleCard(this.parentElement)">
+          <div class="card-info">
+            <div class="card-id">#1 LinkedIn Primary</div>
+            <div class="card-title">Launch Announcement (Arabic)</div>
+            <div class="card-summary">Main launch post. Opens with "Where are your company's documents right now?" Lists 5 product pillars: file management, permissions, workflows, audit trail, Musahm integration. Ends with 30-seat beta scarcity CTA.</div>
+            <div class="card-tags"><span class="tag tag-ar">Arabic</span><span class="tag tag-li">LinkedIn</span></div>
+          </div>
+          <span class="expand-arrow">&#9654;</span>
+        </div>
+        <div class="card-body">
+          <div class="ar-label en-label">English Translation (for review)</div>
+          <div class="content-block"><strong>Where are your company's documents right now?</strong>
+
+In the CFO's inbox? In a WhatsApp group? On the laptop of someone who left six months ago? The auditor asks, and the search takes days instead of minutes.
+
+Saudi companies rely on Musahm today to govern their decisions. Now we complete the picture.
+
+Today we launch <strong>Musahm Vault</strong>, a document management system built from scratch for Saudi governance:
+
+&#9724; Upload, classify, and organize your documents in workspaces with smart tags
+&#9724; Five permission levels per document, from Viewer to Admin
+&#9724; Approval workflows: no document goes live without review and sign-off
+&#9724; Audit trail for every action with user and timestamp
+&#9724; Direct integration with Shareholder Registry and meeting records in Musahm
+
+Vault is more than file storage. A complete system to organize, protect, and govern your documents.
+
+Beta seats are limited. First 30 companies only.
+
+Activate Vault: [link]</div>
+          <div style="border-top:1px dashed var(--gray-200);margin:0.5rem 0"></div>
+          <div class="ar-label">Arabic Original</div>
+          <div class="content-block" dir="rtl"><strong>أين وثائق شركتك الآن؟</strong>
+
+في إيميل المدير المالي؟ في مجموعة واتساب؟ على جهاز موظف غادر الشركة من ستة أشهر؟ والمدقق يسأل، والبحث يستغرق أيام بدل دقائق.
+
+شركات سعودية تعتمد على مساهم اليوم لحوكمة قراراتها. والآن نكمل المنظومة.
+
+اليوم نطلق <strong>مساهم Vault</strong>، نظام إدارة وثائق بُني من الصفر للحوكمة السعودية:
+
+&#9724; ارفع وثائقك، صنّفها، ونظّمها في مساحات عمل بوسوم ذكية
+&#9724; خمسة مستويات صلاحيات لكل وثيقة على حدة، من عارض إلى مدير
+&#9724; سير عمل للموافقات: لا وثيقة تُنشر بدون مراجعة واعتماد
+&#9724; سجل تدقيق لكل عملية بالمستخدم والتاريخ
+&#9724; تكامل مباشر مع سجل المساهمين ومحاضر الاجتماعات في مساهم
+
+Vault أكثر من مخزن ملفات. نظام متكامل لتنظيم وحماية وحوكمة وثائقك.
+
+المقاعد التجريبية محدودة. أول 30 شركة فقط.
+
+فعّل Vault: [رابط]
+
+<span class="hashtags">#مساهم #Musahm #حوكمة_الشركات #SaudiTech #نظام_الشركات #إدارة_الوثائق #Vault</span></div>
+        </div>
+        <div class="review-controls">
+          <div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div>
+          <div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback or notes..." oninput="saveComment(this)"></textarea></div>
+        </div>
+      </div>
+
+      <div class="review-card status-pending" data-id="li-primary-en">
+        <div class="card-top" onclick="toggleCard(this.parentElement)">
+          <div class="card-info">
+            <div class="card-id">#2 LinkedIn Primary</div>
+            <div class="card-title">Launch Announcement (English)</div>
+            <div class="card-summary">English mirror of the Arabic post. Same structure: scatter problem, solution reveal, 5 feature bullets, Vision 2030 anchor, 30-seat CTA.</div>
+            <div class="card-tags"><span class="tag tag-en">English</span><span class="tag tag-li">LinkedIn</span></div>
+          </div>
+          <span class="expand-arrow">&#9654;</span>
+        </div>
+        <div class="card-body">
+          <div class="ar-label en-label">English Copy</div>
+          <div class="content-block"><strong>Where are your company's most important documents right now?</strong>
+
+In the CFO's inbox? In a WhatsApp group? On the laptop of someone who left six months ago?
+
+Saudi companies already rely on Musahm to govern their board decisions. Today we complete the picture.
+
+Introducing <strong>Musahm Vault</strong>, a document management system built from scratch for Saudi governance:
+
+&#9724; Upload, classify, and organize documents in governed workspaces with smart tagging
+&#9724; Five-level permissions on every document, from Viewer through Admin
+&#9724; Approval workflows: no document goes live without review and sign-off
+&#9724; Full audit trail. Every action logged with user identity and timestamp
+&#9724; Direct integration with Shareholder Registry and board meeting records
+
+Vault is more than file storage. A complete system to organize, protect, and govern your documents.
+
+Beta is limited to the first 30 companies. Activate Vault: [link]
+
+<span class="hashtags">#Musahm #CorporateGovernance #SaudiTech #CompaniesLaw #DocumentManagement #Vault</span></div>
+        </div>
+        <div class="review-controls">
+          <div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div>
+          <div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback or notes..." oninput="saveComment(this)"></textarea></div>
+        </div>
+      </div>
+
+      <div class="review-card status-pending" data-id="li-variant-b">
+        <div class="card-top" onclick="toggleCard(this.parentElement)">
+          <div class="card-info">
+            <div class="card-id">#3 LinkedIn Variant B</div>
+            <div class="card-title">Shareholder Registry Angle (Arabic)</div>
+            <div class="card-summary">Unique differentiator: no competitor links shareholder registry to documents. Opens with "Is your shareholder registry connected to your documents?" 5 bullets including workflow and version control.</div>
+            <div class="card-tags"><span class="tag tag-ar">Arabic</span><span class="tag tag-li">LinkedIn</span></div>
+          </div>
+          <span class="expand-arrow">&#9654;</span>
+        </div>
+        <div class="card-body">
+          <div class="ar-label en-label">English Translation (for review)</div>
+          <div class="content-block"><strong>Is your company's shareholder registry connected to its documents?</strong>
+
+In most Saudi companies, general assembly decisions are in a Word file. The shareholder registry is in Excel. Contracts are in the lawyer's email.
+
+That is why we built Musahm Vault, to connect governance documents to their proper context.
+
+&#9724; Shareholder registry in Musahm &#8592; their documents in Vault
+&#9724; Board meeting minutes &#8592; in a governed workspace with five-level permissions
+&#9724; Comprehensive audit trail proving chain of custody
+&#9724; Approval workflows: no document goes out without review and sign-off
+&#9724; Version control: every edit saved automatically with rollback to any version
+
+First 30 companies get exclusive beta access. Activate Vault: [link]</div>
+          <div style="border-top:1px dashed var(--gray-200);margin:0.5rem 0"></div>
+          <div class="ar-label">Arabic Original</div>
+          <div class="content-block" dir="rtl"><strong>هل سجل المساهمين في شركتك مرتبط بوثائقها؟</strong>
+
+في أغلب الشركات السعودية، قرارات الجمعية العامة في ملف وورد. وسجل المساهمين في إكسل. والعقود في إيميل المحامي.
+
+لهذا بنينا مساهم Vault، لربط وثائق الحوكمة بسياقها الصحيح.
+
+&#9724; سجل المساهمين في مساهم &#8592; وثائقهم في Vault
+&#9724; محاضر مجلس الإدارة &#8592; في مساحة عمل محوكمة بصلاحيات خمسة مستويات
+&#9724; سجل تدقيق شامل يثبت سلسلة الحفظ
+&#9724; سير عمل للموافقات: لا وثيقة تخرج بدون مراجعة واعتماد
+&#9724; تحكم بالإصدارات: كل تعديل يُحفظ تلقائياً مع إمكانية الرجوع لأي نسخة
+
+أول 30 شركة تحصل على وصول تجريبي حصري. فعّل Vault: [رابط]</div>
+        </div>
+        <div class="review-controls">
+          <div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div>
+          <div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback or notes..." oninput="saveComment(this)"></textarea></div>
+        </div>
+      </div>
+
+      <div class="review-card status-pending" data-id="li-variant-c">
+        <div class="card-top" onclick="toggleCard(this.parentElement)">
+          <div class="card-info">
+            <div class="card-id">#4 LinkedIn Variant C</div>
+            <div class="card-title">Audit/Compliance Angle (English)</div>
+            <div class="card-summary">Targets CFOs and auditors. Opens with "When a regulator asks for your board resolution, how fast can you produce it?" 5 bullets: classification, permissions, audit trail, OTP sharing, approval workflows.</div>
+            <div class="card-tags"><span class="tag tag-en">English</span><span class="tag tag-li">LinkedIn</span></div>
+          </div>
+          <span class="expand-arrow">&#9654;</span>
+        </div>
+        <div class="card-body">
+          <div class="ar-label en-label">English Copy</div>
+          <div class="content-block"><strong>When a regulator asks for your board resolution from last quarter, how fast can you produce it?</strong>
+
+If the answer is "days, not minutes," your governance has a documentation gap.
+
+<strong>Musahm Vault</strong>, governed document management:
+
+&#9724; Every document tagged, classified, and connected to the decision it supports
+&#9724; Five-tier access control with per-document permissions
+&#9724; Audit trail that proves chain of custody: user, action, timestamp
+&#9724; OTP-verified external sharing with watermarked copies
+&#9724; Approval workflows that block publishing until every reviewer signs off
+
+Limited beta. First 30 companies only. Activate Vault: [link]</div>
+        </div>
+        <div class="review-controls">
+          <div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div>
+          <div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback or notes..." oninput="saveComment(this)"></textarea></div>
+        </div>
+      </div>
+
+      <div class="review-card status-pending" data-id="li-variant-d">
+        <div class="card-top" onclick="toggleCard(this.parentElement)">
+          <div class="card-info">
+            <div class="card-id">#5 LinkedIn Variant D</div>
+            <div class="card-title">Vault as a Place / Bank Metaphor (Arabic)</div>
+            <div class="card-summary">"Your documents deserve a vault, not a shared folder." Uses bank analogy: you keep money in a bank, data on secure servers, but governance docs in WhatsApp? Vault = your digital safe.</div>
+            <div class="card-tags"><span class="tag tag-ar">Arabic</span><span class="tag tag-li">LinkedIn</span></div>
+          </div>
+          <span class="expand-arrow">&#9654;</span>
+        </div>
+        <div class="card-body">
+          <div class="ar-label en-label">English Translation (for review)</div>
+          <div class="content-block"><strong>Your company's documents deserve a vault, not a shared folder.</strong>
+
+Your company keeps its money in a bank. Its data on secure servers. But governance documents? In a WhatsApp group.
+
+Musahm Vault is your digital vault. One place for every governance document in your company:
+
+&#9724; Every document in its proper place, classified and protected with permissions
+&#9724; Approval workflows: no document goes out without review and sign-off
+&#9724; Auditor requests a document? Retrieve it in seconds, not days
+
+Vault is not just a system. It is the place where you manage, organize, and protect all your company's documents.
+
+First 30 companies only. Activate Vault: [link]</div>
+          <div style="border-top:1px dashed var(--gray-200);margin:0.5rem 0"></div>
+          <div class="ar-label">Arabic Original</div>
+          <div class="content-block" dir="rtl"><strong>وثائق شركتك تستحق خزنة، لا مجلد مشترك.</strong>
+
+شركتك تحفظ أموالها في بنك. تحفظ بياناتها في سيرفرات مؤمنة. لكن وثائق الحوكمة؟ في مجموعة واتساب.
+
+مساهم Vault هو خزنتك الرقمية. مكان واحد لكل وثيقة حوكمية في شركتك:
+
+&#9724; كل مستند في مكانه الصحيح، مصنف ومحمي بصلاحيات
+&#9724; سير عمل للموافقات: لا وثيقة تخرج بدون مراجعة واعتماد
+&#9724; المدقق يطلب وثيقة؟ تطلعها في ثوانٍ، لا أيام
+
+Vault ليس مجرد نظام. هو المكان الذي تدير وتنظم وتحمي فيه كل وثائق شركتك.
+
+أول 30 شركة فقط. فعّل Vault: [رابط]</div>
+        </div>
+        <div class="review-controls">
+          <div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div>
+          <div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback or notes..." oninput="saveComment(this)"></textarea></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TWITTER -->
+  <div id="twitter" class="section">
+    <div class="section-title">Twitter/X Posts <span class="section-count">4 VARIANTS</span></div>
+    <div class="card-grid">
+      <div class="review-card status-pending" data-id="tw-a"><div class="card-top" onclick="toggleCard(this.parentElement)"><div class="card-info"><div class="card-id">#6 Twitter A</div><div class="card-title">Triple Beat (Arabic + English)</div><div class="card-summary">Short scatter hook: "Your docs are scattered across email and WhatsApp." Three-word punch: "Permissions, audit, protection." ~186 chars AR / ~255 chars EN.</div><div class="card-tags"><span class="tag tag-ar">AR</span><span class="tag tag-en">EN</span><span class="tag tag-tw">Twitter</span></div></div><span class="expand-arrow">&#9654;</span></div><div class="card-body">
+          <div class="ar-label en-label">English Translation (for review)</div>
+          <div class="content-block">Your company docs are scattered between email and WhatsApp?
+
+We built Musahm Vault for Saudi governance, a document system with a complete audit trail.
+
+Permissions, audit, and protection.
+
+First 30 companies only.
+Activate Vault: [link]</div>
+          <div style="border-top:1px dashed var(--gray-200);margin:0.5rem 0"></div>
+          <div class="ar-label">Arabic Original</div>
+          <div class="content-block" dir="rtl">وثائق شركتك مبعثرة بين الإيميل والواتساب؟
+بنينا مساهم Vault للحوكمة السعودية، نظام وثائق بسجل تدقيق كامل.
+صلاحيات وتدقيق وحماية.
+أول 30 شركة فقط. فعّل Vault: [رابط]</div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+
+      <div class="review-card status-pending" data-id="tw-b"><div class="card-top" onclick="toggleCard(this.parentElement)"><div class="card-info"><div class="card-id">#7 Twitter B</div><div class="card-title">Vision 2030 Hook (Arabic + English)</div><div class="card-summary">"Vision 2030 raised the governance bar. Are your documents ready?" ~169 chars AR / ~223 chars EN.</div><div class="card-tags"><span class="tag tag-ar">AR</span><span class="tag tag-en">EN</span><span class="tag tag-tw">Twitter</span></div></div><span class="expand-arrow">&#9654;</span></div><div class="card-body">
+          <div class="ar-label en-label">English Translation (for review)</div>
+          <div class="content-block">Vision 2030 raised governance standards. Are your company's documents ready?
+
+Musahm Vault, a Saudi document system with full audit trail and governed permissions.
+
+First 30 companies. Activate Vault: [link]</div>
+          <div style="border-top:1px dashed var(--gray-200);margin:0.5rem 0"></div>
+          <div class="ar-label">Arabic Original</div>
+          <div class="content-block" dir="rtl">رؤية 2030 رفعت معايير الحوكمة. وثائق شركتك جاهزة؟
+مساهم Vault، نظام وثائق سعودي بسجل تدقيق كامل وصلاحيات محوكمة.
+أول 30 شركة. فعّل Vault: [رابط]</div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+
+      <div class="review-card status-pending" data-id="tw-c"><div class="card-top" onclick="toggleCard(this.parentElement)"><div class="card-info"><div class="card-id">#8 Twitter C</div><div class="card-title">Contrast Declaration (Arabic + English)</div><div class="card-summary">"Instead of importing a foreign DMS, we built Vault. Saudi, governed, full audit trail." ~189 chars AR / ~263 chars EN.</div><div class="card-tags"><span class="tag tag-ar">AR</span><span class="tag tag-en">EN</span><span class="tag tag-tw">Twitter</span></div></div><span class="expand-arrow">&#9654;</span></div><div class="card-body">
+          <div class="ar-label en-label">English Translation (for review)</div>
+          <div class="content-block">Instead of importing a foreign document system, we built Vault. Saudi, governed, with an audit trail for every action.
+
+Because our companies deserve document protection that understands their regulations.
+
+First 30 companies in beta. Activate Vault: [link]</div>
+          <div style="border-top:1px dashed var(--gray-200);margin:0.5rem 0"></div>
+          <div class="ar-label">Arabic Original</div>
+          <div class="content-block" dir="rtl">بدل ما نستورد نظام وثائق أجنبي، بنينا Vault. سعودي، محوكم، بسجل تدقيق لكل عملية.
+لأن شركاتنا تستحق حماية وثائق تفهم أنظمتها.
+أول 30 شركة تجريبياً. فعّل Vault: [رابط]</div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+
+      <div class="review-card status-pending" data-id="tw-d"><div class="card-top" onclick="toggleCard(this.parentElement)"><div class="card-info"><div class="card-id">#9 Twitter D</div><div class="card-title">Vault as a Place (Arabic)</div><div class="card-summary">"Your money in a bank. Your data on a server. Your governance docs? Musahm Vault. Your digital vault." ~134 chars.</div><div class="card-tags"><span class="tag tag-ar">Arabic</span><span class="tag tag-tw">Twitter</span></div></div><span class="expand-arrow">&#9654;</span></div><div class="card-body">
+          <div class="ar-label en-label">English Translation (for review)</div>
+          <div class="content-block">Your money in a bank. Your data on a server. Your governance documents?
+
+Musahm Vault. Your digital vault.
+
+First 30 companies. Activate Vault: [link]</div>
+          <div style="border-top:1px dashed var(--gray-200);margin:0.5rem 0"></div>
+          <div class="ar-label">Arabic Original</div>
+          <div class="content-block" dir="rtl">أموالك في بنك. بياناتك في سيرفر. وثائق حوكمتك؟
+مساهم Vault. خزنتك الرقمية.
+أول 30 شركة. فعّل Vault: [رابط]</div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+    </div>
+  </div>
+
+  <!-- EMAIL -->
+  <div id="email" class="section">
+    <div class="section-title">Launch Email <span class="section-count">BILINGUAL</span></div>
+    <div class="card-grid">
+      <div class="review-card status-pending" data-id="email-ar"><div class="card-top" onclick="toggleCard(this.parentElement)"><div class="card-info"><div class="card-id">#10 Email</div><div class="card-title">Beta Announcement (Arabic)</div><div class="card-summary">To existing Musahm clients. Opens with Board Secretary pain ("auditor asks, search begins"). 8 feature bullets: shareholder link, 6 workspaces, 5-level permissions, audit trail, approval chains, OTP sharing, e-signatures, version control.</div><div class="card-tags"><span class="tag tag-ar">Arabic</span></div></div><span class="expand-arrow">&#9654;</span></div><div class="card-body">
+          <div class="ar-label en-label">English Translation (for review)</div>
+          <div class="content-block"><strong>Subject:</strong> Your governance documents deserve Saudi-grade protection
+
+Dear [Company Name], Attention [Contact Name],
+
+You manage your company's governance through Musahm. But where are those governance documents now?
+
+Meeting minutes scattered across emails. Contracts on personal devices. Board decisions in folders no one can find. When the auditor requests them, the search begins. The Board Secretary spends hours collecting files that should be in one place.
+
+We did not wait for a foreign solution. We built <strong>Vault</strong> from scratch.
+
+&#8226; <strong>Shareholder registry linked to documents</strong>
+&#8226; <strong>Six governed workspaces</strong>
+&#8226; Five permission levels
+&#8226; <strong>Complete audit trail</strong>
+&#8226; Automated approval and review chains
+&#8226; <strong>Protected external sharing</strong> with OTP verification and watermarks
+&#8226; Electronic signatures integrated into workflows
+&#8226; Full version control
+
+<strong>Only 30 beta seats. Registration closes soon.</strong></div>
+          <div style="border-top:1px dashed var(--gray-200);margin:0.5rem 0"></div>
+          <div class="ar-label">Arabic Email Body</div>
+          <div class="content-block" dir="rtl"><strong>الموضوع:</strong> وثائق حوكمتك تستحق حماية سعودية المعايير
+
+السادة في [اسم الشركة]، عناية [اسم جهة الاتصال]،
+
+أنتم تديرون حوكمة شركتكم عبر مساهم. لكن أين وثائق هذه الحوكمة الآن؟
+
+محاضر اجتماعات مبعثرة بين الإيميلات. عقود على أجهزة شخصية. قرارات مجلس إدارة في مجلدات لا أحد يعرف مكانها. وعندما يطلبها المدقق، تبدأ رحلة البحث. وأمين السر يقضي ساعات يجمع ملفات كان المفروض تكون في مكان واحد.
+
+لم ننتظر حلاً أجنبياً يفهم واقعكم. بنينا <strong>Vault</strong> من الصفر.
+
+&#8226; <strong>سجل المساهمين مرتبط بالوثائق</strong>
+&#8226; <strong>ست مساحات عمل محوكمة</strong>
+&#8226; خمسة مستويات صلاحيات
+&#8226; <strong>سجل تدقيق كامل</strong>
+&#8226; سلاسل موافقة ومراجعة آلية
+&#8226; <strong>مشاركة خارجية محمية</strong> برمز تحقق OTP وعلامات مائية
+&#8226; توقيعات إلكترونية مدمجة في سير العمل
+&#8226; تحكم كامل بالإصدارات
+
+<strong>30 مقعدًا فقط في المرحلة التجريبية.</strong></div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+
+      <div class="review-card status-pending" data-id="email-en"><div class="card-top" onclick="toggleCard(this.parentElement)"><div class="card-info"><div class="card-id">#11 Email</div><div class="card-title">Beta Announcement (English)</div><div class="card-summary">English mirror. Same 8 feature bullets: shareholder link, 6 workspaces, 5-level permissions, audit trail, approval chains, OTP sharing, e-signatures, version control. "30 beta seats remain."</div><div class="card-tags"><span class="tag tag-en">English</span></div></div><span class="expand-arrow">&#9654;</span></div><div class="card-body"><div class="ar-label en-label">English Email Body</div><div class="content-block"><strong>Subject:</strong> Your governance documents deserve Saudi-grade protection
+
+Dear [Client Name],
+
+You already govern your board meetings through Musahm. But where do the documents behind those decisions live?
+
+Board minutes scattered across email threads. Contracts on personal devices. Signed resolutions that no one can locate when the auditor calls.
+
+We built <strong>Vault</strong> from scratch for Saudi governance.
+
+&#8226; <strong>Shareholder documents linked to the registry.</strong> No separate folders.
+&#8226; <strong>Six governed workspaces</strong> for board meetings, committees, decisions, contracts, policies.
+&#8226; Five levels of access control, from Viewer to Admin.
+&#8226; <strong>Complete audit trail.</strong> Every action logged. No deletions without record.
+&#8226; Approval chains enforced automatically before any document goes live.
+&#8226; <strong>OTP-verified external sharing</strong> with watermarked copies.
+&#8226; Electronic signatures integrated into document workflows.
+&#8226; Full version control with rollback to any previous version.
+
+<strong>30 beta seats remain. Registration closes soon.</strong></div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+    </div>
+  </div>
+
+  <!-- SMS -->
+  <div id="sms" class="section">
+    <div class="section-title">SMS Blast <span class="section-count">4 VARIANTS</span></div>
+    <div class="card-grid">
+      <div class="review-card status-pending" data-id="sms-ar1"><div class="card-top" onclick="toggleCard(this.parentElement)"><div class="card-info"><div class="card-id">#12 SMS</div><div class="card-title">Arabic Single (62 chars, 1 segment)</div><div class="card-summary">Core hook + CTA in one SMS segment (UCS-2). "Musahm Vault, governed docs, built Saudi. 30 seats. Register: [link]"</div><div class="card-tags"><span class="tag tag-ar">Arabic</span></div></div><span class="expand-arrow">&#9654;</span></div><div class="card-body">
+          <div class="ar-label en-label">English Translation (for review)</div>
+          <div class="content-block" style="font-size:1rem;font-weight:600">Musahm Vault, governed documents, built Saudi. 30 seats. Register: [link]</div>
+          <div style="border-top:1px dashed var(--gray-200);margin:0.5rem 0"></div>
+          <div class="ar-label">Arabic Original</div>
+          <div class="content-block" dir="rtl" style="font-size:1rem;font-weight:600">مساهم Vault، وثائق محوكمة، صنع سعودي. 30 مقعدا. سجلوا: [رابط]</div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+
+      <div class="review-card status-pending" data-id="sms-ar2"><div class="card-top" onclick="toggleCard(this.parentElement)"><div class="card-info"><div class="card-id">#13 SMS</div><div class="card-title">Arabic Extended (125 chars, 2 segments)</div><div class="card-summary">More detail for Wave 1 VIPs. Adds "audit trail + governed permissions" and "As Musahm clients, you are the first 30 invited."</div><div class="card-tags"><span class="tag tag-ar">Arabic</span></div></div><span class="expand-arrow">&#9654;</span></div><div class="card-body">
+          <div class="ar-label en-label">English Translation (for review)</div>
+          <div class="content-block" style="font-size:1rem;font-weight:600">Musahm Vault is now available in beta, a Saudi document system with audit trail and governed permissions. As Musahm clients, you are the first 30 invited. Register: [link]</div>
+          <div style="border-top:1px dashed var(--gray-200);margin:0.5rem 0"></div>
+          <div class="ar-label">Arabic Original</div>
+          <div class="content-block" dir="rtl" style="font-size:1rem;font-weight:600">مساهم Vault متاح تجريبيا، نظام وثائق سعودي بسجل تدقيق وصلاحيات محوكمة. بصفتكم عملاء مساهم، أنتم أول 30 مدعوين. سجلوا: [رابط]</div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+
+      <div class="review-card status-pending" data-id="sms-en1"><div class="card-top" onclick="toggleCard(this.parentElement)"><div class="card-info"><div class="card-id">#14 SMS</div><div class="card-title">English Single (118 chars, 1 segment)</div><div class="card-summary">"Musahm Vault - Saudi-built document governance. Full audit trail, governed access. 30 beta seats only."</div><div class="card-tags"><span class="tag tag-en">English</span></div></div><span class="expand-arrow">&#9654;</span></div><div class="card-body"><div class="content-block" style="font-size:1rem;font-weight:600">Musahm Vault - Saudi-built document governance. Full audit trail, governed access. 30 beta seats only. Register: [link]</div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+
+      <div class="review-card status-pending" data-id="sms-en2"><div class="card-top" onclick="toggleCard(this.parentElement)"><div class="card-info"><div class="card-id">#15 SMS</div><div class="card-title">English Extended (147 chars, 1 segment)</div><div class="card-summary">"Musahm Vault beta is live. Saudi-built governance DMS - audit trail, five-level access, governed workflows."</div><div class="card-tags"><span class="tag tag-en">English</span></div></div><span class="expand-arrow">&#9654;</span></div><div class="card-body"><div class="content-block" style="font-size:1rem;font-weight:600">Musahm Vault beta is live. Saudi-built governance DMS - audit trail, five-level access, governed workflows. First 30 seats only. Register: [link]</div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+    </div>
+  </div>
+
+  <!-- VISUALS -->
+  <div id="visuals" class="section">
+    <div class="section-title">Visual Graphics <span class="section-count">6 SLIDES</span></div>
+    <div class="card-grid">
+      <div class="review-card status-pending" data-id="vis-1"><div class="card-top"><div class="card-info"><div class="card-id">#16-17 Visuals</div><div class="card-title">Slide 1: Launch Announcement</div><div class="card-summary">Navy background, gold accents, Cairo font. Headline: "Where are your documents now?" 4 feature bullets. CTA button. LinkedIn 1200x628 + Square 1080x1080.</div><div class="card-tags"><span class="tag tag-li">LinkedIn</span><span class="tag tag-tw">Square</span></div></div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+
+      <div class="review-card status-pending" data-id="vis-2"><div class="card-top"><div class="card-info"><div class="card-id">#18-19 Visuals</div><div class="card-title">Slide 2: Shareholder Registry</div><div class="card-summary">"Is your shareholder registry connected to your documents?" 3 integration points with arrow flow. Same brand treatment.</div><div class="card-tags"><span class="tag tag-li">LinkedIn</span><span class="tag tag-tw">Square</span></div></div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+
+      <div class="review-card status-pending" data-id="vis-3"><div class="card-top"><div class="card-info"><div class="card-id">#20-21 Visuals</div><div class="card-title">Slide 3: DMS Workflow</div><div class="card-summary">"Complete document management system." 4-step numbered flow: Upload > Classify > Approve > Share. Bottom bar: "Files. Permissions. Workflows. Audit."</div><div class="card-tags"><span class="tag tag-li">LinkedIn</span><span class="tag tag-tw">Square</span></div></div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+    </div>
+    <p style="font-size:0.78rem;color:var(--gray-500);margin-top:0.75rem">Files: <code>final-social-visuals-linkedin.pptx</code> + <code>final-social-visuals-square.pptx</code></p>
+  </div>
+
+  <!-- VIDEO -->
+  <div id="video" class="section">
+    <div class="section-title">Video Scripts <span class="section-count">2 VIDEOS</span></div>
+    <div class="card-grid">
+      <div class="review-card status-pending" data-id="vid-brand"><div class="card-top"><div class="card-info"><div class="card-id">#22 Video</div><div class="card-title">Brand Video (~78 seconds)</div><div class="card-summary">Cinematic brand introduction. 6 scenes: Problem (scattered docs) > Stakes (lost deal, compliance risk) > Solution Reveal (Vault logo) > 4 Features (4.5 sec each) > Complete Stack (Musahm + Vault) > CTA (30 seats). Top-of-funnel awareness. Arabic VO + English subtitles.</div></div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+
+      <div class="review-card status-pending" data-id="vid-demo"><div class="card-top"><div class="card-info"><div class="card-id">#23 Video</div><div class="card-title">Product Demo Video (~2:40)</div><div class="card-summary">Screen-capture walkthrough. 8 scenes showing actual Vault UI: Dashboard > File Upload/Classify > Search > Permissions/OTP Sharing > Approval Workflows (React Flow) > Audit Trail + Versioning > CTA. Mid-funnel evaluation. Arabic VO + English subtitles. 12+ real screens.</div></div></div><div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div></div>
+    </div>
+    <p style="font-size:0.78rem;color:var(--gray-500);margin-top:0.75rem">Files: <code>video-script.md</code> + <code>final-video-demo-script.md</code></p>
+  </div>
+
+  <!-- EXTRA: 8-Week Calendar + Posting Schedule -->
+  <div id="schedule" class="section">
+    <div class="section-title">Posting Schedule <span class="section-count">LAUNCH WEEK</span></div>
+    <div class="review-card status-pending" data-id="sched-overall">
+      <div class="card-top"><div class="card-info"><div class="card-id">#24 Calendar</div><div class="card-title">8-Week Content Calendar (48 Topics Planned, 9 Fully Written)</div><div class="card-summary">4 phases across 8 weeks. 48 topic hooks planned (6/week). <strong>9 launch-day posts are fully written</strong> (5 LinkedIn + 4 Twitter). The remaining 39 are one-line topic prompts that need full copy written before posting.</div></div></div>
+      <div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div>
+    </div>
+    <table class="sched-table" style="margin-top:1rem">
+      <thead><tr><th>Platform</th><th>Day</th><th>Time (AST)</th><th>Post</th><th>Rationale</th></tr></thead>
+      <tbody>
+        <tr><td>LinkedIn</td><td>Sunday</td><td>09:00 AM</td><td>Primary AR/EN</td><td>KSA business week start</td></tr>
+        <tr><td>Twitter/X</td><td>Sunday</td><td>12:00 PM</td><td>Triple Beat</td><td>Post-lunch engagement</td></tr>
+        <tr><td>LinkedIn</td><td>Tuesday</td><td>10:00 AM</td><td>Shareholder Registry</td><td>Mid-week rotation</td></tr>
+        <tr><td>Twitter/X</td><td>Tuesday</td><td>01:00 PM</td><td>Vision 2030</td><td>Different hook for algo</td></tr>
+        <tr><td>LinkedIn</td><td>Thursday</td><td>09:00 AM</td><td>Audit/Compliance</td><td>Compliance audience</td></tr>
+        <tr><td>Twitter/X</td><td>Thursday</td><td>12:00 PM</td><td>Contrast Declaration</td><td>Brand voice anchor</td></tr>
+      </tbody>
+    </table>
+    <div class="review-card status-pending" data-id="sched-posting" style="margin-top:1rem">
+      <div class="card-top"><div class="card-info"><div class="card-id">#25</div><div class="card-title">Posting Schedule &amp; Timing Strategy</div><div class="card-summary">6 posts/week. Arabic first, English 2-3 hours later on Twitter. Simultaneous on LinkedIn. Stagger variants to test which angle drives most beta signups.</div></div></div>
+      <div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div>
+    </div>
+  </div>
+
+  <!-- PERSONAS -->
+  <div id="personas" class="section">
+    <div class="section-title">Target Personas <span class="section-count">4 ICP BUYERS</span></div>
+    <div class="info-grid">
+      <div class="info-card"><div class="label">Champion + Daily User</div><div class="title">Board Secretary</div><div class="desc">Age 28-45. Overwhelmed by manual document management. Spends hours on meeting logistics. This is who will USE Vault daily.</div></div>
+      <div class="info-card"><div class="label">Economic Buyer (Final Sign-off)</div><div class="title">CEO</div><div class="desc">Age 35-55. Reputation-conscious. Wants professional governance without enterprise complexity or cost.</div></div>
+      <div class="info-card"><div class="label">Approver + Security Evaluator</div><div class="title">CFO</div><div class="desc">Age 35-50. Risk-averse. Needs audit trail, version control, proof nothing was deleted or accessed improperly.</div></div>
+      <div class="info-card"><div class="label">Compliance Validator</div><div class="title">Legal Counsel</div><div class="desc">Age 32-50. Detail-obsessed. Needs chain-of-custody proof and compliant document workflows.</div></div>
+    </div>
+  </div>
+
+  <!-- ROLLOUT -->
+  <div id="rollout" class="section">
+    <div class="section-title">Beta Rollout Waves</div>
+    <div class="info-grid">
+      <div class="info-card"><div class="label">Wave 1</div><div class="title">Pilot (5 Clients)</div><div class="desc"><strong>4 weeks.</strong> Dedicated onboarding, WhatsApp direct line, weekly check-ins.<br><strong>Gate:</strong> 80% activation, 0 P0 bugs, 7.0+ satisfaction.</div></div>
+      <div class="info-card"><div class="label">Wave 2</div><div class="title">Expanded Beta (15 Clients)</div><div class="desc"><strong>6 weeks.</strong> Self-serve onboarding, shared channel, bi-weekly check-ins.<br><strong>Gate:</strong> 80% activation in 7 days, 60%+ WAU, 30+ NPS.</div></div>
+      <div class="info-card"><div class="label">Wave 3</div><div class="title">Open Beta &rarr; GA</div><div class="desc"><strong>8 weeks.</strong> Fully self-serve, standard support queue.<br><strong>Gate:</strong> 100+ users, 1,000+ docs, 99.5%+ uptime, pricing validated.</div></div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div id="timeline" class="section">
+    <div class="section-title">Launch Timeline <span class="section-count">SIMPLIFIED</span></div>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-date">T-7</div><div class="timeline-text">Vault login page ready. WhatsApp Business number set up. Email templates loaded.</div></div>
+      <div class="timeline-item"><div class="timeline-date">T-3</div><div class="timeline-text">LinkedIn + Twitter warm-up posts (2-3 posts)</div></div>
+      <div class="timeline-item"><div class="timeline-date" style="color:var(--gold);font-size:1rem">T+0 LAUNCH DAY</div><div class="timeline-text">Wave 1: Email + SMS + WhatsApp to 5 pilot clients (Board Secretaries first). LinkedIn + Twitter launch posts.</div></div>
+      <div class="timeline-item"><div class="timeline-date">T+7</div><div class="timeline-text">Check-in: activation rate, bugs, satisfaction score. Follow up with non-responders.</div></div>
+      <div class="timeline-item"><div class="timeline-date">T+14</div><div class="timeline-text">Wave 2: Email + SMS to 15 expanded beta clients. Social proof posts from Wave 1 feedback.</div></div>
+      <div class="timeline-item"><div class="timeline-date">T+21</div><div class="timeline-text">Check-in: WAU, NPS. Adjust messaging based on Wave 1+2 feedback.</div></div>
+      <div class="timeline-item"><div class="timeline-date">T+30</div><div class="timeline-text">Wave 3: Broader messaging + social push. Gate evaluation for Wave 1 (80% activation, 0 P0 bugs).</div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">Musahm Vault &bull; Launch Content Review Dashboard &bull; 25 Pieces &bull; Decisions saved in browser localStorage</div>
+
+<script>
+const STORAGE_KEY = 'vault-review-';
+
+function toggleCard(card) {
+  const body = card.querySelector('.card-body');
+  if (!body) return;
+  card.classList.toggle('open');
+}
+
+function updateStatus(select) {
+  const card = select.closest('.review-card');
+  const id = card.dataset.id;
+  const val = select.value;
+  card.className = 'review-card status-' + val;
+  if (val !== 'pending') card.classList.add('open');
+  const data = JSON.parse(localStorage.getItem(STORAGE_KEY + id) || '{}');
+  data.status = val;
+  localStorage.setItem(STORAGE_KEY + id, JSON.stringify(data));
+  updateCounts();
+}
+
+function saveComment(textarea) {
+  const card = textarea.closest('.review-card');
+  const id = card.dataset.id;
+  const data = JSON.parse(localStorage.getItem(STORAGE_KEY + id) || '{}');
+  data.comment = textarea.value;
+  localStorage.setItem(STORAGE_KEY + id, JSON.stringify(data));
+}
+
+function saveGeneralReview() {
+  const notes = document.getElementById('general-notes').value;
+  const verdict = document.getElementById('overall-verdict').value;
+  localStorage.setItem('vault-general-review', JSON.stringify({ notes, verdict }));
+  const saved = document.getElementById('general-saved');
+  saved.textContent = 'Saved at ' + new Date().toLocaleTimeString();
+  saved.style.color = 'var(--emerald)';
+  setTimeout(() => { saved.style.color = 'var(--gray-300)'; }, 2000);
+}
+
+function updateCounts() {
+  const cards = document.querySelectorAll('.review-card[data-id]');
+  let approved = 0, edits = 0, rejected = 0, pending = 0;
+  cards.forEach(c => {
+    const sel = c.querySelector('.status-select');
+    if (!sel) return;
+    const v = sel.value;
+    if (v === 'approved') approved++;
+    else if (v === 'edits') edits++;
+    else if (v === 'rejected') rejected++;
+    else pending++;
+  });
+  const total = approved + edits + rejected + pending;
+  const reviewed = approved + edits + rejected;
+  document.getElementById('count-approved').textContent = approved;
+  document.getElementById('count-edits').textContent = edits;
+  document.getElementById('count-rejected').textContent = rejected;
+  document.getElementById('count-pending').textContent = pending;
+  const pct = total > 0 ? Math.round((reviewed / total) * 100) : 0;
+  document.getElementById('pct-reviewed').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+function restoreState() {
+  document.querySelectorAll('.review-card[data-id]').forEach(card => {
+    const id = card.dataset.id;
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY + id) || '{}');
+    if (data.status) {
+      const sel = card.querySelector('.status-select');
+      if (sel) { sel.value = data.status; card.className = 'review-card status-' + data.status; }
+    }
+    if (data.comment) {
+      const ta = card.querySelector('.comment-input');
+      if (ta) ta.value = data.comment;
+    }
+  });
+  // Restore general review
+  const gr = JSON.parse(localStorage.getItem('vault-general-review') || '{}');
+  if (gr.notes) document.getElementById('general-notes').value = gr.notes;
+  if (gr.verdict) document.getElementById('overall-verdict').value = gr.verdict;
+  updateCounts();
+}
+
+function exportDecisions() {
+  const gr = JSON.parse(localStorage.getItem('vault-general-review') || '{}');
+  let csv = 'ID,Title,Status,Comment\n';
+  csv += '"GENERAL","Overall Review Verdict","' + (gr.verdict || 'pending') + '","' + (gr.notes || '').replace(/"/g, '""').replace(/\n/g, ' ') + '"\n';
+  csv += '\n';
+  const cards = document.querySelectorAll('.review-card[data-id]');
+  cards.forEach(c => {
+    const id = c.dataset.id;
+    const title = (c.querySelector('.card-title') || {}).textContent || '';
+    const sel = c.querySelector('.status-select');
+    const status = sel ? sel.value : 'pending';
+    const ta = c.querySelector('.comment-input');
+    const comment = ta ? ta.value.replace(/"/g, '""').replace(/\n/g, ' ') : '';
+    csv += '"' + id + '","' + title + '","' + status + '","' + comment + '"\n';
+  });
+  const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'vault-review-decisions-' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Nav scroll
+document.querySelectorAll('.nav a').forEach(a => {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelectorAll('.nav a').forEach(n => n.classList.remove('active'));
+    this.classList.add('active');
+    const t = document.querySelector(this.getAttribute('href'));
+    if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+window.addEventListener('scroll', () => {
+  let cur = '';
+  document.querySelectorAll('.section[id]').forEach(s => { if (window.scrollY >= s.offsetTop - 160) cur = s.id; });
+  document.querySelectorAll('.nav a').forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+});
+
+restoreState();
+
+// Language Toggle
+const i18n = {
+  ar: {
+    'header-desc': 'راجع كل محتوى أدناه. حدد الحالة وأضف تعليقاتك. القرارات تُحفظ تلقائياً.',
+    'nav-decisions': 'قرارات معلّقة',
+    'nav-linkedin': 'منشورات LinkedIn',
+    'nav-twitter': 'منشورات Twitter',
+    'nav-email': 'البريد الإلكتروني',
+    'nav-sms': 'الرسائل النصية',
+    'nav-visuals': 'التصاميم',
+    'nav-video': 'نصوص الفيديو',
+    'nav-schedule': 'الجدول',
+    'nav-personas': 'الشخصيات المستهدفة',
+    'nav-rollout': 'خطة الإطلاق',
+    'nav-timeline': 'الجدول الزمني'
+  },
+  en: {
+    'header-desc': 'Review each content piece below. Set status and add comments. Decisions are saved automatically.',
+    'nav-decisions': 'Blocking Decisions',
+    'nav-linkedin': 'LinkedIn Posts',
+    'nav-twitter': 'Twitter Posts',
+    'nav-email': 'Email',
+    'nav-sms': 'SMS',
+    'nav-visuals': 'Visuals',
+    'nav-video': 'Video Scripts',
+    'nav-schedule': 'Schedule',
+    'nav-personas': 'Personas',
+    'nav-rollout': 'Rollout',
+    'nav-timeline': 'Timeline'
+  }
+};
+
+let currentLang = localStorage.getItem('vault-dash-lang') || 'en';
+
+function toggleLang() {
+  currentLang = currentLang === 'en' ? 'ar' : 'en';
+  applyLang();
+  localStorage.setItem('vault-dash-lang', currentLang);
+}
+
+function applyLang() {
+  const btn = document.getElementById('lang-toggle');
+  const html = document.documentElement;
+  if (currentLang === 'ar') {
+    html.setAttribute('dir', 'rtl');
+    html.setAttribute('lang', 'ar');
+    btn.textContent = 'English';
+    document.body.style.fontFamily = "'Cairo', 'Segoe UI', system-ui, sans-serif";
+  } else {
+    html.setAttribute('dir', 'ltr');
+    html.setAttribute('lang', 'en');
+    btn.textContent = 'عربي';
+    document.body.style.fontFamily = "'Segoe UI', system-ui, -apple-system, sans-serif";
+  }
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[currentLang] && i18n[currentLang][key]) {
+      el.textContent = i18n[currentLang][key];
+    }
+  });
+}
+
+if (currentLang === 'ar') applyLang();
+</script>
+</body>
+</html>

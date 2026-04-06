@@ -1,0 +1,530 @@
+
+.workflow-assignment-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.workflow-assignment-modal {
+    background: white;
+    padding: 0;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 1100px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modal-header {
+    padding: 20px 24px;
+    border-bottom: 2px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94a3b8;
+    padding: 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close-btn:hover {
+    background-color: #f1f5f9;
+    color: #ef4444;
+}
+
+.modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+    background-color: #f8fafc;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    border-top: 2px solid #f1f5f9;
+    background-color: #fff;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+/* Tabs */
+.tabs-header {
+    display: flex;
+    border-bottom: 2px solid #e2e8f0;
+    margin-bottom: 24px;
+    background: white;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    color: #64748b;
+    transition: all 0.2s;
+    border-radius: 6px;
+    flex: 1;
+    text-align: center;
+}
+
+.tab-btn:hover {
+    background-color: #f1f5f9;
+    color: #334155;
+}
+
+.tab-btn.active {
+    background-color: white;
+    color: var(--brand-gold);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #334155;
+    font-size: 0.9rem;
+}
+
+.form-select,
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background-color: white;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.form-select:focus,
+.form-input:focus {
+    outline: none;
+    border-color: var(--brand-gold);
+    box-shadow: 0 0 0 3px rgba(195, 146, 77, 0.1);
+}
+
+/* Checkbox List */
+.checkbox-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0;
+    background: white;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: all 0.15s;
+    background-color: white;
+}
+
+.checkbox-item:last-child {
+    border-bottom: none;
+}
+
+.checkbox-item:hover {
+    background-color: #f8fafc;
+}
+
+.checkbox-item:has(input:checked) {
+    background-color: #fffbf0;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--brand-gold, #c3924d);
+    flex-shrink: 0;
+    cursor: pointer;
+    margin-inline-end: 12px;
+}
+
+.checkbox-item span {
+    font-size: 0.95rem;
+    color: #334155;
+    font-weight: 500;
+}
+
+/* Grouped Assignments List */
+.assignments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.workflow-group-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.workflow-group-header {
+    background-color: #f8fafc;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Accordion Layout */
+.assignments-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.workflow-accordion-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: white;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.workflow-accordion-item.expanded {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border-color: #cbd5e1;
+}
+
+.accordion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background-color: #f8fafc;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    user-select: none;
+}
+
+.accordion-header:hover {
+    background-color: #f1f5f9;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #475569;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.rule-count-badge {
+    font-size: 0.75rem;
+    background-color: #e2e8f0;
+    color: #475569;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.accordion-body {
+    border-top: 1px solid #e2e8f0;
+    background-color: white;
+}
+
+/* Rule List Styles - nesting inside accordion */
+.workflow-rules-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.rule-item {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    padding: 16px 24px; /* Increased padding */
+    border-bottom: 1px solid #f1f5f9;
+    transition: background-color 0.15s;
+}
+
+.rule-item:last-child {
+    border-bottom: none;
+}
+
+.rule-item:hover {
+    background-color: #fcfcfc;
+}
+
+.rule-details {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+.rule-column {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.col-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #94a3b8;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.col-value {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.rule-actions {
+    margin-left: 20px;
+    display: flex;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+/* Reusing button styles from before */
+.btn-icon-sm {
+    padding: 6px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #64748b;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon-sm.active-toggle {
+    color: #10b981 !important;
+}
+
+.btn-icon-sm.inactive-toggle {
+    color: #cbd5e1 !important;
+}
+
+.btn-icon-sm:hover {
+    background-color: #f8fafc;
+    color: var(--brand-navy);
+    border-color: #cbd5e1;
+}
+
+.btn-icon-sm.delete:hover {
+    background-color: #fef2f2;
+    color: #ef4444;
+    border-color: #fee2e2;
+}
+
+.actions-row {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    background-color: white;
+    border-radius: 12px;
+    border: 2px dashed #e2e8f0;
+    text-align: center;
+}
+
+.btn-secondary {
+    padding: 10px 16px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #64748b;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: #f8fafc;
+    color: #334155;
+    border-color: #cbd5e1;
+}
+
+/* RTL Support for Tags */
+.rtl .meta-label {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+.add-new-doctype-btn {
+    background-color: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #dbeafe;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+
+.assignments-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 16px;
+    font-size: 0.9rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: white;
+    table-layout: fixed;
+}
+
+.assignments-table th {
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 600;
+    color: #475569;
+    background-color: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0; /* Vertical line */
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.assignments-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e2e8f0; /* Darker bottom line */
+    border-right: 1px solid #e2e8f0; /* Vertical line */
+    vertical-align: middle;
+    color: #334155;
+    word-wrap: break-word;
+}
+
+/* Remove right border for last column */
+.assignments-table th:last-child,
+.assignments-table td:last-child {
+    border-right: none;
+}
+
+.assignments-table th:last-child {
+    text-align: center;
+}
+
+.assignments-table tr:last-child td {
+    border-bottom: none;
+}
+
+.assignments-table tr:hover {
+    background-color: #f8fafc;
+}
+
+.rtl .assignments-table th {
+    text-align: right;
+    border-right: none;
+    border-left: 1px solid #e2e8f0;
+}
+
+.rtl .assignments-table td {
+    border-right: none;
+    border-left: 1px solid #e2e8f0;
+}
+
+.rtl .assignments-table th:last-child,
+.rtl .assignments-table td:last-child {
+    border-left: none;
+}
+
+
+.assignments-table .actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.assignments-table .meta-tag {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    border: 1px solid transparent;
+}
+
+.assignments-table .role-tag {
+    background-color: #f1f5f9;
+    color: #334155;
+    border-color: #e2e8f0;
+}
+
+.assignments-table .trigger-tag {
+    background-color: #dbeafe;
+    color: #1e40af;
+    border-color: #bfdbfe;
+    font-weight: 500;
+}
+
+.assignments-table .doc-tag {
+    background-color: #fff7ed;
+    color: #9a3412;
+    border-color: #ffedd5;
+}

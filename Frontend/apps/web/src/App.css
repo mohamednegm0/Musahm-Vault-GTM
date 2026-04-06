@@ -1,0 +1,32 @@
+.app {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg-page);
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: margin 0.3s ease;
+  overflow: auto;
+  position: relative;
+}
+
+[dir="ltr"] .app-main {
+  margin-left: 280px;
+}
+
+[dir="rtl"] .app-main {
+  margin-right: 280px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .app-main {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}

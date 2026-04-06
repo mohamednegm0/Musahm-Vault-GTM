@@ -1,0 +1,461 @@
+.registration-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  position: relative;
+}
+
+.language-toggle {
+  position: fixed;
+  top: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+[dir="ltr"] .language-toggle {
+  right: 20px;
+}
+
+[dir="rtl"] .language-toggle {
+  left: 20px;
+}
+
+.language-toggle:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.registration-container {
+  width: 100%;
+  max-width: 800px;
+}
+
+.registration-card {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.registration-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.registration-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.registration-header p {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── Form sections ─────────────────────────────────────────────────────────── */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+}
+
+.form-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #374151;
+  margin: 0 0 4px 0;
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid #e5e7eb;
+}
+
+.section-title-icon {
+  color: #c3924d;
+  flex-shrink: 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.input-wrapper:focus-within {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.input-wrapper.error {
+  border-color: #ef4444;
+}
+
+.input-wrapper.error:focus-within {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.input-wrapper.success {
+  border-color: #10b981;
+}
+
+.input-icon {
+  position: absolute;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+[dir="ltr"] .input-icon {
+  left: 14px;
+}
+
+[dir="rtl"] .input-icon {
+  right: 14px;
+}
+
+.input-wrapper .form-input {
+  flex: 1;
+  border: none !important;
+  margin: 0 !important;
+  outline: none;
+  font-size: 15px;
+  color: #111827;
+  background: transparent;
+  height: 48px;
+
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+[dir="ltr"] .registration-card .form-input {
+  border: none !important;
+  box-shadow: none !important;
+
+  padding: 12px 40px 12px 48px !important;
+}
+
+[dir="rtl"] .registration-card .form-input {
+  border: none !important;
+  box-shadow: none !important;
+
+  padding: 12px 48px 12px 40px !important;
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+}
+
+.toggle-password {
+  position: absolute;
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.toggle-password:hover {
+  color: #374151;
+}
+
+[dir="ltr"] .toggle-password {
+  right: 8px;
+}
+
+[dir="rtl"] .toggle-password {
+  left: 8px;
+}
+
+.validation-icon {
+  position: absolute;
+  pointer-events: none;
+}
+
+[dir="ltr"] .validation-icon {
+  right: 14px;
+}
+
+[dir="rtl"] .validation-icon {
+  left: 14px;
+}
+
+.validation-icon.success {
+  color: #10b981;
+}
+
+.validation-icon.error {
+  color: #ef4444;
+}
+
+.error-message {
+  font-size: 13px;
+  color: #ef4444;
+  margin-top: 4px;
+}
+
+.password-strength {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.strength-bar {
+  flex: 1;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.strength-fill {
+  height: 100%;
+  transition: all 0.3s ease;
+  border-radius: 3px;
+}
+
+.strength-text {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 48px;
+  background: #c3924d;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #a67939;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(195, 146, 77, 0.4);
+}
+
+.submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-footer {
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+.login-link {
+  color: #667eea;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+[dir="ltr"] .login-link {
+  margin-left: 4px;
+}
+
+[dir="rtl"] .login-link {
+  margin-right: 4px;
+}
+
+.login-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+[dir="rtl"] .login-link {
+  margin-left: 0;
+  margin-right: 4px;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .registration-container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .registration-card {
+    padding: 28px 24px;
+  }
+
+  .registration-header h1 {
+    font-size: 24px;
+  }
+
+  .form-input {
+    font-size: 14px;
+  }
+}
+
+/* ── Email check spinner ─────────────────────────────────────────────────── */
+@keyframes reg-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Small inline spinner positioned at the end of the email input */
+.email-spin-icon {
+  position: absolute;
+  color: #667eea;
+  animation: reg-spin 0.9s linear infinite;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+[dir="ltr"] .email-spin-icon {
+  right: 14px;
+}
+
+[dir="rtl"] .email-spin-icon {
+  left: 14px;
+}
+
+/* ── User-exists banner ──────────────────────────────────────────────────── */
+.user-exists-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(239,68,68,0.08) 0%, rgba(239,68,68,0.04) 100%);
+  border: 1.5px solid rgba(239,68,68,0.3);
+  animation: banner-in 0.3s ease;
+}
+
+@keyframes banner-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.user-exists-banner .banner-icon {
+  flex-shrink: 0;
+  color: #ef4444;
+  margin-top: 2px;
+}
+
+.user-exists-banner .banner-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-exists-banner .banner-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #b91c1c;
+}
+
+.user-exists-banner .banner-sub {
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.user-exists-banner .banner-login-link {
+  flex-shrink: 0;
+  align-self: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #667eea;
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #667eea;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.user-exists-banner .banner-login-link:hover {
+  background: #667eea;
+  color: #fff;
+}
+
+/* ── Disabled inputs ────────────────────────────────────────────────────── */
+.input-wrapper:has(input:disabled) {
+  background: #f3f4f6;
+  border-color: #e5e7eb !important;
+  box-shadow: none !important;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.form-input:disabled {
+  cursor: not-allowed;
+  color: #9ca3af;
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "agricidaniel-blog",
+  "owner": {
+    "name": "AgriciDaniel"
+  },
+  "metadata": {
+    "description": "Blog creation and optimization tools for Claude Code"
+  },
+  "plugins": [
+    {
+      "name": "claude-blog",
+      "source": "./",
+      "description": "AI-powered blog creation, optimization, and management with 22 skills, 4 agents, and 5-category scoring. Optimized for Google rankings and AI citations."
+    }
+  ]
+}

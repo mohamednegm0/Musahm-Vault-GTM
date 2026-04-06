@@ -1,0 +1,9 @@
+﻿global using Core.Entities;
+global using System.Collections.Generic;
+global using System.Threading.Tasks;
+global using Core.DTOs;
+global using Core.DTOs.Account;
+global using Core.DTOs.Identity;
+global using Core.DTOs.Login;
+global using Core.DTOs.Profile;
+global using Core.DTOs.Register;

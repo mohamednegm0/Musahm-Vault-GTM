@@ -1,0 +1,987 @@
+Summary,Issue key,Issue id,Issue Type,Status,Project key,Project name,Project type,Project lead,Project lead id,Project description,Priority,Resolution,Assignee,Assignee Id,Reporter,Reporter Id,Creator,Creator Id,Created,Updated,Last Viewed,Resolved,Due date,Votes,Labels,Labels,Description,Environment,Watchers,Watchers Id,Log Work,Original estimate,Remaining Estimate,Time Spent,Work Ratio,Σ Original Estimate,Σ Remaining Estimate,Σ Time Spent,Security Level,Attachment,Attachment,Custom field (Accessibility needs),Custom field (Actual end),Custom field (Actual start),Custom field (Affected hardware),Custom field (Affected services),Custom field (Approvals),Custom field (Atlassian project),Custom field (Atlassian project status),Custom field (Category),Custom field (Category),Custom field (Change reason),Custom field (Change risk),Custom field (Change type),Custom field (City),Custom field (Comments),Custom field (Company email address),Custom field (Confidence),Custom field (Confidence),Custom field (Date of birth),Custom field (Delivery progress),Custom field (Delivery status),Custom field (Department),Custom field (Department),Custom field (Department),Custom field (Department),Custom field (Department),Custom field (Designs ready),Custom field (Designs ready),Custom field (Development),Custom field (Documents),Custom field (Documents),Custom field (Effort),Custom field (Effort),Custom field (Employee ID),Custom field (Employee location),Custom field (Employment type),Custom field (Epic Color),Custom field (Epic Name),Custom field (Epic Status),Custom field (First name),Custom field (Focus Areas),Custom field (Goals),Custom field (Idea archived),Custom field (Idea archived on),Custom field (Idea short description),Custom field (Idea short description),Custom field (Impact),Custom field (Impact),Custom field (Impact),Custom field (Impact score),Custom field (Impact score),Custom field (Insights),Custom field (Issue color),Custom field (Job title),Custom field (Last name),Custom field (Last working day),Custom field (Linked items),Custom field (Locked forms),Custom field (Mailing address),Custom field (Major incident),Custom field (Middle name),Custom field (Open forms),Custom field (Pending reason),Custom field (Personal email address),Custom field (Project overview key),Custom field (Project overview status),Custom field (Project start),Custom field (Project start),Custom field (Project target),Custom field (Project target),Custom field (Rank),Custom field (Region),Custom field (Request Type),Custom field (Request language),Custom field (Request participants),Custom field (Residential status),Custom field (Resignation date),Custom field (Responders),Custom field (Roadmap),Custom field (Roadmap),Custom field (Role),Satisfaction rating,Custom field (Satisfaction date),Custom field (Sentiment),Custom field (Severity),Custom field (Spec ready),Custom field (Spec ready),Sprint,Sprint,Custom field (Start date),Custom field (Start date),Custom field (Story Points),Custom field (Story point estimate),Custom field (Submitted forms),Custom field (Target end),Custom field (Target start),Custom field (Team),Team Id,Team Name,Custom field (Time to close after resolution),Custom field (Time to first response),Custom field (Time to resolution),Custom field (Total forms),Custom field (Urgency),Custom field (Value),Custom field (Value),Custom field (Vulnerability),Custom field (Work category),Custom field ([CHART] Date of First Response),Custom field ([CHART] Time in Status),Comment,Parent,Parent key,Parent summary,Status Category,Status Category Changed
+name of trigger,MUS-755,45642,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Afaf Hussein,712020:c2d00f3e-ad34-47a9-91fc-21155bc0a64d,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,31/Mar/26 9:12 PM,31/Mar/26 9:13 PM,,,,0,,,field needs to be more clear as its only asking for name and confuses the user which name they need to enter ,,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@58608719,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02db1:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,31/Mar/26 9:12 PM
+Cannot add workflow name when side menu collapses/gets hidden,MUS-754,45640,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Afaf Hussein,712020:c2d00f3e-ad34-47a9-91fc-21155bc0a64d,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,31/Mar/26 9:11 PM,31/Mar/26 9:12 PM,,,,0,,,add a button for workflow name ,,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@2fc14ca3,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02dat:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,31/Mar/26 9:11 PM
+[Vault][Charts]: Missing delete action to remove relations between chart elements,MUS-753,45638,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Afaf Hussein,712020:c2d00f3e-ad34-47a9-91fc-21155bc0a64d,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,31/Mar/26 9:02 PM,31/Mar/26 9:04 PM,,,,0,,,"h3. Impact
+
+Users cannot remove relations between chart elements or delete chart elements in the Vault charts editor. This leads to maintaining incorrect or outdated relations/elements, causing frustration and inefficiency.
+
+h3. Expected behaviour
+
+A clear *Delete* option should be available in the charts editor. This option should allow users to:
+
+* Delete relations between chart elements.
+* Delete individual chart elements.  
+After deletion, the removed relation should not appear, and the removed element should disappear from the chart.
+
+h3. Actual behaviour
+
+There is no visible *Delete* action in the Vault charts editor. Users cannot:
+
+* Remove relations between chart elements.
+* Delete chart elements.
+
+h3. Steps to reproduce
+
+* Open Vault and navigate to a chart with multiple elements and relations.
+* Select a relation between two chart elements.
+* Try to find an option to delete/remove this relation.
+* Select a chart element and try to find an option to delete/remove this element.
+
+h3. Environment
+
+* Vault – Charts / Visualization editor
+
+h3. ",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@220a0fb,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02dal:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,31/Mar/26 9:02 PM
+[Vault][Workflow Engine]: Only one trigger can be configured per workflow instead of multiple,MUS-752,45636,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Afaf Hussein,712020:c2d00f3e-ad34-47a9-91fc-21155bc0a64d,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,31/Mar/26 8:50 PM,31/Mar/26 8:52 PM,,,,0,,,"h3. Impact
+
+* Leads to invalid workflow configurations.
+* Potential for unexpected workflow activations or failures.
+* Causes confusion for users managing workflow automation.
+* Results in inconsistent system behavior regarding workflow design.
+
+h3. Expected behaviour
+
+Each workflow should have exactly one trigger connected to its start. This trigger is solely responsible for activating the flow. The system should prevent users from adding more than one trigger per workflow.
+
+h3. Actual behaviour
+
+The system permits the addition of up to four triggers for a single workflow. This contradicts the design principle of having one trigger per workflow.
+
+h3. Steps to reproduce
+
+* Configure a workflow in the system.
+* Attempt to add multiple triggers to the workflow.
+* Observe that the system allows the addition of up to four triggers.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@17e9ed87,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02dad:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,31/Mar/26 8:50 PM
+[Vault][Workflow][Audit Logs]: Some workflow activities are missing from activity history logging,MUS-751,45634,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Waleed Hussien,60aa0dcf5c73730069e7ad29,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,31/Mar/26 8:45 PM,31/Mar/26 8:48 PM,,,,0,,,"Workflow activities are not being fully logged in Vault. This impacts the completeness and accuracy of audit trails.
+
+*Environment:*
+
+* *Product:* Vault
+* *Area:* Workflow Activities, Audit Logs
+
+*Steps to Reproduce:*
+
+# Perform various workflow activities within Vault (e.g., approvals, rejections, modifications).
+# Navigate to the Audit Log for the respective items/workflows.
+# Compare the performed activities with the logged activities.
+
+*Expected Result:*
+All workflow activities should be accurately and completely logged in the activity history/audit log.
+
+*Actual Result:*
+Some workflow activities are missing from the activity history logging, leading to incomplete audit trails.
+
+*Impact:*
+
+* Incomplete audit trails, making it difficult to track changes and actions.
+* Potential compliance issues due to missing activity records.
+* Reduced trust in the integrity of the system's logging capabilities.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@22e3799d,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02da5:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,31/Mar/26 8:45 PM
+[Vault][Workflow][Activites]: Some workflow activities are missing from activity history logging,MUS-750,45630,Bug,Done,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Afaf Hussein,712020:c2d00f3e-ad34-47a9-91fc-21155bc0a64d,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,31/Mar/26 7:37 PM,31/Mar/26 8:46 PM,,,,0,,,,,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@1974d0c5,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02clm:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,In Progress,31/Mar/26 8:46 PM
+[Vault][Tasks]: Require full details and preview before executing file/workspace actions,MUS-749,45628,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Afaf Hussein,712020:c2d00f3e-ad34-47a9-91fc-21155bc0a64d,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,31/Mar/26 7:17 PM,31/Mar/26 7:18 PM,,,,0,,,"h3. Impact
+
+Users lack clear understanding of what they are acting on before confirming actions in Vault. This can lead to mistakes, such as deleting the wrong file or workspace.
+
+h3. Expected behaviour
+
+The system should display all key details and a preview of the selected item before executing any action.
+
+h3. Actual behaviour
+
+Currently, users do not see the necessary details or previews before confirming actions, which increases the risk of errors.
+
+h3. Steps to reproduce
+
+* Navigate to Vault.
+* Select a file or workspace.
+* Trigger a sensitive action (e.g. Delete, Move, Share).
+* Observe the absence of a confirmation dialog showing details and previews.
+
+h3. 
+
+h3. Other information
+
+* The required details for files include:
+** File name and extension
+** File type
+** File size
+** Location path
+** Created by and date
+** Last modified by and date
+** Status
+** Relevant flags
+* The required details for workspaces include:
+** Workspace name
+** Workspace type/category
+** Owner
+** Number of documents
+** Number of subfolders/sub-workspaces
+** Last activity date
+** High-level permissions info
+** Integration flags
+* UX/Flow requirements detail how confirmation dialogs should function and what information should be displayed in multi-selection scenarios.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@724f0857,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02d99:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,31/Mar/26 7:17 PM
+[Vault][GRC Export]: Exported GRC documents are saved as Draft instead of Final,MUS-748,45626,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Ahmed Taher,712020:ba0168bc-6dad-4942-a8c1-0a85c1d85007,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,31/Mar/26 7:09 PM,31/Mar/26 7:11 PM,,,,0,,,"*Summary:* Exporting files from GRC results in the documents being saved as 'Draft' instead of 'Final'.
+
+*Environment:*
+
+* *System:* Musahm GRC (Governance, Risk, and Compliance)
+* *Module/Feature:* Document Export Functionality
+* *Browser:* [Google Chrome
+* *Operating System:* [Windows 11x]
+
+*Steps to Reproduce:*
+
+# Log in to Musahm GRC.
+# Navigate to a section that allows document export (e.g., Reports, Document Management, specific GRC module).
+# Select a document or a set of documents to export.
+# Initiate the export process using the available functionality (e.g., ""Export"" button, ""Download"" option).
+# Check the status or content of the exported file.
+
+*Actual Result:*
+The exported file is marked or designated as 'Draft' status upon export or download.
+
+*Expected Result:*
+The exported file should be marked or designated as 'Final' status, reflecting its completed and ready-for-use state.
+
+*Impact:*
+
+* Users may experience confusion and rework due to inadvertently using or distributing 'Draft' versions of officially exported documents.
+* Potential compliance risks if official records are expected to be 'Final' but are generated as 'Draft'.
+* Reduced efficiency and trust in the document management process within GRC.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@62280d25,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02d91:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,31/Mar/26 7:09 PM
+Critical Bug: Workflow Instances Visible and Actionable After Workspace Deletion,MUS-747,45623,Bug,Done,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Afaf Hussein,712020:c2d00f3e-ad34-47a9-91fc-21155bc0a64d,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,31/Mar/26 6:42 PM,31/Mar/26 7:08 PM,,,,0,,,"h3. Impact
+
+Workflow instances are visible to unintended users after their associated workspace is deleted. This can lead to confusion, incorrect actions on stale data, and potential data corruption. It poses a significant risk to data integrity and user experience.
+
+h3. Expected behaviour
+
+* All workflow instances and their tasks should become inaccessible and un-actionable upon workspace deletion.
+* Users should receive clear feedback or error messages when trying to interact with items from a deleted workspace.
+* No workflow instances from a deleted workspace should be visible to users who were not the original creators or relevant participants.
+
+h3. Actual behaviour
+
+* Users can see workflow instances linked to a deleted workspace that they did not create.
+* Users can approve, reject, or modify items and documents associated with these workflows, despite the workspace being deleted.
+
+h3. Steps to reproduce
+
+* Add a workflow to a specific workspace.
+* Delete the workspace (move it to the recycle bin).
+* Observe that unintended users can see multiple workflow instances.
+* Attempt to approve, reject, or modify items or documents associated with the deleted workspace's workflows.
+
+h3. Environment
+
+windows 11 
+
+chrome browser latest version",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@46734b61,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02cli:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,In Progress,31/Mar/26 7:08 PM
+[Vault][Workflows]: Company‑specific workflow appears under other companies,MUS-746,45609,Bug,Ready For Test,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Afaf Hussein,712020:c2d00f3e-ad34-47a9-91fc-21155bc0a64d,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,31/Mar/26 3:42 PM,31/Mar/26 7:08 PM,,,,0,high-priority,,,,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@61be531,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02clr:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,In Progress,31/Mar/26 7:08 PM
+[Vault][Subfolders]: Subfolder file counter doesn’t reflect nested subfolders/documents,MUS-740,45555,Bug,Ready For Test,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Ahmed Taher,712020:ba0168bc-6dad-4942-a8c1-0a85c1d85007,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,30/Mar/26 8:43 PM,31/Mar/26 7:07 PM,,,,0,,,"h3. Impact
+
+The file count for subfolders is incorrect. Users may be misinformed about the actual content size or structure. This can lead to confusion and potentially missed documents.
+
+h3. Expected behaviour
+
+The file count should accurately reflect the total number of sub-subfolders and documents within the entire hierarchy of a subfolder.
+
+h3. Actual behaviour
+
+The displayed count for a subfolder only includes direct children. It does not account for nested subfolders or documents within them.
+
+h3. Steps to reproduce
+
+* Navigate to the Vault section of the application.
+* Access a folder that contains nested subfolders and/or documents.
+* Observe the displayed count for the parent subfolder.
+
+h3. Environment
+
+* Platform: vault
+* Browser: [ Chrome]
+* OS: [Windows 11]
+
+h3. ",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@41582b95,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02bib:k,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,In Progress,30/Mar/26 8:45 PM
+[Vault][Workspaces]: GRC-synced workspaces vanish after adding first Vault workspace,MUS-739,45542,Bug,Closed,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,Done,Ahmed Taher,712020:ba0168bc-6dad-4942-a8c1-0a85c1d85007,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,30/Mar/26 2:40 PM,30/Mar/26 8:40 PM,,30/Mar/26 8:40 PM,,0,high-priority,severity-high,"h3. Impact
+
+* Users may think their workspaces were deleted or lost.
+* This blocks normal usage of Vault.
+* Users cannot access their original workspaces/documents.
+* There is a high risk for data trust and adoption during the GRC → Vault onboarding flow.
+
+h3. Expected behaviour
+
+* The 6 existing (synced) workspaces should remain visible.
+* The new workspace should be added to the list, resulting in 7 total workspaces (6 existing + 1 new).
+* The workspace list should remain consistent after creation and after refresh.
+
+h3. Actual behaviour
+
+* After creating the new workspace, the previous 6 workspaces vanish/disappear from the Vault workspaces list.
+* The list may show only the newly created workspace or an incomplete list.
+
+h3. Steps to reproduce
+
+# Login to Musahm GRC using a user account that should have existing workspaces.
+# Navigate from GRC → Vault (cross-app transition).
+# In Vault, open the Workspaces screen/list.
+# Confirm that the user can see the 6 existing workspaces.
+# Click Create / Add Workspace.
+# Create a new workspace and save.
+# Return to the Workspaces list (or observe the list after creation completes).
+
+h3. Environment
+
+* Platform: Web
+* OS: Windows 11
+* Browser: Chrome
+* Flow: Musahm GRC → Vault (first-time transition / initial sync)",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@2e52a8d1,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02bib:4,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,10386_*:*_1_*:*_21576186_*|*_10488_*:*_1_*:*_0,,,,,Done,30/Mar/26 8:40 PM
+[Web][Vault][Folders]: Parent folder’s subfolder count not updated correctly when adding a nested folder,MUS-738,45541,Bug,Ready For Test,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Ahmed Taher,712020:ba0168bc-6dad-4942-a8c1-0a85c1d85007,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,30/Mar/26 2:37 PM,31/Mar/26 7:07 PM,,,,0,,,,,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@54a55146,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02bib:r,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,In Progress,30/Mar/26 8:40 PM
+[Vault][Workspace Deletion]: Files moved to “All files” instead of being soft deleted when deleting a workspace,MUS-737,45454,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Ahmed Taher,712020:ba0168bc-6dad-4942-a8c1-0a85c1d85007,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,29/Mar/26 7:38 PM,31/Mar/26 8:23 PM,,,,0,,,"h3. Impact
+
+This behavior can confuse users about the actual deletion state of workspace content. It may cause issues for data retention and compliance, as files appear to be deleted with the workspace but are still accessible from *All files*.
+
+h3. Expected behaviour
+
+Files that were inside a deleted workspace should be soft deleted along with the workspace. They should not appear under *All files* as active documents.
+
+h3. Actual behaviour
+
+The files that were inside the deleted workspace appear under *All files* and are still accessible.
+
+h3. Steps to reproduce
+
+* Create a workspace in Vault.
+* Upload one or more files to this workspace.
+* Delete this workspace.
+* Navigate to *All files*.
+
+h3. Environment
+
+windows 11 
+
+browser chrome
+
+h3. ",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@4265e89,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02d5j:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,31/Mar/26 8:23 PM
+[Web][Vault][Workspace]: User can still act on tasks after workspace deletion,MUS-736,45453,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Ahmed Taher,712020:ba0168bc-6dad-4942-a8c1-0a85c1d85007,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,29/Mar/26 7:31 PM,30/Mar/26 8:47 PM,,,,0,,,"h3. Impact
+
+Users can still approve, reject, or modify tasks linked to a deleted workspace. This occurs even after the workspace has been soft-deleted and moved to the recycle bin.
+
+h3. Expected behaviour
+
+When a workspace is deleted:
+
+* All approval, rejection, or modification actions should be blocked.
+* A clear message should inform users that they cannot perform these actions until the workspace is restored.
+
+Once the workspace is restored:
+
+* All related actions should be enabled again and function normally.
+
+h3. Actual behaviour
+
+The system allows users to approve, reject, or modify items/files that belong to the deleted workspace.
+
+h3. Steps to reproduce
+
+* Login to Vault.
+* Delete an existing workspace (it will move to the recycle bin).
+* Go to *Tasks*.
+* Open a task/file linked to the deleted workspace.
+* Attempt to perform an action (e.g. *Approve*, *Reject*, or *Modify/Edit*).
+
+h3. Environment
+
+Windows 11 chrome browser
+
+h3. Other information
+
+No backend workflow should continue to process approvals/changes for items that belong to a deleted workspace.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@7256aa4d,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02csk:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,29/Mar/26 7:31 PM
+File upload accepts all extensions instead of restricting to document types,MUS-732,45276,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Afaf Hussein,712020:c2d00f3e-ad34-47a9-91fc-21155bc0a64d,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,26/Mar/26 8:47 PM,31/Mar/26 7:58 PM,,,,0,high-priority,severity-high,"h3. Impact
+
+The file upload component allows users to upload any file type. This can lead to uploading irrelevant or unsupported files. It poses security and compliance risks if unsafe file types are accepted.
+
+h3. Expected behaviour
+
+The system should restrict uploads to specific document formats only. Allowed extensions include {{pdf}}, {{doc}}, {{docx}}, and other similar document types. If a user tries to upload an unsupported file type, the upload should be blocked, and a clear message should be displayed.
+
+h3. Actual behaviour
+
+Currently, the system accepts any file extension without any validation error. Users can upload images, videos, zip files, executables, etc.
+
+h3. Steps to reproduce
+
+* Open the file upload component.
+* Select a file with an unsupported extension (e.g., image, video).
+* Attempt to upload the file.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@1657e757,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02d9d:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,31/Mar/26 7:58 PM
+[Web][Vault Workspaces]: Enforce unique workspace name per company (naming convention),MUS-731,45275,Bug,Ready For Test,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Ahmed Taher,712020:ba0168bc-6dad-4942-a8c1-0a85c1d85007,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,26/Mar/26 8:34 PM,31/Mar/26 7:22 PM,,,,0,high-priority,severity-high,"h3. Impact
+
+* Users can select the wrong workspace when performing actions.
+* Documents, permissions, or configurations may be assigned to the incorrect workspace.
+* Navigation and management of workspaces becomes unclear, especially for companies with many workspaces.
+
+h3. Expected behaviour
+
+Each workspace name should be unique per company. Users should be able to clearly identify and work with the correct workspace.
+
+h3. Actual behaviour
+
+It is currently possible to create multiple Vault workspaces with the same name under the same company. The system does not validate the uniqueness of the workspace name when creating or renaming a workspace.
+
+h3. Steps to reproduce
+
+* Attempt to create a new Vault workspace with a name that already exists under the same company.
+* Observe that the system allows the creation without any validation.
+* Rename an existing workspace to a name that is already in use.
+* Check that the rename is successful without any uniqueness validation.
+
+h3. Environment
+
+chrome browser 
+
+h3. Other information
+
+This bug can lead to confusion in lists, filters, and selection menus, impacting the overall workflow.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@5afde0ed,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02d5l:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,In Progress,31/Mar/26 7:12 PM
+[Web][Vault][Workspace]: Storage Limit (MB) not enforced — uploads exceed limit,MUS-730,45272,Bug,In Progress,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Ahmed Taher,712020:ba0168bc-6dad-4942-a8c1-0a85c1d85007,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,26/Mar/26 7:40 PM,31/Mar/26 8:24 PM,,,,0,high-priority,severity-high,"*Summary:* Storage limit set per workspace is not being enforced; user can upload files far beyond limit (e.g., limit=1MB, upload=1GB succeeds).
+
+*Steps:*
+
+# Login
+# Create workspace with Storage Limit (MB)=1
+# Upload a file of ~1GB to that workspace
+# Observe upload success.
+
+*Actual:* Upload succeeds; no validation/error; workspace storage usage/limit not blocked.
+
+*Expected:* Upload should be rejected once workspace would exceed limit; show clear error; prevent upload and keep storage usage accurate.
+
+*Acceptance Criteria:*
+A) Backend enforces limit at upload API (before persisting)
+B) UI shows friendly message with remaining MB and attempted file size
+C) Workspace storage usage is calculated accurately and updated after upload/delete
+D) Edge cases: multiple uploads, concurrent uploads, replacing files.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@55c2d116,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02d5i:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,In Progress,31/Mar/26 8:24 PM
+[Web][Vault][Workspace]: Number field enforces leading zero – cannot fully clear or override with empty value,MUS-729,45271,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,mostafa.mohamed,712020:ee930284-a676-4ef4-984e-6d2be77068d4,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,26/Mar/26 7:30 PM,26/Mar/26 7:38 PM,,,,0,,,"h3. Impact
+
+* Users are forced to keep an unnecessary leading zero in the *Storage Limit (MB)* field.
+* This leads to confusion and increases the risk of entering incorrect values (e.g. {{01}} instead of {{1}}).
+
+h3. Expected behaviour
+
+* The *Storage Limit (MB)* field should be required.
+* Users should be able to:
+** Completely clear the field, including the {{0}}, and then type a new value.
+** Type directly, replacing the {{0}} with new digits.
+* The requirement should be for a valid numeric value, not to retain the literal {{0}}.
+
+h3. Actual behaviour
+
+* The {{0}} in the *Storage Limit (MB)* field cannot be fully removed.
+* When attempting to enter a new number, the {{0}} remains as if it were mandatory.
+* Users end up with values like {{01}}, {{02}}, etc., instead of starting from an empty field.
+
+h3. Steps to reproduce
+
+# Login as an employee.
+# Navigate to *Vault* and click *Add workspace*.
+# In the *Storage Limit (MB)* field, delete the current number so that only the default {{0}} remains.
+# Try to delete the {{0}} or type a new number directly.
+
+h3. Environment
+
+* Platform: Web (Desktop)
+* OS: Windows 11
+* Browser: Google Chrome Version 146.0.7680.165 (Official Build) (64‑bit)
+
+h3. Workarounds
+
+* N/A
+
+h3. Other information
+
+* Module / Screen: Vault – Add Workspace
+* Field: *Storage Limit (MB)*
+
+!image-20260326-140719.png|width=638,height=717!",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,26/Mar/26 7:38 PM;ug:14e49a3d-81bc-4f58-947b-699f3cef9a30;image-20260326-140719.png;https://runatek.atlassian.net/rest/api/3/attachment/content/22077,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@553bc8cc,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02cs5:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,26/Mar/26 7:30 PM
+UI/UX: Checkbox label text is too close to the checkbox in “New Workflow → Rules & Exceptions” modals,MUS-728,45228,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,mostafa.mohamed,712020:ee930284-a676-4ef4-984e-6d2be77068d4,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,26/Mar/26 1:06 PM,26/Mar/26 1:14 PM,,,,0,,,"h3. Impact
+
+* The checkbox label text is too close to the checkbox in the New Workflow → Rules and Exceptions modals.
+* This affects readability and makes it harder for users to scan options quickly.
+* It may also give a less polished impression of the UI.
+
+h3. Expected behaviour
+
+* There should be clear and consistent horizontal spacing (around 8–12px) between each checkbox and its label.
+* The layout should match spacing conventions used elsewhere in the product for better readability.
+
+h3. Actual behaviour
+
+* The label text is very close to its checkbox on both Rules and Exceptions screens.
+* There is almost no visible gap between the checkbox and the label, leading to a cramped layout.
+
+h3. Steps to reproduce
+
+* Login to the application.
+* Go to WorkSpace.
+* Click on any file to open its details/actions.
+* Click on New Workflow.
+* Navigate to the Rules page in the workflow.
+* Observe the spacing between each checkbox and its label.
+* Navigate to the Exceptions page.
+* Observe the checkbox and label spacing there as well.
+
+h3. Environment
+
+* OS: Windows 11
+* Browser: Google Chrome
+* Area: All files → File workflow
+* Affected Screens:
+** New Workflow → Rules
+** New Workflow → Exceptions
+
+h3. Workarounds
+
+* N/A
+
+h3. Other information
+
+* Severity: Minor (Cosmetic UI issue)
+* Priority: Medium (visible in a core workflow; likely a quick CSS/design-system fix)
+* Technical Notes:
+** Check the layout container for checkbox + label and ensure a proper gap or margin-left on the label.
+** Confirm it uses the standard checkbox-with-label component from the design system.
+** Validate that Rules and Exceptions use the same spacing as other similar lists (e.g., roles, permissions, filters).
+* Attachment: image1.png (shows example of cramped checkbox + label spacing)",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@6299f112,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02cqt:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,26/Mar/26 1:06 PM
+Enhance Workspace Creation: Remove Manual Slug URL Requirement,MUS-727,45192,Bug,Closed,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,Done,mostafa.mohamed,712020:ee930284-a676-4ef4-984e-6d2be77068d4,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,25/Mar/26 7:39 PM,31/Mar/26 5:33 PM,,31/Mar/26 5:33 PM,,0,,,"let’s hide this text box for url slug.
+
+!image-20260325-141038.png|width=636,alt=""image-20260325-141038.png""!",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,;31/Mar/26 5:33 PM;09fe937c-713b-4810-b97c-f0ae48184541;28800,,0,28800,,,0,28800,,25/Mar/26 7:40 PM;ug:14e49a3d-81bc-4f58-947b-699f3cef9a30;image-20260325-141038.png;https://runatek.atlassian.net/rest/api/3/attachment/content/21978,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@2ba45942,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02cqd:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,10387_*:*_1_*:*_0_*|*_10386_*:*_1_*:*_510831570,,38938,MUS-577,Musahm Vault,Done,31/Mar/26 5:33 PM
+File Extension Missing After Downloading 0.1K File,MUS-725,45188,Bug,Closed,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,Done,Ahmed Taher,712020:ba0168bc-6dad-4942-a8c1-0a85c1d85007,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,25/Mar/26 7:19 PM,30/Mar/26 8:58 PM,,30/Mar/26 8:58 PM,,0,high-priority,severity-high,"*Environment:*
+
+* Browser: Google Chrome Version 146.0.7680.80 (Official Build) (64-bit)
+* OS: Windows 11
+
+*Severity:* High
+*Priority:* High
+
+*Steps to Reproduce:*
+
+# Login to the application.
+# Go to the *Workspace*.
+# Select a test file with a size of *0.1K* (or 0.0 KB).
+# Click *Download*.
+
+*Actual Result:*
+
+* The downloaded file appears on the desktop (or in the Downloads folder) *without a file extension*.
+
+*Expected Result:*
+
+* The downloaded file should *retain its original file extension* (e.g., {{.pdf}}, {{.docx}}, {{.png}}, etc.) regardless of its size, including 0.1K / 0.0 KB files.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@4f9474a4,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02bib:2,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,10386_*:*_1_*:*_437957259_*|*_10488_*:*_1_*:*_0,,38938,MUS-577,Musahm Vault,Done,30/Mar/26 8:58 PM
+"[Web][Vault]: After some time in the app, certain endpoints start returning 403 Forbidden",MUS-724,45186,Bug,Ready For Test,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Ahmed Taher,712020:ba0168bc-6dad-4942-a8c1-0a85c1d85007,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,25/Mar/26 7:05 PM,31/Mar/26 7:07 PM,,,,0,high-priority,severity-high,"*Environment / Endpoint*
+
+* *Endpoint:* {{POST https://api-s2.vault.musahm.com/api/documents/uploadDocument}}
+* *Module:* Vault – Documents
+* *Issue:* Intermittent HTTP 403 when uploading documents after the user has been using the app for a while
+
+----
+
+h3. Request Details
+
+*Headers*
+
+* {{Authorization: Bearer <JWT>}}
+Example token (redacted in ticket, shared here for backend analysis):
+{{eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lQXIiOiLYp9mE2KrYs9iq2LEiLCJOYW1lRW4iOiJ0ZXN0ZXIiLCJFbWFpbCI6ImEubW9uaXJAcnVuYXRlY2hub2xvZ3kuY29tIiwiTW9iaWxlTnVtYmVyIjoiMjAxMDE3Nzk1NTI2IiwiQ29tcGFueU5hbWVBciI6Itin2KjYp9mG2YjYqCIsIkNvbXBhbnlOYW1lRW4iOiJhYmFub2IiLCJJc0RlZmF1bHRQYXNzd29yZCI6IkZhbHNlIiwiSXNBZG1pbiI6IkZhbHNlIiwiQWRtaW5JZCI6IjAiLCJDb21wYW55VHlwZUlkIjoiNCIsIklzVHdvRmFjdG9yQXV0aGVudGljYXRpb24iOiJGYWxzZSIsIlVzZXJUeXBlIjoiRW1wbG95ZWUiLCJJZCI6IjEyMzkiLCJDb21wYW55SWQiOiIyMzIiLCJ0ZW5hbnRfaWQiOiI2OWMyNzE5NjZjMWU1OGU2MjQ5YmM2NWUiLCJ1c2VyX2lkIjoiNjk2NzhjYzYwYTY1YjczNzg4MjM2NDM0IiwibmJmIjoxNzc0NDM4OTEwLCJleHAiOjE3NzQ0NzQ5MTAsImlhdCI6MTc3NDQzODkxMH0.CiQlDYFLHfScNqRvqGY93T-BDcq7jqgdvtOfnMhXsB4}}
+Payload highlights:
+** {{Email}}: {{a.monir@runatetechnology.com}}
+** {{UserType}}: {{Employee}}
+** {{tenant_id}}: {{69c271966c1e58e6249bc65e}}
+** {{user_id}}: {{69678cc60a65b73788236434}}
+** {{CompanyId}}: {{232}}
+** {{exp}}: {{1774474910}}
+** {{IsAdmin}}: {{False}}
+
+{quote}Note to backend: Please validate claims, roles, and any permission checks for this endpoint against this token structure.{quote}
+
+*Body / Payload*
+
+Multipart request with:
+
+* {{file}}: (binary document)
+* {{Status}}: {{Draft}}
+* {{DocumentType}}: {{697f1a15036fb24402923363}}
+* {{ParentId}}: {{69c29780142f5cff4847c836}}
+* {{WorkspaceId}}: {{69c29780142f5cff4847c836}}
+* {{Title}}: {{test0.1}}
+
+----
+
+h3. Observed Behaviour
+
+* After the user has been logged in and using the app for some time, calling {{POST /api/documents/uploadDocument}} starts returning:
+** *HTTP status:* {{403 Forbidden}}
+* The same user and token were previously able to upload documents successfully (same endpoint and similar payload).
+* No validation errors are returned in the body (backend returns only the 403 status).
+
+----
+
+h3. Expected Behaviour
+
+* As long as the JWT is valid (not expired) and the user has permission to upload documents in the given *WorkspaceId/ParentId*, the endpoint should:
+** Accept the request
+** Create the document in *Draft* status
+** Return a success status (e.g., {{200}} / {{201}}) instead of {{403}}.
+
+----
+
+h3. Hypothesis / Pointers for Backend
+
+Please check:
+
+# *Authorization/Policy checks*
+#* Any change in role/permission mapping for:
+#** {{UserType = Employee}}
+#** {{CompanyId = 232}}
+#** {{tenant_id = 69c271966c1e58e6249bc65e}}
+#* Whether the combination of {{WorkspaceId}} + {{ParentId}} requires a role that this token no longer satisfies over time (e.g. cached permissions, tenant switching).
+# *Token validation*
+#* Whether there is any server‑side blacklisting / revocation / “single session” logic that might cause an otherwise valid token to start failing with {{403}} after a certain time or action.
+#* Any clock skew / {{nbf}} and {{exp}} handling that might be mis‑calculated.
+# *Resource‑level access*
+#* Permission checks specific to:
+#** {{DocumentType = 697f1a15036fb24402923363}}
+#** {{WorkspaceId = 69c29780142f5cff4847c836}}
+#** {{ParentId = 69c29780142f5cff4847c836}}
+# *Logs*
+#* Check server logs for this endpoint filtered by {{user_id = 69678cc60a65b73788236434}} and {{tenant_id = 69c271966c1e58e6249bc65e}} around the time of the 403 to see which authorization rule is failing.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,;30/Mar/26 7:48 PM;ug:2c1e53b3-1709-4748-a13e-5046c0b3882e;28800,,0,28800,,,0,28800,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@30ff216d,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02bib:m,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,In Progress,30/Mar/26 7:48 PM
+"Login: Loader Dismisses Before Navigation, Leaving User Stuck on Login Screen Briefly (while selecting a company) if the employee was joint between two companies ",MUS-718,45110,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,mostafa.mohamed,712020:ee930284-a676-4ef4-984e-6d2be77068d4,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,24/Mar/26 4:03 PM,24/Mar/26 4:53 PM,,,,0,,,"*Environment / Context*
+
+* Screen: Login – Company Selection step
+* User type: Employee linked to more than one company (joint between two companies)
+
+*Current Behavior*
+
+# User enters valid login credentials and proceeds to the company selection screen.
+# The user selects one of the companies they are linked to.
+# A loading indicator (loader/spinner) appears to indicate that navigation is in progress.
+# The loader dismisses *before* the navigation to the selected company’s home/dashboard is completed.
+# For a brief period, the user is left on the login/company selection screen with no loader and no clear feedback, giving the impression that the system is stuck or unresponsive.
+# After this short delay, the navigation finally happens and the user is redirected to the correct company context.
+
+This behavior is only observed when the employee is joint between two companies and is choosing a company during login.
+
+*Expected Behavior*
+
+* When the user selects a company and the loader appears:
+** The loader should remain visible *until* the navigation to the selected company’s home/dashboard is fully completed, *or*
+** The user should be immediately redirected with smooth, continuous feedback, without a period where the loader disappears and the screen seems idle.
+* At no point should the user be left on the login/company selection screen with no loader while the system is still processing their selection.
+
+*Impact*
+
+* Creates confusion and a poor user experience at a critical step (login).
+* Users may think the system has frozen or that their company selection did not work.
+* Increases the likelihood of repeated clicks or re-login attempts.
+
+*Steps to Reproduce*
+
+# Login using an employee account that is associated with at least two companies.
+# Proceed to the company selection step.
+# Select one of the available companies.
+# Observe the loader and the behavior of the screen between selection and final navigation.
+
+*Notes / Hypothesis*
+
+* The loader appears to be tied only to the initial request and is dismissed once the selection call returns, while additional processing or navigation logic is still ongoing.
+* The timing issue is more noticeable on slower connections or when the company context initialization takes longer.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@7a77102a,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02ck5:,,,,,,,,,,,,,,,,,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,24/Mar/26 4:03 PM
+Musahm-GRC → Musahm-Vault: Intermediate transition screen doesn’t match product design,MUS-713,44612,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,mostafa.mohamed,712020:ee930284-a676-4ef4-984e-6d2be77068d4,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,17/Mar/26 5:17 PM,24/Mar/26 1:27 PM,,,,0,medium-priority,,"*Severity:* Minor
+*Priority:* Medium
+*Issue Type:* Bug / UX Inconsistency
+
+*Environment*
+
+* Environment: Production / Staging
+* Entry point: Transition from *Musahm-GRC* to *Musahm-Vault*
+* Browser: [Chrome Version 146.0.7680.80 (Official Build) (64-bit)]
+* OS: [Windows 11]
+
+*Steps to Reproduce*
+
+# From *Musahm-GRC*, trigger navigation to *Musahm-Vault* (e.g. using the Vault-related action/link that opens Vault).
+# Observe the screen that appears between GRC and the final Vault screen.
+
+*Expected Result*
+
+* Transition should go directly to the Vault page *or* show an intermediate screen that:
+** Follows the Musahm design system (colors, typography, spacing, components).
+** Uses consistent layout with other Vault / GRC screens.
+** Contains only necessary information and actions.
+
+*Actual Result*
+
+* A “middle” / intermediate screen appears during the transition that:
+** Does *not* match the design of GRC or Vault.
+** Looks visually inconsistent with the rest of the product (layout, colors, components).
+** Feels like an out-of-place or leftover screen in the flow.
+
+*Suggested Fix*
+
+* Either:
+** Remove this intermediate screen and navigate directly to the target Vault screen, *or*
+** Redesign the intermediate screen to fully align with Musahm’s current design system and user flow.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@108c448f,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02bwd:,,,,,,,,,,,,,,,,,MUS Sprint 13,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,17/Mar/26 5:17 PM
+"Dropdown list for ""signature policies test"" is incorrectly positioned and overlaps the parent component",MUS-712,44610,Bug,Done,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,mostafa.mohamed,712020:ee930284-a676-4ef4-984e-6d2be77068d4,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,17/Mar/26 4:30 PM,30/Mar/26 4:10 PM,,,,0,medium-priority,,"*Summary*
+Dropdown list for the organization/policy selector (""signature policies test"") is incorrectly positioned and overlaps the parent component.
+
+*Severity:* Minor
+*Priority:* Medium
+*Issue Type:* Bug
+
+*Environment*
+
+* Environment: Production / Staging
+* URL: https://s2.vault.musahm.com
+* Browser: Chrome 146.0.7680.80 (Official Build) (64-bit)
+* OS: Windows 11 (laptop)
+
+*Steps to Reproduce*
+
+# Navigate to the *Starred* documents page.
+# Click on the *""signature policies test""* dropdown menu in the top header.
+# Observe the position and styling of the resulting blue list box.
+
+*Expected Result*
+
+* The dropdown list appears *below* the input field.
+* There is clear visual separation (padding/margin) between the trigger and the dropdown list.
+* The dropdown uses the standard menu styling for the system (e.g., *white background*, *box-shadow*, consistent with the design language).
+
+*Actual Result*
+
+* The dropdown list (blue box) appears directly *on top of* the trigger label.
+* The trigger text is partially/fully obscured by the blue box.
+* The styling does *not* match the standard system design language for dropdown menus.
+
+*Screenshots*
+
+# {{image1.png}} – Starred documents header with the *""signature policies test""* dropdown open, showing the blue list box overlapping the trigger label.
+# {{image2.png}} – Additional view of the same dropdown illustrating the incorrect vertical offset and overlap with the trigger.
+
+Note: The two screenshots ({{image1.png}} and {{image2.png}}) are attached to this issue and correspond to the descriptions above.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,;30/Mar/26 4:10 PM;09fe937c-713b-4810-b97c-f0ae48184541;7200,,0,7200,,,0,7200,,17/Mar/26 5:12 PM;ug:14e49a3d-81bc-4f58-947b-699f3cef9a30;9c09603e-dafa-4e75-ad64-d77b1c0173dd.png;https://runatek.atlassian.net/rest/api/3/attachment/content/21840,17/Mar/26 5:05 PM;ug:14e49a3d-81bc-4f58-947b-699f3cef9a30;a806a9f9-4c64-4e89-8db1-dd2478f85347.png;https://runatek.atlassian.net/rest/api/3/attachment/content/21839,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@25433242,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02bw5:,,,,,,,,,,,,,,,,,MUS Sprint 13,MUS Sprint 14,,,,,,,,,6b7d6503-39a9-482b-a2a4-a31d5e30a4cc,musahm team,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,In Progress,30/Mar/26 4:09 PM
+Web: Sequential loaders shown during page load (loader after loader),MUS-711,44608,Bug,Done,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,mostafa.mohamed,712020:ee930284-a676-4ef4-984e-6d2be77068d4,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,17/Mar/26 4:02 PM,30/Mar/26 4:10 PM,,,,0,medium-priority,,,,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,17/Mar/26 4:03 PM;ug:14e49a3d-81bc-4f58-947b-699f3cef9a30;Video Project.mp4;https://runatek.atlassian.net/rest/api/3/attachment/content/21806,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@7d617ce2,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02bvx:,,,,,,,,,,,,,,,,,MUS Sprint 13,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,In Progress,30/Mar/26 3:15 PM
+Vault–GRC: Employee name change doesn’t trigger deactivation or authorization letter,MUS-710,44606,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Ahmed Taher,712020:ba0168bc-6dad-4942-a8c1-0a85c1d85007,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,17/Mar/26 3:18 PM,31/Mar/26 7:44 PM,,,,0,security,Severity-Medium,"*Description*
+
+When an employee’s *name is changed in Vault*, this change is not handled correctly in *GRC*:
+
+* The employee remains *active* in GRC with the old authorization context.
+* GRC *does not request a new authorization letter*, even though the legal/official name appearing on the authorization has changed.
+
+This leads to a mismatch between the employee’s identity data in Vault and GRC, and potentially invalid or outdated authorization letters.
+
+*Environment*
+
+* Systems:
+** Musahm *Vault*
+** Musahm *GRC*
+* Area: Employee synchronization + authorization letter workflow
+* Role: Company admin / delegate updating employee data in Vault
+
+*Preconditions*
+
+* A company exists in GRC with an *active employee* who already has an authorization letter (or is considered authorized).
+* The same employee exists in *Vault*, and the company–employee mapping is established.
+
+*Steps to Reproduce*
+
+# In *Vault*, locate a company that has an active, authorized employee in GRC.
+# Open that employee’s record in Vault.
+# *Change only the employee’s name* (e.g., update spelling, change last name, or update to a new legal name).
+# Save the changes in Vault.
+# Go to *GRC*, open the same company and navigate to the section where the employee’s authorization/representation is shown.
+# Observe:
+#* The employee’s status.
+#* Whether GRC requests or enforces a new authorization letter for the updated name.
+
+*Actual Result*
+
+* The employee remains *active* in GRC with no status change.
+* GRC *does not prompt for a new authorization letter*.
+* The authorization context in GRC doesn’t react to the name change from Vault.
+
+*Expected Result*
+
+* When an employee’s *name is changed in Vault*:
+** GRC should either:
+*** Trigger a *new authorization letter requirement*, or
+*** At least *flag the record for re‑authorization / review*, depending on the defined business rules.
+** Authorization data in GRC should be *consistent and traceable* to the updated legal name.
+
+*Impact*
+
+* Potential *compliance and legal risk*, since authorization letters may no longer match the employee’s current legal name.
+* *Data inconsistency* between Vault and GRC for employee identity.
+* Difficulties in audits: the person authorized in GRC might not match the current Vault identity.
+
+*Notes / Possible Root Cause*
+
+* Name changes from Vault may not be:
+** Emitting the correct event/type to GRC, or
+** Mapped in GRC as a “sensitive change” requiring re‑authorization.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@2aba16fd,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i01zmp:,,,,,,,,,,,,,,,,,MUS Sprint 13,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,31/Mar/26 7:44 PM
+Tooltip for profile button is not displayed/positioned correctly,MUS-709,44491,Bug,Done,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,mostafa.mohamed,712020:ee930284-a676-4ef4-984e-6d2be77068d4,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,15/Mar/26 6:25 PM,30/Mar/26 3:14 PM,,,,0,,,"Summary
+Tooltip for profile button is not shown properly
+
+Environment / Context
+
+* Module / Area: Header
+* URL: [https://www-s2.vault.musahm.com/|https://www-s2.vault.musahm.com/|smart-link] 
+* Platform: Web
+* Device: [Laptop]
+* OS: [Windows 11]
+* Browser & Version: [Version 146.0.7680.80 (Official Build) (64-bit)]
+* Language: [English]
+
+Steps to Reproduce
+
+# Go to: [https://www-s2.vault.musahm.com/|https://www-s2.vault.musahm.com/|smart-link] 
+# Login
+# Locate the *Profile* button/icon in the header.
+# Hover the mouse over the profile button (and/or focus it using Tab).
+# Observe how the tooltip appears.
+
+Expected Result
+
+* A tooltip appears when hovering or focusing the profile button.
+
+Actual Result
+
+* Tooltip is partially off-screen / clipped / cut by the header.
+
+Frequency
+
+* [Always]
+* Reproducible on: [All browsers]",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,;30/Mar/26 3:06 PM;09fe937c-713b-4810-b97c-f0ae48184541;28800,,0,28800,,,0,28800,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@94fb2c7,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02bt9:,,,,,,,,,,,,,,,,,MUS Sprint 13,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,In Progress,30/Mar/26 3:07 PM
+Intermittent Login Error: “Wrong Password” Shown Then Redirected Despite Valid Credentials,MUS-708,44489,Bug,Closed,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,Done,Ahmed Taher,712020:ba0168bc-6dad-4942-a8c1-0a85c1d85007,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,15/Mar/26 6:18 PM,31/Mar/26 7:11 PM,,31/Mar/26 7:11 PM,,0,,,"*Summary*
+Sometimes when logging in with correct username and password, the application briefly shows a “wrong password” (or invalid credentials) error message, then redirects back to the login page. The same credentials work at other times, so the error is intermittent and incorrect.
+
+----
+
+*Steps to Reproduce*
+
+# Open the application in a web browser.
+# Navigate to the *Login* page.
+# Enter a *valid* username and password.
+# Click on the *Login* button.
+# Repeat the login process a few times (if the issue is intermittent).
+
+----
+
+*Actual Result*
+
+* Occasionally, after clicking *Login* with valid credentials:
+** The browser/app displays an error message such as *“Wrong password”* / *“Invalid credentials”*.
+** The user is then redirected back to the login page.
+** Using the exact same username and password again may work on a subsequent attempt.
+
+----
+
+*Expected Result*
+
+* When the username and password are correct:
+** No “wrong password” / “invalid credentials” error should be displayed.
+** The user should be logged in successfully and redirected to the home page on the first attempt.
+
+----
+
+*Impact*
+
+* Users may think their account or password is incorrect and attempt unnecessary resets.
+* Reduces trust in the authentication system and overall system stability.
+* Wastes time as users retry login multiple times.
+
+----
+
+*Environment*
+
+* Platform: Web
+* Device: Laptop
+* OS: Windows 11
+* Browser: Google Chrome
+* Browser Version: 145.0.7632.160 (Official Build) (64-bit)",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@1b05d4a7,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02238:,,,,,,,,,,,,,,,,,MUS Sprint 13,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,10387_*:*_1_*:*_0_*|*_10386_*:*_1_*:*_1385505146,,38938,MUS-577,Musahm Vault,Done,31/Mar/26 7:11 PM
+Cross-App Navigation: Musahm Vault Ignores Selected Language from Musahm GRC,MUS-707,44487,Bug,To Do,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,Ahmed Taher,712020:ba0168bc-6dad-4942-a8c1-0a85c1d85007,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,15/Mar/26 6:06 PM,24/Mar/26 1:27 PM,,,,0,,,"*Summary*
+When navigating from Musahm GRC to Musahm Vault, the selected language in Musahm GRC is not preserved. Musahm Vault opens in a different/default language instead of using the language already chosen by the user.
+
+*Steps to Reproduce*
+
+# Open Musahm GRC.
+# Change the application language to a non-default language (for example, Arabic if English is default, or vice versa).
+# While still in Musahm GRC, use the UI option/link/button to navigate to Musahm Vault.
+# Observe the language in Musahm Vault after navigation.
+
+*Actual Result*
+
+* Musahm Vault opens, but the interface is not in the same language selected in Musahm GRC.
+* The language appears to fall back to a default (or another) language instead of respecting the user’s prior language choice.
+
+*Expected Result*
+
+* When moving from Musahm GRC to Musahm Vault, Musahm Vault should open with the same selected language as in Musahm GRC, maintaining a consistent localized experience across both products.
+
+*Impact*
+
+* Breaks consistency of the user experience between Musahm products.
+* Confuses users who expect their language preference to be respected across integrated modules.
+* May cause users to think translation or localization is broken.
+
+*Environment*
+
+* Platform: Web
+* Device: Laptop
+* OS: Windows 11
+* Browser: Google Chrome
+* Browser Version: 145.0.7632.160 (Official Build) (64-bit)",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@39e6b79b,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02bst:,,,,,,,,,,,,,,,,,MUS Sprint 13,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,To Do,15/Mar/26 6:06 PM
+"Login: Loader Dismisses Before Navigation, Leaving User Stuck on Login Screen Briefly",MUS-706,44486,Bug,Done,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,,mostafa.mohamed,712020:ee930284-a676-4ef4-984e-6d2be77068d4,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,15/Mar/26 5:44 PM,29/Mar/26 8:30 PM,,,,0,,,"*Summary*
+When logging in, the loading indicator disappears but the user remains on the login page for about one second before being redirected to the home screen, creating a confusing and sluggish experience.
+
+----
+
+*Steps to Reproduce*
+
+# Open the application in a web browser.
+# Navigate to the login screen (if not already there).
+# Enter valid credentials (email/username and password).
+# Click on the *Login* button.
+
+----
+
+*Actual Result*
+
+* The loader/spinner appears briefly.
+* The loader disappears, but the user still sees the login screen for about one second with no visible loading state.
+* After that short delay, the user is redirected to the home page.
+
+----
+
+*Expected Result*
+
+* The loader/spinner should remain visible until navigation to the home page is complete,
+*or*
+* The transition from login to home page should be seamless with no “blank” idle state on the login page.
+
+----
+
+*Impact*
+
+* Creates the impression that the app is slow or unresponsive.
+* May cause users to think the login did not work and click *Login* again.
+
+----
+
+*Environment*
+
+* Platform: Web
+* Device: Laptop
+* OS: Windows 11
+* Browser: Google Chrome
+* Browser Version: 145.0.7632.160 (Official Build) (64-bit)",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,;29/Mar/26 8:29 PM;09fe937c-713b-4810-b97c-f0ae48184541;28800,,0,28800,,,0,28800,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@4c74ef08,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02bsl:,,,,,,,,,,,,,,,,,MUS Sprint 13,MUS Sprint 14,,,,,,,,,,,,,,,,,,,,,,,38938,MUS-577,Musahm Vault,In Progress,29/Mar/26 8:29 PM
+[Web][Authorization Letter]: Server error when uploading authorization letter due to API handling issue,MUS-702,44328,Bug,Closed,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,Done,Waleed Hussien,60aa0dcf5c73730069e7ad29,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,11/Mar/26 4:57 PM,11/Mar/26 6:40 PM,,11/Mar/26 6:40 PM,,0,,,"* Application: MUSAHM – Web
+* Module: Association meetings – Attendance report / Authorization letter
+* Example URL (similar context as MUS-556):
+{{https://www-s2.musahm.com/association-meetings/attendance-report/43}}
+* User type: Company delegate / association meeting user
+* Browser: [Please specify: e.g. Chrome xx / Edge xx]
+* Environment: [Production / Staging S2 – please specify]
+
+----
+
+h3. Precondition
+
+* User is logged in and has permission to view the association meeting attendance report and manage authorization letters.
+
+----
+
+h3. Steps to Reproduce
+
+# Navigate to the attendance report / authorization letter page
+#* e.g. {{https://www-s2.musahm.com/association-meetings/attendance-report/{meetingId}}}
+# Click on *Upload Authorization Letter* (or equivalent button/icon).
+# Select a valid file (e.g. PDF) and confirm the upload.
+# Wait for the upload request to be sent to the backend API.
+
+----
+
+h3. Actual Result
+
+* A *server error* is displayed to the end user when trying to upload the authorization letter.
+* The upload fails and the authorization letter is not saved.
+* (If available) Network/console shows error from the upload API endpoint:
+** [Attach exact endpoint and response if you have it, for example:]
+** {{POST https://api-s2.musahm.com/api/AuthorizationLetters}}
+** Response: {{500 Internal Server Error}} / error message from API.
+
+----
+
+h3. Expected Result
+
+* The authorization letter file should be uploaded successfully.
+* A success message should be shown to the user.
+* The uploaded authorization letter should be visible in the UI (list / card / icon updated).
+* Any backend validation errors (wrong format, size, missing fields, etc.) should be returned as *clear, user‑friendly messages*, not as a generic server error.
+
+----
+
+h3. Probable Root Cause (Hypothesis)
+
+* *Backend API error handling on file upload*:
+** API may not be handling one of the following correctly:
+*** Null/invalid metadata (e.g. {{meetingId}}, {{companyId}}, or user info).
+*** Missing or invalid file content / content‑type.
+*** Size / type validation not wrapped in proper {{try/catch}}, causing unhandled exception.
+** Result: an internal exception is thrown, returning a 5xx error to the frontend instead of a structured error response.
+
+----
+
+h3. Suggested Technical Checks
+
+# *Backend*
+#* Review the upload endpoint (Authorization Letter) for:
+#** Null checks on {{meetingId}}, {{companyId}}, and user context.
+#** Proper validation of file type and size before processing.
+#** Proper exception handling with standardized error response (e.g. 4xx with error code/message instead of 500).
+#* Add logging around:
+#** Incoming request metadata.
+#** Storage call (e.g. file system / blob storage).
+#** Any mapping to DB entities.
+# *Frontend*
+#* Ensure the request sends:
+#** Correct {{Content-Type}} (e.g. {{multipart/form-data}}).
+#** All required form-data fields (authorizationLetterType, etc.).
+#* Display user-friendly error messages when API returns validation errors.",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@72cb9118,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02bep:,,,,,,,,,,,,,,,,,MUS Sprint 13,,,,,,,,,,,,,,,,,,,,,,10387_*:*_1_*:*_0_*|*_10386_*:*_1_*:*_461,,,,,Done,11/Mar/26 6:40 PM
+[Web][Multi‑Company Employees]: Employee deactivated in Company 1 after name change while remaining active in Company 2 ,MUS-697,44258,Bug,Closed,MUS,MUSAHM,software,Waleed Hussien,60aa0dcf5c73730069e7ad29,,Medium,Done,Waleed Hussien,60aa0dcf5c73730069e7ad29,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,10/Mar/26 5:01 PM,11/Mar/26 6:03 PM,,11/Mar/26 6:03 PM,,0,,,"
+
+h3. Environment
+
+* Application: MUSAHM – Web
+* Module: Employees / Company Members (multi‑company employee setup)
+* User type: Company admin / delegate managing employees
+* Affected employee: User linked to more than one company (Company 1 and Company 2)
+
+h3. Steps to Reproduce
+
+# Login as a user who can manage employees for *Company 1* and *Company 2*.
+# Open the *Employees* (or Company Members) screen for *Company 1*.
+# Edit an employee who is already linked to *both Company 1 and Company 2*.
+# Change the employee *name* in the Company 1 context and save.
+# Check the employee status in *Company 1*.
+# Check the same employee status in *Company 2*.
+
+h3. Actual Result
+
+* After changing the employee name in *Company 1*, the employee becomes *deactivated / inactive* in *Company 1*.
+* The *same employee remains active* in *Company 2*, which causes inconsistency between companies for the same person.
+
+h3. Expected Result
+
+* Changing an employee’s *name in Company 1* should *not deactivate* the employee in that company.
+* The employee’s *active/inactive status should remain consistent and correctly handled across all companies* the employee is linked to.
+* Name updates should behave as a simple data update and not trigger unintended deactivation.
+
+h3. Impact
+
+* Risk of unintentionally deactivating active employees in one company.
+* Inconsistent employee status across companies for the same user",,Abanob Ashraf,712020:13892bc4-7729-4ac2-b049-fa974364ed48,,,,,,,,,,,,,,,,,com.atlassian.servicedesk.plugins.approvals.internal.customfield.ApprovalsCFValue@631b06f0,,,,,,,,,,,,,,,,,,,,,,,{},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0|i02bel:,,,,,,,,,,,,,,,,,MUS Sprint 12,MUS Sprint 13,,,,,,,,,,,,,,,,,,,,,10387_*:*_1_*:*_0_*|*_10386_*:*_1_*:*_533,11/Mar/26 6:03 PM;712020:13892bc4-7729-4ac2-b049-fa974364ed48;retested,,,,Done,11/Mar/26 6:03 PM

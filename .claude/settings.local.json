@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm list:*)",
+      "Bash(node gtm/phase4-content/generate-visuals.js)",
+      "Bash(python -m markitdown \"C:/Users/LENOVO/Music/Negm-Musahem-main/gtm/phase4-content/final-social-visuals-linkedin.pptx\")",
+      "Bash(python3 -m markitdown \"C:/Users/LENOVO/Music/Negm-Musahem-main/gtm/phase4-content/final-social-visuals-linkedin.pptx\")",
+      "Bash(pip install:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\LENOVO\\\\AppData\\\\Local\\\\Temp\\\\dotnet-install.ps1\" -Channel 10.0 -InstallDir \"C:\\\\Users\\\\LENOVO\\\\.dotnet\")",
+      "Bash(\"/c/Users/LENOVO/.dotnet/dotnet.exe\" --version)",
+      "mcp__Claude_Preview__preview_start"
+    ]
+  }
+}

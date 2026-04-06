@@ -1,0 +1,134 @@
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  line-height: 1.6;
+  font-weight: 400;
+  color-scheme: light;
+
+  /* Color Palette */
+  --brand-gold: #c3924d;
+  --brand-gold-dark: #a67c41;
+  --brand-gold-light: rgba(195, 146, 77, 0.08);
+  --brand-navy: #1F2937; /* Replaced Navy with a sleek dark gray to let Gold pop more */
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
+  --bg-page: #f9fafb;
+  --bg-card: #ffffff;
+  --border-color: #e5e7eb;
+
+  /* Layout */
+  --sidebar-width: 260px;
+  --header-height: 64px;
+  --border-radius-sm: 8px;
+  --border-radius: 12px;
+  --border-radius-lg: 16px;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Font Family */
+[dir="ltr"],
+[dir="ltr"] * {
+  font-family: 'Inter', 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+[dir="rtl"],
+[dir="rtl"] * {
+  font-family: 'Cairo', sans-serif;
+  letter-spacing: 0;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  direction: rtl;
+}
+
+[dir="ltr"] {
+  direction: ltr;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Enable vertical scrolling */
+}
+
+/* Global Component Classes */
+
+/* Premium Back Button */
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  /* Balanced padding */
+  min-width: 40px;
+  min-height: 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+}
+
+.back-button:hover {
+  background: var(--bg-page);
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.back-button:active {
+  transform: translateY(0);
+}
+
+/* RTL adjustment for icons if needed */
+[dir="rtl"] .back-button svg {
+  transform: rotate(180deg);
+}
+
+/* Global Input Override: Minimize padding for all inputs */
+/* Global Input Override: Minimize padding for all inputs */
+/* input, textarea, select, .form-control, .form-input, .form-select, .form-textarea {
+  padding:0 !important;
+} */
+.form-group input:not([role="combobox"]):not([id^="react-select"]):not(.form-input), 
+.form-group textarea:not(.form-input) {
+    padding: 10px 9px !important;
+}
+
+/* Ensure placeholders also align if necessary */
+::placeholder {
+  opacity: 1; /* Fix firefox */
+}

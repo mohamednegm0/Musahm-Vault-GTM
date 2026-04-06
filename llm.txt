@@ -1,0 +1,610 @@
+# Musahm Vault — LLM Knowledge Graph
+# Format: Semantic triples and structured indexes for fast LLM retrieval
+# Updated: 2026-04-01
+
+## IDENTITY
+project: Musahm Vault
+type: Enterprise Document Management System (DMS) with AI capabilities
+domain: Document storage, workflow automation, compliance, multi-tenant SaaS
+org: Musahm (Saudi Arabia)
+languages: C# (.NET 10), TypeScript (React 18), JavaScript (Node.js MCP bots)
+database: MongoDB (MusahmVault)
+deployment: Backend on IIS, Frontend on Vercel/Cloudflare
+api_base_url: https://api-s2.vault.musahm.com
+frontend_url: https://www-s2.vault.musahm.com
+i18n: Arabic (RTL, default), English (LTR)
+
+## ARCHITECTURE GRAPH
+
+### Layer Dependencies
+```
+Frontend/apps/web → [apiClient.ts] → Backend/Vault/API/Controllers
+Backend/Vault/API → Backend/Vault/Service → Backend/Vault/Repository → MongoDB
+Backend/Vault/Core ← (shared by API, Service, Repository)
+Backend/Vault/MCP-Bots → Backend/Vault/API (HTTP)
+```
+
+### Backend Clean Architecture
+```
+API/Controllers/{X}Controller.cs
+  → uses I{X}Service (from Core/Interfaces/Service/)
+  → impl {X}Service (from Service/Services/)
+    → uses IBaseRepository<{Entity}> (from Core/Interfaces/Repository/)
+    → impl BaseRepository<{Entity}> (from Repository/Repositories/)
+      → MongoDB IMongoCollection<{Entity}>
+```
+
+### Frontend Data Flow
+```
+Page.tsx → src/api/{module}.ts → apiClient.ts → axios → Backend API
+Page.tsx → useAuth() [AuthContext] → JWT decode → user state
+Page.tsx → useWorkspace() [WorkspaceContext] → selected workspace
+Page.tsx → useLanguage() [LanguageContext] → ar/en toggle
+```
+
+## ENTITY RELATIONSHIP GRAPH
+
+```
+Tenant (TenantId on every entity)
+  ├── Workspace [workspaces]
+  │     ├── Document [documents]
+  │     │     ├── DocumentVersion [documentversions]
+  │     │     ├── DocumentAcl [documentacls]
+  │     │     ├── DocumentExtraction [documentextractions]
+  │     │     └── Obligation [obligations]
+  │     ├── WorkspaceMember [workspacemembers]
+  │     ├── Workflow [workflows]
+  │     │     ├── WorkflowInstance [workflowinstances]
+  │     │     └── WorkflowAssignment [workflowassignments]
+  │     ├── TaskEntity [taskentitys]
+  │     └── Invitation [invitations]
+  ├── UserMap [usermaps] → GRC external users
+  ├── CompanyMap [companymaps] → GRC companies
+  ├── Role [roles]
+  │     ├── RolePermission [rolepermissions]
+  │     └── UserRole [userroles]
+  ├── Permission [permissions]
+  ├── Activity [activitys]
+  ├── AuditLog [auditlogs]
+  ├── AgentActionLog [agentactionlogs]
+  ├── DocumentType [documenttypes]
+  └── Workflow Definitions (triggers, actions, events)
+```
+
+## FILE → CONCEPT INDEX
+
+### Backend: Entity files
+Core/Entities/Document.cs → Document model (TenantId, WorkspaceId, ParentId, Title, DocumentType, Status, CurrentVersion, OwnerUserId, Tags, LegalHold, IsDeleted, DeletedAt, DeletedBy)
+Core/Entities/DocumentVersion.cs → Version tracking (DocumentId, VersionNumber, FilePath, FileSize, MimeType, UploadedBy)
+Core/Entities/DocumentAcl.cs → Access control (DocumentId, UserId, Permission, GrantedBy)
+Core/Entities/DocumentExtraction.cs → AI extraction results (DocumentId, Fields, ConfidenceScore, Status)
+Core/Entities/DocumentType.cs → Document categories (Name, NameAr, Code, FieldDefinitions)
+Core/Entities/Workspace.cs → Workspace (TenantId, ParentId, Name, Slug, Type, Settings{Privacy,AllowInvites,StorageLimitMb}, Stats{TotalMembers,LastActivity}, LegalHold, IsQuickAccess, IsDeleted)
+Core/Entities/WorkspaceMember.cs → Membership (WorkspaceId, UserId, Role, InvitedBy)
+Core/Entities/Workflow.cs → Workflow definition (TenantId, WorkspaceId, Name, Steps[], Triggers[], MinConfidenceScore, IsActive)
+Core/Entities/WorkflowInstance.cs → Runtime instance (WorkflowId, Status enum, CurrentStepIds, Steps[], History[], Context BsonDocument)
+Core/Entities/WorkflowAssignment.cs → Step assignments (WorkflowId, AssigneeId, StepId)
+Core/Entities/WorkflowDefinitions.cs → Schema definitions for steps/events/triggers
+Core/Entities/WorkflowTriggerDefinition.cs → Trigger templates (Code, Name, Description)
+Core/Entities/WorkflowEventDefinition.cs → Event templates (Code, Name)
+Core/Entities/ActionDefinition.cs → Action templates (Code, Name, RequiresApproval)
+Core/Entities/TaskEntity.cs → Tasks (Title, WorkspaceId, AssignedTo, CandidateUsers, DueDate, Status, RelatedEntity, ActionConfig, TargetDocumentId)
+Core/Entities/Obligation.cs → Obligations (DocumentId, Title, DueDate, Status, AssignedTo)
+Core/Entities/Activity.cs → Activity log (Action, EntityType, EntityId, UserId, Details)
+Core/Entities/AuditLog.cs → Audit trail (Action, UserId, IpAddress, Details)
+Core/Entities/AgentActionLog.cs → AI agent actions (AgentType, Action, Status, Sources)
+Core/Entities/Invitation.cs → Invitations (WorkspaceId, Email, Status, InvitedBy, Role)
+Core/Entities/UserMap.cs → GRC user mapping (GrcUserId int, GrcUserType, GrcNameAr/En, Email, MobileNumber)
+Core/Entities/CompanyMap.cs → GRC company mapping (GrcCompanyId, TenantId)
+Core/Entities/CompanyUserMap.cs → Company-user junction (CompanyMapId, UserMapId)
+Core/Entities/Role.cs → Role definition (Code, NameAr, NameEn, Level, IsSystem)
+Core/Entities/RolePermission.cs → Role-permission junction (RoleId, PermissionCode)
+Core/Entities/Permission.cs → Permission definition (Code, Module, NameAr, NameEn)
+Core/Entities/UserRole.cs → User-role assignment (UserId, RoleId, Scope, ScopeId)
+
+### Backend: Controller → Service → Entity mapping
+AuthController → UserService, GRCService, EmailService → UserMap, CompanyMap
+DocumentsController → DocumentService → Document, DocumentVersion
+DocumentVersionsController → DocumentVersionService → DocumentVersion
+DocumentAclsController → DocumentAclService → DocumentAcl
+DocumentExtractionsController → DocumentExtractionService → DocumentExtraction
+DocumentTypesController → (direct repo) → DocumentType
+WorkspacesController → WorkspaceService → Workspace
+WorkspaceMembersController → WorkspaceMemberService → WorkspaceMember
+WorkflowsController → WorkflowService → Workflow
+WorkflowInstancesController → WorkflowInstanceService → WorkflowInstance
+WorkflowAssignmentsController → WorkflowAssignmentService → WorkflowAssignment
+TasksController → TaskEntityService → TaskEntity
+ObligationsController → ObligationService → Obligation
+ActivitiesController → ActivityService → Activity
+SearchController → SearchService → Document (full-text + semantic)
+InvitationsController → InvitationService → Invitation
+AgentActionLogsController → AgentActionLogService → AgentActionLog
+AuditLogsController → AuditLogService → AuditLog
+UsersController → UserService → UserMap, UserRole
+RolesController → RoleService → Role, RolePermission
+PermissionsController → PermissionService → Permission
+ProfilesController → UserService, GRCService → UserMap
+RecycleBinController → RecycleBinService → Document (IsDeleted=true)
+IntegrationController → IntegrationService, GRCService → CompanyMap, UserMap
+
+### Backend: Constant files
+Core/Constants/ConstPermissions.cs → All permission strings: "Permissions.{Module}.{Action}" (Documents, Workspaces, WorkspaceMembers, Comments, Tasks, Workflows, Activities, AuditLogs, DocumentTypes, Invitations, Obligations, Users, Roles, System)
+Core/Constants/ConstRoles.cs → Role hierarchy: viewer(1) < commenter(2) < editor(3) < organizer(4) < admin(5). Names in AR/EN.
+Core/Constants/ConstUserType.cs → User type identifiers
+Core/Constants/ConstDefaultWorkspaces.cs → Default workspace definitions
+Core/Constants/ConstWorkflowTriggers.cs → Workflow trigger codes
+Core/Constants/ConstAppConfiguration.cs → App-level config keys
+
+### Backend: Service files
+Service/Services/DocumentService.cs → Upload (multipart), download, preview, check-in/out, CRUD, PDF generation (iText + PdfPig)
+Service/Services/SearchService.cs → Keyword search, semantic search (external API?), Ask Vault (RAG)
+Service/Services/WorkflowService.cs → Workflow CRUD, step/trigger management
+Service/Services/WorkflowInstanceService.cs → Instance lifecycle, step execution
+Service/Services/GRCService.cs → External GRC API integration (RestSharp)
+Service/Services/EmailService.cs → Microsoft Graph email (OAuth)
+Service/Services/UserService.cs → User CRUD via UserMap, authentication delegation
+Service/Services/InvitationService.cs → Invitation lifecycle, email notifications
+Service/Services/RecycleBinService.cs → Soft-delete recovery, permanent delete
+
+### Backend: Helpers
+Service/Helpers/GrcServiceHelper.cs → GRC API call wrapper
+Service/Helpers/MimeTypes.cs → File extension → MIME type mapping
+Service/Helpers/WatermarkHelper.cs → Document watermarking (ImageSharp)
+
+### Frontend: Page → API module mapping
+pages/Login.tsx → services/authService.ts → POST /api/Auth/login
+pages/Registration.tsx → services/authService.ts → POST /api/Auth/register
+pages/Dashboard.tsx → api/documents.ts, api/tasks.ts, api/obligations.ts, api/agentActionLogs.ts
+pages/WorkspaceExplorer.tsx → api/documents.ts, api/workspaces.ts
+pages/DocumentDetails.tsx → api/documents.ts (GET by id, download, preview)
+pages/DocumentUpload.tsx → api/documents.ts (POST upload multipart)
+pages/DocumentVersions.tsx → api/documentVersions.ts
+pages/DocumentPermissions.tsx → api/documentAcls.ts
+pages/Tasks.tsx → api/tasks.ts (CRUD + my-tasks + complete)
+pages/Obligations.tsx → api/obligations.ts (CRUD + upcoming)
+pages/Workflows.tsx → api/workflows.ts (CRUD)
+pages/WorkflowEditorPage.tsx → api/workflows.ts (create/update with steps + triggers)
+pages/WorkflowAssignmentsPage.tsx → api/workflowAssignments.ts
+pages/WorkflowInstances.tsx → api/workflowInstances.ts
+pages/SearchVault.tsx → api/search.ts (keyword, semantic, ask)
+pages/ExtractionReview.tsx → api/documentExtractions.ts (pending, approve, reject)
+pages/Invitations.tsx → api/invitations.ts
+pages/AgentActions.tsx → api/agentActionLogs.ts (pending, approve, reject)
+pages/AuditLogs.tsx → api/auditLogs.ts
+pages/Users.tsx → api/users.ts
+pages/Permissions.tsx → api/permissions.ts, api/roles.ts
+pages/Profile.tsx → api/profiles.ts, services/profileService.ts
+pages/AIChat.tsx → api/search.ts (ask endpoint for RAG), standalone chat UI
+pages/SharedDocuments.tsx → api/documents.ts (shared filter)
+pages/Starred.tsx → api/documents.ts (starred/quick-access filter)
+pages/RecycleBinPage.tsx → api/recycleBin.ts
+pages/RetentionPolicies.tsx → (local state, planned API)
+pages/TenantAdminSettings.tsx → (local state, planned API)
+pages/MyCompanies.tsx → api/workspaceUsers.ts, GRC integration
+pages/WorkspaceInvite.tsx → api/workspaceMembers.ts, api/invitations.ts
+pages/WorkspaceSettings.tsx → api/workspaces.ts (update)
+
+### Frontend: Component purpose index
+components/Sidebar.tsx → LEFT: Logo, workspace list, add workspace, navigation links (Dashboard, Search, Tasks, Workflows, etc.)
+components/Header.tsx → TOP: Search bar, language toggle (AR/EN), user dropdown (Profile, Change Password, Logout)
+components/ProtectedRoute.tsx → Auth guard: if !isAuthenticated redirect /login, shows nothing until isInitialized
+components/MainContent.tsx → Default home view (workspace grid)
+components/DocumentCard.tsx → Card: icon by file type, title, date, size, actions dropdown
+components/DocumentsGrid.tsx → Grid or list view of DocumentCards
+components/DocumentsLayout.tsx → Breadcrumb + filter bar + documents grid wrapper
+components/CreateWorkspaceModal.tsx → Form: name, slug, description, type, privacy, storage limit, allow invites
+components/UploadDocumentModal.tsx → Drag & drop + file picker, metadata fields
+components/ShareModal.tsx → Share document with users (email autocomplete)
+components/DocumentClassificationModal.tsx → AI extraction review: fields table, confidence badges, approve/reject
+components/WorkflowAssignmentModal.tsx → Assign users to workflow steps
+components/TaskActionModal.tsx → Complete/update task form
+components/AddPermissionModal.tsx → Add permission to role
+components/SearchableSelect.tsx → Dropdown with search filter
+components/FilterBar.tsx → Reusable filter row (status, date range, search)
+components/Pagination.tsx → Page number controls
+components/Toast.tsx → Notification popup (success/error/info)
+components/Loader.tsx → Fullscreen loading spinner
+components/GlobalTooltip.tsx → Hover tooltip singleton
+components/workflow/WorkflowEditor.tsx → React Flow canvas for visual workflow design
+components/workflow/WorkflowFlowDesigner.tsx → Flow graph with custom nodes
+components/workflow/CustomNodes.tsx → Start, Step, End, Condition node types for React Flow
+components/workflow/ResourcePicker.tsx → Pick documents/workspaces as workflow resources
+components/workflow/WorkflowFormBuilder.tsx → Build form fields for workflow step forms
+
+### Frontend: Context state shape
+AuthContext → { user: {email, token, name, NameAr, NameEn, IsAdmin, UserType, ...}, login(email,token), logout(), isAuthenticated, isInitialized }
+WorkspaceContext → { selectedWorkspace, setSelectedWorkspace, workspaces, refreshWorkspaces }
+LanguageContext → { language: 'ar'|'en', setLanguage, t(key), isRTL }
+LoadingContext → { isLoading, increment(), decrement() } — counter-based global loader
+ToastContext → { showToast(message, type), toasts[] }
+ConfirmContext → { confirm(message): Promise<boolean> }
+
+### Frontend: Utils
+utils/tokenUtils.ts → decodeToken(jwt), getTenantIdFromToken(), getUserIdFromToken(), getClaimsFromToken()
+utils/errorUtils.ts → extractErrorMessage(error), isNetworkError(error)
+utils/workflowUtils.ts → buildWorkflowPayload(), validateWorkflowSteps(), stepTypeOptions
+
+## API ENDPOINT COMPLETE INDEX
+
+### Auth
+POST   /api/Auth/login                    → {email, password} → {token, user}
+POST   /api/Auth/register                 → {RegisterRequestDto} → {success}
+POST   /api/Auth/forgot-password          → {email} → sends reset email
+POST   /api/Auth/reset-password           → {token, newPassword}
+POST   /api/Auth/verify-otp              → {email, otp} → {token}
+POST   /api/Auth/login-by-token          → {token} → {token, user}
+POST   /api/Auth/admin-login             → admin credentials
+POST   /api/Auth/admin-partner-login     → partner admin credentials
+
+### Documents
+GET    /api/Documents                     → list (filtered by tenant + workspace)
+GET    /api/Documents/{id}               → single document
+POST   /api/Documents                     → create metadata
+POST   /api/Documents/upload             → multipart file upload
+PUT    /api/Documents/{id}               → update metadata
+DELETE /api/Documents/{id}               → soft delete
+GET    /api/Documents/{id}/download      → file download (binary)
+GET    /api/Documents/{id}/preview       → preview URL/data
+POST   /api/Documents/{id}/check-in     → lock for editing
+POST   /api/Documents/{id}/check-out    → release lock
+
+### Document Versions
+GET    /api/DocumentVersions              → list
+GET    /api/DocumentVersions/{id}        → single
+GET    /api/DocumentVersions/by-document/{docId} → versions for document
+POST   /api/DocumentVersions             → create version
+POST   /api/DocumentVersions/upload      → upload new version file
+PUT    /api/DocumentVersions/{id}        → update
+DELETE /api/DocumentVersions/{id}        → delete
+
+### Document ACLs
+GET    /api/DocumentAcls                  → list
+GET    /api/DocumentAcls/{id}            → single
+GET    /api/DocumentAcls/by-document/{docId} → ACLs for document
+POST   /api/DocumentAcls                 → grant access
+DELETE /api/DocumentAcls/{id}            → revoke access
+
+### Document Extractions
+GET    /api/DocumentExtractions           → list
+GET    /api/DocumentExtractions/{id}     → single
+GET    /api/DocumentExtractions/pending  → pending review queue
+POST   /api/DocumentExtractions          → create
+PUT    /api/DocumentExtractions/{id}     → update
+PUT    /api/DocumentExtractions/{id}/approve → approve extraction
+PUT    /api/DocumentExtractions/{id}/reject  → reject extraction
+DELETE /api/DocumentExtractions/{id}     → delete
+
+### Document Types
+GET    /api/DocumentTypes                 → list (seeded)
+GET    /api/DocumentTypes/{id}           → single
+POST   /api/DocumentTypes                → create
+PUT    /api/DocumentTypes/{id}           → update
+DELETE /api/DocumentTypes/{id}           → delete
+
+### Workspaces
+GET    /api/Workspaces                    → list by tenant
+GET    /api/Workspaces/{id}              → single
+POST   /api/Workspaces                   → create
+PUT    /api/Workspaces/{id}              → update
+DELETE /api/Workspaces/{id}              → delete
+PATCH  /api/Workspaces/{id}/quick-access → toggle quick access
+
+### Workspace Members
+GET    /api/WorkspaceMembers              → list
+GET    /api/WorkspaceMembers/{id}        → single
+GET    /api/WorkspaceMembers/by-workspace/{wsId} → members of workspace
+POST   /api/WorkspaceMembers             → add member
+POST   /api/WorkspaceMembers/invite      → invite by email
+PUT    /api/WorkspaceMembers/{id}        → update role
+DELETE /api/WorkspaceMembers/{id}        → remove member
+
+### Workflows
+GET    /api/Workflows                     → list
+GET    /api/Workflows/{id}               → single (with steps + triggers)
+POST   /api/Workflows                    → create
+PUT    /api/Workflows/{id}               → update
+DELETE /api/Workflows/{id}               → delete
+
+### Workflow Instances
+GET    /api/WorkflowInstances             → list (filter by status)
+GET    /api/WorkflowInstances/{id}       → single (with steps + history)
+POST   /api/WorkflowInstances            → create/start
+PUT    /api/WorkflowInstances/{id}       → update
+DELETE /api/WorkflowInstances/{id}       → delete
+
+### Workflow Assignments
+GET    /api/WorkflowAssignments           → list
+GET    /api/WorkflowAssignments/{id}     → single
+GET    /api/WorkflowAssignments/by-workflow/{wfId} → assignments for workflow
+POST   /api/WorkflowAssignments          → create
+PUT    /api/WorkflowAssignments/{id}     → update
+DELETE /api/WorkflowAssignments/{id}     → delete
+
+### Tasks
+GET    /api/Tasks                         → list
+GET    /api/Tasks/{id}                   → single
+GET    /api/Tasks/my-tasks               → current user's tasks
+POST   /api/Tasks                        → create
+PUT    /api/Tasks/{id}                   → update
+PUT    /api/Tasks/{id}/complete          → mark complete
+DELETE /api/Tasks/{id}                   → delete
+
+### Obligations
+GET    /api/Obligations                   → list
+GET    /api/Obligations/{id}             → single
+GET    /api/Obligations/upcoming         → upcoming deadlines
+POST   /api/Obligations                  → create
+PUT    /api/Obligations/{id}             → update
+DELETE /api/Obligations/{id}             → delete
+
+### Activities
+GET    /api/Activities                    → list (paginated, search)
+GET    /api/Activities/{id}              → single
+POST   /api/Activities                   → create
+PUT    /api/Activities/{id}              → update
+DELETE /api/Activities/{id}              → delete
+
+### Search
+POST   /api/Search/keyword               → {query, workspaceId?} → document results
+POST   /api/Search/semantic              → {query, workspaceId?} → ranked results
+POST   /api/Search/ask                   → {question, workspaceId?} → answer + citations
+
+### Invitations
+GET    /api/Invitations                   → list
+GET    /api/Invitations/{id}             → single
+GET    /api/Invitations/pending          → pending invitations
+POST   /api/Invitations                  → create + send email
+PUT    /api/Invitations/{id}             → update
+POST   /api/Invitations/{id}/accept     → accept invitation → create WorkspaceMember
+POST   /api/Invitations/{id}/decline    → decline
+DELETE /api/Invitations/{id}             → delete
+
+### Agent Action Logs
+GET    /api/AgentActionLogs               → list
+GET    /api/AgentActionLogs/{id}         → single (with details)
+GET    /api/AgentActionLogs/pending      → pending approval
+POST   /api/AgentActionLogs              → create
+PUT    /api/AgentActionLogs/{id}         → update
+POST   /api/AgentActionLogs/{id}/approve → approve action
+POST   /api/AgentActionLogs/{id}/reject  → reject action
+DELETE /api/AgentActionLogs/{id}         → delete
+
+### Audit Logs
+GET    /api/AuditLogs                     → list (filter by action, date, user)
+GET    /api/AuditLogs/{id}              → single
+POST   /api/AuditLogs                   → create
+PUT    /api/AuditLogs/{id}              → update
+DELETE /api/AuditLogs/{id}              → delete
+
+### Users
+GET    /api/Users                         → list
+GET    /api/Users/{id}                   → single
+POST   /api/Users                        → create
+PUT    /api/Users/{id}                   → update
+DELETE /api/Users/{id}                   → delete
+
+### Roles
+GET    /api/Roles                         → list
+GET    /api/Roles/{id}                   → single (with permissions)
+POST   /api/Roles                        → create
+PUT    /api/Roles/{id}                   → update
+DELETE /api/Roles/{id}                   → delete
+
+### Permissions
+GET    /api/Permissions                   → list all
+GET    /api/Permissions/{id}             → single
+
+### Profiles
+GET    /api/Profiles/me                   → current user profile
+PUT    /api/Profiles/update              → update profile
+PUT    /api/Profiles/change-password     → change password
+
+### Recycle Bin
+GET    /api/RecycleBin                    → list deleted items
+POST   /api/RecycleBin/restore/{id}     → restore item
+DELETE /api/RecycleBin/permanent/{id}   → permanent delete
+
+### Integration (GRC)
+Various endpoints for GRC system synchronization
+
+## PERMISSION SYSTEM REFERENCE
+
+### Roles (hierarchical, seeded)
+viewer(1) → commenter(2) → editor(3) → organizer(4) → admin(5)
+Higher roles inherit ALL permissions from lower roles.
+
+### Permission Modules
+Documents: View, Create, Edit, Delete, Download, Share, CheckInOut, Restore, PermanentDelete, Move, Rename, ViewStats, ManageVersions, ManageACL
+Workspaces: View, Create, Edit, Delete, ManageSettings, ManageMembers, MoveOutside, Export
+WorkspaceMembers: View, Add, Remove, ManagePermissions
+Comments: View, Create, Edit, Delete
+Tasks: View, Create, Edit, Delete, Assign, Complete
+Workflows: View, Create, Edit, Delete, Execute, ManageInstances
+Activities: View, Create, Delete
+AuditLogs: View, Export
+DocumentTypes: View, Create, Edit, Delete
+Invitations: View, Create, Edit, Delete, Accept
+Obligations: View, Create, Edit, Delete
+Users: View, Create, Edit, Delete, ManageRoles
+Roles: View, Create, Edit, Delete, ManagePermissions
+System: ViewSettings, ManageSettings, FullAccess
+
+## SEARCH PATTERNS FOR COMMON TASKS
+
+### "Fix a bug in document upload"
+→ Frontend: pages/DocumentUpload.tsx, components/UploadDocumentModal.tsx, api/documents.ts
+→ Backend: Controllers/DocumentsController.cs, Services/DocumentService.cs
+
+### "Change workspace creation logic"
+→ Frontend: components/CreateWorkspaceModal.tsx, components/Sidebar.tsx (has inline modal too), api/workspaces.ts, services/workspaceService.ts
+→ Backend: Controllers/WorkspacesController.cs, Services/WorkspaceService.cs, Entities/Workspace.cs, DTOs/Workspace/
+
+### "Modify authentication flow"
+→ Frontend: contexts/AuthContext.tsx, services/authService.ts, pages/Login.tsx, pages/TokenAuth.tsx (SSO), api/apiClient.ts (interceptors)
+→ Backend: Controllers/AuthController.cs, Services/UserService.cs, Services/GRCService.cs, Program.cs (JWT config)
+
+### "Add a new API endpoint"
+→ 1. Core/Entities/{Entity}.cs (if new entity)
+→ 2. Core/DTOs/{Module}/{Dto}.cs
+→ 3. Core/Interfaces/Service/I{X}Service.cs
+→ 4. Service/Services/{X}Service.cs
+→ 5. API/Controllers/{X}Controller.cs
+→ 6. API/Program.cs (register DI)
+
+### "Add a new frontend page"
+→ 1. src/api/{module}.ts (API functions)
+→ 2. src/pages/{Page}.tsx
+→ 3. src/App.tsx (add route)
+→ 4. src/components/Sidebar.tsx (add nav link)
+
+### "Change permissions"
+→ Backend: Core/Constants/ConstPermissions.cs, Service/Seeders/PermissionSeeder.cs, Service/Seeders/RolePermissionSeeder.cs, API/Program.cs (AddPermissionPolicy)
+→ Frontend: pages/Permissions.tsx, api/permissions.ts, api/roles.ts
+
+### "Modify workflow engine"
+→ Backend: Entities/Workflow.cs, WorkflowInstance.cs, WorkflowDefinitions.cs; Services/WorkflowService.cs, WorkflowInstanceService.cs; Controllers/WorkflowsController.cs, WorkflowInstancesController.cs
+→ Frontend: pages/WorkflowEditorPage.tsx, components/workflow/WorkflowEditor.tsx, WorkflowFlowDesigner.tsx, CustomNodes.tsx; api/workflows.ts, workflowInstances.ts
+→ Custom ReactFlow nodes: StartNode (green, source bottom), EndNode (red, target top), TaskNode (card with assignee, target+source), DecisionNode (diamond, yes/no handles)
+
+### "Fix localization / Arabic issues"
+→ Backend: Resources/Localization/messages.ar.json, messages.en.json; Service/Localization/JsonLocalizationService.cs
+→ Frontend: contexts/LanguageContext.tsx (contains ~104KB inline dictionary with all AR/EN translations)
+→ RTL: main.css uses [dir="rtl"] selectors, document.documentElement.dir toggled by LanguageContext
+→ Fonts: Inter + Cairo (LTR), Cairo only (RTL)
+→ DatePicker: has Arabic month names and day abbreviations
+
+### "Debug multi-tenancy issue"
+→ Every entity has TenantId. Check corresponding Service file for tenant filtering logic.
+→ Frontend: utils/tokenUtils.ts (getTenantIdFromToken reads CompanyId from JWT), contexts/AuthContext.tsx (JWT decode)
+→ Frontend: apiClient.ts injects X-Company-Id header from localStorage.currentCompanyId
+→ Backend: Each service's methods filter by TenantId from JWT claims
+
+### "GRC integration issue"
+→ Backend: Services/GRCService.cs, Helpers/GrcServiceHelper.cs, Entities/UserMap.cs, CompanyMap.cs, CompanyUserMap.cs
+→ Config: appsettings.json → GRCUrl, GRCWebUrl
+→ Frontend: pages/MyCompanies.tsx, services/authService.ts (getEmployeeCompanies, switchCompany)
+
+### "Fix company switching"
+→ Frontend: components/Header.tsx (company switcher dropdown), services/authService.ts (switchCompany)
+→ localStorage.currentCompanyId stores active company
+→ apiClient.ts injects X-Company-Id header on every request
+
+### "Debug PostHog / analytics"
+→ Frontend: main.tsx (PostHogProvider, host: posthog.musahm.com), contexts/AuthContext.tsx (posthog.identify on login, posthog.reset on logout)
+
+## LOCAL STORAGE KEYS REFERENCE
+authToken → JWT bearer token
+userEmail → user's email
+currentCompanyId → active tenant/company ID (sent as X-Company-Id header)
+language → 'ar' or 'en'
+sessionStorage.userId → user ID extracted from JWT on login
+
+## LARGE FILES WARNING (may need splitting)
+contexts/LanguageContext.tsx → ~104KB (inline translation dictionary)
+components/ExplorerLayout.tsx → ~76KB (full workspace/folder explorer)
+components/WorkflowAssignmentModal.tsx → ~55KB (assignment CRUD modal)
+
+## MONGODB COLLECTION NAMES (from UnitOfWork, NOT auto-generated)
+
+documents → Document
+workspaces → Workspace
+workspace_members → WorkspaceMember
+document_versions → DocumentVersion
+document_acl → DocumentAcl
+document_extractions → DocumentExtraction
+document_types → DocumentType
+invitations → Invitation
+obligations → Obligation
+tasks → TaskEntity
+activities → Activity
+audit_logs → AuditLog
+workflows → Workflow
+workflow_instances → WorkflowInstance
+workflow_assignments → WorkflowAssignment
+workflow_events → WorkflowEventDefinition
+triggers → WorkflowTriggerDefinition
+actions → ActionDefinition
+roles → Role
+permissions → Permission
+role_permissions → RolePermission
+user_roles → UserRole
+user_maps → UserMap
+company_maps → CompanyMap
+company_user_maps → CompanyUserMap
+agent_action_logs → AgentActionLog
+Plus GridFS: fs.files, fs.chunks
+
+## KEY ARCHITECTURAL PATTERNS
+
+### Blocking Workflows
+Document upload/update/delete/share → check WorkflowAssignment for applicable workflow
+If workflow found → Document status set to "Pending" → WorkflowInstance created → Tasks generated per step
+When workflow completes → Document status set to "Active" (for share: invitation emails sent)
+HTTP 460 = WorkflowRequired (custom status code)
+
+### Dual File Storage
+DocumentVersion.FileContent (byte[]) → inline binary in MongoDB document
+GridFS (fs.files + fs.chunks) → used for large files
+Service tries inline first, falls back to GridFS for download
+
+### OTP External Access
+POST /api/Invitations/generate-otp [AllowAnonymous] → sends 6-digit OTP to email
+POST /api/Invitations/verify-otp [AllowAnonymous] → validates OTP (10-min expiry), returns watermarked file stream
+Invitation stores watermarked copy (WatermarkHelper stamps recipient email)
+
+### Identity Resolution (per request)
+BaseApiController (IAsyncActionFilter) → parses ClaimsIdentity → CurrentUser DTO → loads Permissions from MongoDB
+TenantId derived from JWT tenant_id claim, falls back to CompanyId
+GRC Service forwards Bearer token as x-api-key header to external GRC API
+
+## CSS DESIGN TOKENS
+--brand-gold: #c3924d (primary accent)
+
+## TESTING
+
+### E2E Tests (Playwright)
+Location: Frontend/apps/web/e2e/smoke.spec.ts
+Config: Frontend/apps/web/playwright.config.ts
+Run: cd Frontend/apps/web && npx playwright test
+Tests: 13 smoke tests covering public routes, auth redirects, login UX, TokenAuth i18n
+Browser: Chromium (headless)
+Target: https://www-s2.vault.musahm.com
+
+### API Smoke Tests
+Method: curl against https://api-s2.vault.musahm.com
+Verified: Swagger (200), Auth endpoints (200), all protected endpoints return 401, upload endpoint exists
+
+## BUG FIX STATUS (2026-04-01)
+
+### Implemented
+MUS-730 → Storage limit enforced on upload (DocumentService.cs checks StorageLimitMb)
+MUS-736 → Task actions blocked on deleted workspaces (TaskEntityService.cs)
+MUS-707 → TokenAuth preserves language from query/JWT (TokenAuth.tsx)
+MUS-732 → All 6 file inputs have accept attribute matching backend AllowedExtensions
+MUS-724 → 401/403 interceptor allowlist covers all auth pages (apiClient.ts)
+MUS-729 → Storage limit input allows empty typing, coerces on submit (CreateWorkspaceModal.tsx)
+MUS-753 → Trash2 delete button in edge-properties panel (WorkflowEditor.tsx)
+MUS-754 → Workflow name/description always visible above conditional panels (WorkflowEditor.tsx)
+MUS-755 → Start-edge label uses t('connectionName') with AR/EN (WorkflowEditor.tsx + LanguageContext.tsx)
+MUS-737 → Recursive CascadeSoftDeleteDescendantsAsync walks full descendant tree (WorkspaceService.cs)
+MUS-751 → Activity logging added to EvaluateTriggersAsync, EvaluateConfidenceAsync, StartStepAsync
+MUS-748 → Summary status falls back to DTO status ("Final") instead of "Active" (IntegrationService.cs)
+MUS-718 → Removed premature setIsSubmitting(false) before navigate — loader stays until unmount (Login.tsx)
+
+### Open (need product decisions)
+MUS-710 → Name change deactivation/auth letter not implemented
+MUS-752 → Single vs multi trigger needs PM clarification
+MUS-749 → Task preview gate needs design spec
+MUS-728 → Checkbox spacing needs in-browser inspection
+--brand-gold-dark: #a67c41
+--brand-gold-light: rgba(195, 146, 77, 0.08)
+--brand-navy: #1F2937
+--text-primary: #111827
+--text-secondary: #4b5563
+--text-muted: #9ca3af
+--bg-page: #f9fafb
+--bg-card: #ffffff
+--border-color: #e5e7eb
+--sidebar-width: 260px / --header-height: 64px
+--border-radius-sm: 8px / --border-radius: 12px / --border-radius-lg: 16px

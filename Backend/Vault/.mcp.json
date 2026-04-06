@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "musahm-vault": {
+      "command": "node",
+      "args": ["d:/projects/backend/Musahm-Vault/Backend/Vault/MCP-Bots/VaultServer.js"],
+      "env": {
+        "MONGO_URL": "mongodb://localhost:27017",
+        "DB_NAME": "MusahmVault"
+      }
+    },
+    "musahm-memory": {
+      "command": "node",
+      "args": ["d:/projects/backend/Musahm-Vault/Backend/Vault/MCP-Bots/MemoryServer.js"],
+      "env": {
+        "MONGO_URL": "mongodb://localhost:27017",
+        "DB_NAME": "MusahmVault"
+      }
+    }
+  }
+}

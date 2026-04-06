@@ -1,0 +1,89 @@
+{
+  "rules": [
+    {
+      "id": 1,
+      "title": "Backend Architecture",
+      "content": "Project uses .NET with a clean architecture. Services go into 'Service/Services' and must implement an interface from 'Core/Interfaces'.",
+      "category": "backend"
+    },
+    {
+      "id": 2,
+      "title": "Database Standards",
+      "content": "Database is MongoDB. All entities must implement 'IEntity' and use '[BsonId]' with '[BsonRepresentation(BsonType.ObjectId)]' for IDs.",
+      "category": "backend"
+    },
+    {
+      "id": 3,
+      "title": "Frontend Stack",
+      "content": "The frontend is a React application built with Vite, using TypeScript and Lucide-React for icons.",
+      "category": "frontend"
+    },
+    {
+      "id": 4,
+      "title": "Frontend Icon Standard",
+      "content": "Any modification or addition to the Frontend components must use Lucide-React for icons to ensure consistency.",
+      "category": "frontend"
+    },
+    {
+      "id": 5,
+      "title": "قاعدة الترجمة في الواجهة",
+      "content": "لا يُسمح بكتابة أي نص ثابت (hardcoded text) مباشرة في مكونات React. جميع النصوص يجب أن تُجلب عبر دالة t() من ملف LanguageContext.tsx. عند إضافة نص جديد، يجب إضافته في كلا قسمَي اللغتين (ar و en) داخل ملف LanguageContext.tsx.",
+      "category": "frontend"
+    },
+    {
+      "id": 6,
+      "title": "قاعدة MongoDB - أنواع الحقول",
+      "content": "جميع حقول الـ IDs في قاعدة بيانات MongoDB (مثل workspace_id وdocument_id) مخزنة كـ ObjectId وليس كـ string. عند كتابة أي استعلام يجب تحويل الـ ID باستخدام new ObjectId(id) وإلا سيعيد الاستعلام نتائج فارغة.",
+      "category": "backend"
+    },
+    {
+      "id": 7,
+      "title": "أسماء مجموعات قاعدة البيانات",
+      "content": "جميع أسماء المجموعات (Collections) في MongoDB مكتوبة بحروف صغيرة (lowercase). مثال: 'documents' وليس 'Documents' - 'workflows' وليس 'Workflows' - 'tasks' وليس 'Tasks'. قاعدة البيانات حساسة لحالة الأحرف (Case-Sensitive).",
+      "category": "backend"
+    },
+    {
+      "id": 8,
+      "title": "هيكل مجموعات قاعدة البيانات",
+      "content": "قاعدة بيانات Musahm Vault تحتوي على 25 مجموعة: workflows, permissions, roles, user_maps, document_versions, activities, workflow_events, triggers, agent_action_logs, company_maps, document_types, document_acl, obligations, role_permissions, actions, tasks, workspaces, workflow_instances, invitations, documents, workspace_members, workflow_assignments, audit_logs, user_roles, document_extractions",
+      "category": "backend"
+    },
+    {
+      "id": 9,
+      "title": "نمط واجهة المستخدم - Quick Actions",
+      "content": "صفحة Dashboard تحتوي على شبكة Quick Actions بأربعة أزرار فقط (2x2 grid). الألوان المستخدمة: act-blue لمساحات العمل, act-green لإنشاء مساحة عمل جديدة, act-purple لإعدادات الفريق, act-gold للالتزامات. لا يجب تغيير هذه الألوان أو إضافة أزرار جديدة دون مراجعة.",
+      "category": "frontend"
+    },
+    {
+      "id": 10,
+      "title": "نمط CSS في الواجهة",
+      "content": "لا يُستخدم TailwindCSS. جميع الأنماط مكتوبة بـ Vanilla CSS في ملفات .css منفصلة لكل صفحة. كل صفحة React لها ملف CSS خاص بها باسم مطابق (مثل Dashboard.tsx -> Dashboard.css). لا يجوز استخدام inline styles إلا للقيم الديناميكية.",
+      "category": "frontend"
+    },
+    {
+      "id": 11,
+      "title": "نمط Audit Logs في الـ Backend",
+      "content": "عند تحديث أي كيان (مثل المستخدم أو المستند)، يجب إنشاء سجل تدقيق واحد فقط مجمّع (consolidated) وليس سجلات متعددة. كل عملية تعديل = سجل تدقيق واحد فقط.",
+      "category": "backend"
+    },
+    {
+      "id": 12,
+      "title": "نمط Workflows - القواعد",
+      "content": "كل Workflow يجب أن يحتوي على: نقطة بداية واحدة فقط (Start Node) ونقطة نهاية واحدة فقط (End Node). لا يمكن تعديل Workflow نشط (is_active: true) بل يجب تعطيله أولاً. كل Trigger يربط بين حدث معين (مثل delete أو share أو update) وبين سير العمل.",
+      "category": "backend"
+    }
+  ],
+  "snippets": [],
+  "context": {
+    "project_name": "Musahm Vault",
+    "frontend_path": "d:/projects/backend/Musahm-Vault/Frontend/apps/web",
+    "backend_path": "d:/projects/backend/Musahm-Vault/Backend/Vault",
+    "database_name": "MusahmVault",
+    "database_url": "mongodb://localhost:27017",
+    "tech_stack": {
+      "frontend": "React + Vite + TypeScript + Vanilla CSS + Lucide-React",
+      "backend": ".NET Clean Architecture + MongoDB",
+      "ai": "MCP Bots (VaultServer + MemoryServer)"
+    }
+  }
+}
