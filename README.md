@@ -1,26 +1,88 @@
-# Musahm Vault GTM
+<p align="center">
+  <img src="https://img.shields.io/badge/Musahm-Vault%20GTM-1B4332?style=for-the-badge&labelColor=1B4332&color=c3924d&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAxTDMgNXY2YzAgNS41NSAzLjg0IDEwLjc0IDkgMTIgNS4xNi0xLjI2IDktNi40NSA5LTEyVjVsLTktNHoiLz48L3N2Zz4=" alt="Musahm Vault GTM"/>
+</p>
 
-Go-to-market strategy, content, and launch materials for **Musahm Vault** -- a document management system built for Saudi corporate governance.
+<h1 align="center">Musahm Vault — Go-to-Market</h1>
 
-Vault connects directly to the [Musahm](https://musahm.com) corporate governance platform, giving companies one place to store, govern, and audit every board minute, shareholder document, contract, and policy.
+<p align="center">
+  <strong>Saudi governance. World-class platform.</strong><br/>
+  <strong>حوكمة سعودية. منصة عالمية.</strong>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Platform-.NET%2010%20%2B%20React%2018-2563EB?style=flat-square" alt="Platform"/>
+  <img src="https://img.shields.io/badge/Database-MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white" alt="MongoDB"/>
+  <img src="https://img.shields.io/badge/Language-Arabic--First-c3924d?style=flat-square" alt="Arabic-First"/>
+  <img src="https://img.shields.io/badge/GTM%20Phases-6%2F6%20Complete-1B4332?style=flat-square" alt="GTM Complete"/>
+  <img src="https://img.shields.io/badge/Content%20Files-60%2B-2563EB?style=flat-square" alt="Content Files"/>
+</p>
 
 ---
 
-## What's in This Repo
+## What Is Musahm Vault?
+
+**Musahm** is the only Saudi-built governance platform that combines board management, shareholder registry with SMS communications, e-signatures, and a governed document management system (**Vault**) in a single Arabic-first product.
+
+> We didn't translate a foreign platform. We built a Saudi one from scratch — because Saudi companies deserve governance that understands them.
+>
+> لم نستورد حلاً أجنبياً وترجمناه. بنينا منصة سعودية من الصفر، لأن شركاتنا تستحق حوكمة تفهمها.
+
+**Target market:** Board Secretaries, CEOs, CFOs, and Legal Counsel at Saudi SMBs (20–500 employees) — closed joint-stock, listed, and LLC entities.
+
+---
+
+## 📁 Repository Structure
 
 ```
-Backend/          .NET 10 Clean Architecture (MongoDB, JWT, multi-tenant)
-Frontend/         React 18 SPA (Vite, TypeScript, plain CSS, RTL/LTR)
-gtm/              Go-to-market strategy and content (see below)
-gtm-agents-ref/   Reference: 67 GTM agent plugins, 244 skill prompts
-llm.txt           Codebase knowledge graph (file index, API map, entity map)
+Backend/            .NET 10 Clean Architecture (MongoDB, JWT, multi-tenant)
+Frontend/           React 18 SPA (Vite, TypeScript, plain CSS, RTL/LTR)
+gtm/                Go-to-market strategy and content (see detailed breakdown below)
+  ├─ phase1-discovery/    Market research, ICPs, competitive analysis
+  ├─ phase2-brand/        Brand concepts, voice, visual identity
+  ├─ phase3-segmentation/ Message house, sector targeting, rollout plan
+  ├─ phase4-content/      33 customer-facing content files
+  ├─ phase5-launch/       Launch checklist, KPIs, user docs
+  └─ deliverables/        15 final polished documents
+gtm-agents-ref/     Reference: 67 GTM agent plugins, 244 skill prompts
+llm.txt             Codebase knowledge graph (file index, API map, entity map)
 ```
 
 ---
 
-## GTM Structure
+## 🎯 Brand Identity
 
-All go-to-market work lives under `gtm/`. Six milestones, all complete.
+| Element | Value |
+|---------|-------|
+| **Tagline** | Saudi governance. World-class platform. |
+| **Arabic** | حوكمة سعودية. منصة عالمية. |
+| **Concept** | KSA-Native-Tech — "Built FOR Saudi governance" |
+| **Palette** | `#1B4332` dark green · `#c3924d` gold · `#2563EB` oasis blue |
+| **Voice** | Confident, Saudi-native, professional, forward-looking |
+| **Language** | Arabic-first, MSA, Western numerals (0-9) |
+
+---
+
+## 🏗️ Product Capabilities
+
+| Capability | Detail |
+|-----------|--------|
+| **Platform** | .NET 10 + React 18 + MongoDB |
+| **Deployment** | IIS backend, Vercel/Cloudflare frontend |
+| **Multi-tenancy** | Per-query tenant isolation via `TenantId` |
+| **Workspaces** | 6 default governance workspaces |
+| **Roles** | Viewer / Commenter / Editor / Organizer / Admin |
+| **Permissions** | 14 modules, hierarchical (level 1–5) |
+| **Audit trail** | Every action logged with user + timestamp |
+| **External sharing** | OTP via email + watermarked copies |
+| **Workflows** | Approval chains enforced before document publication |
+| **Version control** | Every edit saved, rollback to any version |
+| **Signatures** | Electronic signatures in document workflows |
+| **Search** | Keyword search (semantic search coming soon) |
+| **Data hosting** | Saudi Arabia |
+
+---
+
+## 📋 GTM Strategy — All 6 Phases Complete
 
 ### Phase 1: Discovery
 
@@ -37,7 +99,7 @@ All go-to-market work lives under `gtm/`. Six milestones, all complete.
 |------|----------------|
 | `phase2-brand/concept-1-trust-heritage.md` | Concept option 1 |
 | `phase2-brand/concept-2-modern-digital.md` | Concept option 2 |
-| `phase2-brand/concept-3-ksa-native-tech.md` | **Selected concept**: "Built FOR Saudi governance" |
+| `phase2-brand/concept-3-ksa-native-tech.md` | ✅ **Selected concept**: "Built FOR Saudi governance" |
 | `phase2-brand/recommendation.md` | 5 modifications, voice table, brand palette |
 
 ### Phase 3: Segmentation
@@ -48,9 +110,9 @@ All go-to-market work lives under `gtm/`. Six milestones, all complete.
 | `phase3-segmentation/sector-priority-matrix.md` | 6 sectors ranked (Real Estate P0, Healthcare P0) |
 | `phase3-segmentation/beta-rollout-plan.md` | Wave 1/2/3 rollout, scoring matrix |
 
-### Phase 4: Content (Customer-Facing)
+### Phase 4: Content — 33 Customer-Facing Files
 
-33 files covering every launch channel. Key deliverables:
+Key deliverables:
 
 | File | Description |
 |------|-------------|
@@ -59,7 +121,6 @@ All go-to-market work lives under `gtm/`. Six milestones, all complete.
 | `final-sms-blast.md` | 4 SMS variants (AR/EN, single/extended) |
 | `video-script.md` | Brand video script (~78s, 6 scenes) |
 | `final-video-demo-script.md` | Product demo script (~2:40, 8 scenes) |
-| `generate-visuals.js` | LinkedIn + square visual generator (PptxGenJS) |
 | `final-boss-review.html` | Self-contained executive review dashboard |
 | `final-launch-dashboard-en.html` | Launch review dashboard with approval controls |
 | `landing-page.md` | Landing page copy |
@@ -84,7 +145,9 @@ All go-to-market work lives under `gtm/`. Six milestones, all complete.
 | `phase5-launch/vault-user-docs.md` | 12-section user documentation from codebase |
 | `phase5-launch/win-loss-template.md` | 9-field post-deal analysis template |
 
-### Polished Deliverables
+---
+
+## 📦 Polished Deliverables
 
 `gtm/deliverables/` contains final, standalone versions of key documents:
 
@@ -98,10 +161,13 @@ All go-to-market work lives under `gtm/`. Six milestones, all complete.
 | `demo-script.md` | 25-minute scripted demo, 6 scenes |
 | `account-tiering-matrix.md` | T1/T2/T3 scoring model, wave assignments |
 | `pricing-tiers.md` | 3 tiers (Starter/Professional/Enterprise) |
-| `crisis-playbook.md` | P1-P4 severity matrix, bilingual templates |
+| `crisis-playbook.md` | P1–P4 severity matrix, bilingual templates |
 | `brand-governance-checklist.md` | 14-item pre-publish gate |
+| `process-methodology.md` | Full GTM process documentation |
 
-### Audit Reports
+---
+
+## 📊 Audit Reports
 
 | File | What It Covers |
 |------|----------------|
@@ -114,55 +180,53 @@ All go-to-market work lives under `gtm/`. Six milestones, all complete.
 
 ---
 
-## Brand Identity
+## 👔 Boss Review Dashboard
 
-| Element | Value |
-|---------|-------|
-| Tagline | **Saudi governance. World-class platform.** |
-| Arabic | **...** |
-| Concept | KSA-Native-Tech ("Built FOR Saudi governance") |
-| Palette | `#1B4332` dark green, `#c3924d` gold, `#2563EB` oasis blue |
-| Voice | Confident, Saudi-native, professional, forward-looking |
-| Language | Arabic-first, MSA, Western numerals (0-9) |
-
----
-
-## Product Summary
-
-| Capability | Detail |
-|-----------|--------|
-| Platform | .NET 10 + React 18 + MongoDB |
-| Deployment | IIS backend, Vercel/Cloudflare frontend |
-| Multi-tenancy | Per-query tenant isolation via `TenantId` |
-| Workspaces | 6 default governance workspaces |
-| Roles | Viewer / Commenter / Editor / Organizer / Admin |
-| Permissions | 14 modules, hierarchical (level 1-5) |
-| Audit trail | Every action logged with user + timestamp |
-| External sharing | OTP via email + watermarked copies |
-| Workflows | Approval chains enforced before document publication |
-| Version control | Every edit saved, rollback to any version |
-| Signatures | Electronic signatures in document workflows |
-| Search | Keyword search (semantic search coming soon) |
-| Data hosting | Saudi Arabia |
-
----
-
-## Boss Review Dashboard
-
-`gtm/phase4-content/final-boss-review.html` is a self-contained HTML file designed for executive review. Open it in any browser -- no server, no dependencies, no repo access needed.
+> **Quick access:** Open `gtm/phase4-content/final-boss-review.html` in any browser — no server, no dependencies, no repo access needed.
 
 **What it includes:**
-- Deliverables overview table (all 7 final content files)
-- 25 reviewable content cards with approve/revise/reject controls
-- Full 48-post social media calendar (9 written + 39 planned)
-- 3 pending blocker cards requiring decisions
-- Personas, rollout waves, and timeline
-- Comment fields saved to browser localStorage
-- CSV export of all decisions and notes
+- ✅ Deliverables overview table (all 7 final content files)
+- ✅ 25 reviewable content cards with approve/revise/reject controls
+- ✅ Full 48-post social media calendar (9 written + 39 planned)
+- ✅ 3 pending blocker cards requiring decisions
+- ✅ Personas, rollout waves, and timeline
+- ✅ Comment fields saved to browser localStorage
+- ✅ CSV export of all decisions and notes
 
 ---
 
-## Quick Start (Development)
+## ✅ Milestone Status
+
+| Milestone | Description | Status |
+|-----------|-------------|--------|
+| M0 | Showstopper Fixes (7 items across 20+ files) | ✅ Complete |
+| M1 | Foundation (positioning, voice guide, battle cards) | ✅ Complete |
+| M2 | Sales Enablement (MEDDIC, demo script, account tiering) | ✅ Complete |
+| M3 | AI Cleanup (humanizer pass, 8.9/10 avg score) | ✅ Complete |
+| M4 | New Content (thank-you page, win/loss template) | ✅ Complete |
+| M5 | Distribution (social calendar, cold outreach, SEO) | ✅ Complete |
+| M6 | Sales & Partner Enablement (pricing, crisis, governance) | ✅ Complete |
+
+---
+
+## ⏳ Pending Client Decisions
+
+These items are blocked on client input before launch:
+
+| ID | Decision | Priority |
+|----|----------|----------|
+| D1 | Pricing (SAR amounts for 3 tiers) | 🔴 High |
+| D2 | Data hosting confirmation | 🔴 High |
+| D3 | Logo permissions for case studies | 🟡 Medium |
+| D4 | Launch date | 🔴 High |
+| D5 | WhatsApp support number | 🟡 Medium |
+| D6 | Landing page URL | 🟡 Medium |
+| D7 | E-signature legal review | 🔴 High |
+| D8 | Encryption verification | 🔴 High |
+
+---
+
+## 🚀 Quick Start (Development)
 
 ```bash
 # Backend
@@ -176,58 +240,35 @@ cd Frontend/apps/web && npx playwright test  # 13 smoke tests
 ```
 
 **Environment:**
-- API: `VITE_API_URL=https://api-s2.vault.musahm.com`
-- Prod: `https://www-s2.vault.musahm.com`
-- Analytics: PostHog at `posthog.musahm.com`
+| Variable | Value |
+|----------|-------|
+| API | `VITE_API_URL=https://api-s2.vault.musahm.com` |
+| Prod | `https://www-s2.vault.musahm.com` |
+| Analytics | PostHog at `posthog.musahm.com` |
 
 ---
 
-## Content Rules
+## 📝 Content Rules
 
 These rules apply to all customer-facing content in this repo:
 
-1. Never claim features that are stubs (semantic search, Ask Vault, mobile apps)
-2. Never use em dashes
-3. Never use AI vocabulary (revolutionary, game-changing, best-in-class)
-4. Always use Western Arabic numerals (0-9)
-5. Always use canonical role names
-6. Beta seats = 30, no other number
-7. "Built FOR Saudi governance" not "Built IN Saudi"
-8. Lead with shareholder registry as the primary differentiator
+1. ❌ Never claim features that are stubs (semantic search, Ask Vault, mobile apps)
+2. ❌ Never use em dashes
+3. ❌ Never use AI vocabulary (revolutionary, game-changing, best-in-class)
+4. ✅ Always use Western Arabic numerals (0-9)
+5. ✅ Always use canonical role names
+6. ✅ Beta seats = 30, no other number
+7. ✅ "Built FOR Saudi governance" not "Built IN Saudi"
+8. ✅ Lead with shareholder registry as the primary differentiator
 
 ---
 
-## Milestone Status
-
-| Milestone | Description | Status |
-|-----------|-------------|--------|
-| M0 | Showstopper Fixes (7 items across 20+ files) | Complete |
-| M1 | Foundation (positioning, voice guide, battle cards) | Complete |
-| M2 | Sales Enablement (MEDDIC, demo script, account tiering) | Complete |
-| M3 | AI Cleanup (humanizer pass, 8.9/10 avg score) | Complete |
-| M4 | New Content (thank-you page, win/loss template) | Complete |
-| M5 | Distribution (social calendar, cold outreach, SEO) | Complete |
-| M6 | Sales & Partner Enablement (pricing, crisis, governance) | Complete |
-
----
-
-## Pending Client Decisions
-
-These items are blocked on client input before launch:
-
-| ID | Decision |
-|----|----------|
-| D1 | Pricing (SAR amounts for 3 tiers) |
-| D2 | Data hosting confirmation |
-| D3 | Logo permissions for case studies |
-| D4 | Launch date |
-| D5 | WhatsApp support number |
-| D6 | Landing page URL |
-| D7 | E-signature legal review |
-| D8 | Encryption verification |
-
----
-
-## License
+## 🔒 License
 
 Proprietary. Internal use only.
+
+---
+
+<p align="center">
+  <sub>Built with 🇸🇦 by the Musahm team</sub>
+</p>
