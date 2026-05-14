@@ -491,12 +491,36 @@
     margin-top: 2rem;
   }
 
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
   @media (max-width: 768px) {
     .header { padding: 1.5rem 1rem; }
+    .header h1 { font-size: 1.3rem; }
     .main { padding: 1rem; }
     .card-grid { grid-template-columns: 1fr; }
     .stats-row { grid-template-columns: repeat(2, 1fr); }
-    .nav a { padding: 0.7rem 0.8rem; font-size: 0.78rem; }
+    .nav { padding: 0 0.5rem; }
+    .nav a { padding: 0.6rem 0.7rem; font-size: 0.75rem; }
+    .decision-grid { grid-template-columns: 1fr; }
+    .info-grid, .persona-grid { grid-template-columns: 1fr; }
+    .review-controls { flex-direction: column; }
+    .comment-input { min-width: 100%; }
+    .status-select { min-width: 100%; }
+    .card-top { flex-direction: column; gap: 0.5rem; }
+    .section { scroll-margin-top: 100px; }
+    .sched-table, .cal-table { font-size: 0.75rem; }
+    .sched-table th, .sched-table td,
+    .cal-table th, .cal-table td { padding: 0.5rem 0.6rem; }
+  }
+  @media (max-width: 480px) {
+    .header { padding: 1rem 0.75rem; }
+    .header h1 { font-size: 1.1rem; }
+    .stats-row { grid-template-columns: 1fr; }
+    .main { padding: 0.75rem; }
+    .section-title { font-size: 1rem; }
+    .card-top { padding: 0.75rem; }
+    .review-controls { padding: 0.75rem; }
+    .export-btn { width: 100%; text-align: center; }
+    .footer { padding: 1rem; font-size: 0.72rem; }
   }
 </style>
 </head>
@@ -906,7 +930,7 @@ Leading Saudi companies already trust Musahm: Al-Ufuq Educational, Miral Medical
     <div class="section-header">
       <div class="section-title">8-Week Content Calendar <span class="section-count">48 Posts</span></div>
     </div>
-    <table class="cal-table">
+    <div class="table-scroll"><table class="cal-table">
       <thead><tr><th>Week</th><th>Day</th><th>Platform</th><th>Theme</th><th>Hook</th><th>Phase</th></tr></thead>
       <tbody>
         <tr><td>1</td><td>Sun</td><td>LinkedIn</td><td>Launch</td><td dir="rtl">أطلقنا مساهم Vault. نظام وثائق سعودي للحوكمة.</td><td><span class="phase-badge phase-1">Launch Buzz</span></td></tr>
@@ -922,7 +946,7 @@ Leading Saudi companies already trust Musahm: Al-Ufuq Educational, Miral Medical
         <tr><td>5</td><td>Tue</td><td>Twitter</td><td>Differentiation</td><td dir="rtl">إدارة ملفات + صلاحيات + سير عمل + تدقيق. هذا ليس مجلد مشترك. هذا Vault</td><td><span class="phase-badge phase-3">Social Proof</span></td></tr>
         <tr><td>7</td><td>Tue</td><td>Twitter</td><td>Cost of Inaction</td><td dir="rtl">مخالفة حوكمية واحدة تكلف أكثر من سنوات اشتراك. هل وثائقك جاهزة؟</td><td><span class="phase-badge phase-4">Conversion</span></td></tr>
       </tbody>
-    </table>
+    </table></div>
     <p style="font-size:0.8rem;color:var(--gray-500);margin-top:0.5rem">Showing key highlights. Full 48-post calendar in <code>final-social-posts.md</code></p>
   </div>
 
@@ -931,7 +955,7 @@ Leading Saudi companies already trust Musahm: Al-Ufuq Educational, Miral Medical
     <div class="section-header">
       <div class="section-title">Launch-Day Posting Schedule</div>
     </div>
-    <table class="sched-table">
+    <div class="table-scroll"><table class="sched-table">
       <thead><tr><th>Platform</th><th>Day</th><th>Time (AST)</th><th>Post</th><th>Rationale</th></tr></thead>
       <tbody>
         <tr><td>LinkedIn</td><td>Sunday</td><td>09:00 AM</td><td>Primary AR/EN</td><td>KSA business week start</td></tr>
@@ -941,7 +965,7 @@ Leading Saudi companies already trust Musahm: Al-Ufuq Educational, Miral Medical
         <tr><td>LinkedIn</td><td>Thursday</td><td>09:00 AM</td><td>Variant C (Audit)</td><td>Final push, compliance audience</td></tr>
         <tr><td>Twitter/X</td><td>Thursday</td><td>12:00 PM</td><td>Variant C (Contrast)</td><td>Close week with brand anchor</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
 
   <!-- PERSONAS -->

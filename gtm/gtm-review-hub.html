@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<title>GTM Review Hub — Multi-Product Launch Manager</title>
+<style>
+:root {
+  --navy: #1a1f2e; --navy-light: #252b3d; --navy-hover: #2d3450;
+  --gold: #c3924d; --gold-light: #d4a96a; --gold-bg: #fdf6ed; --gold-dim: rgba(195,146,77,0.15);
+  --white: #ffffff; --gray-50: #f8f9fb; --gray-100: #f1f3f5; --gray-200: #e2e5ea;
+  --gray-300: #cdd1d8; --gray-400: #9da3af; --gray-500: #6b7280; --gray-600: #4b5563;
+  --gray-700: #374151; --gray-800: #1f2937; --gray-900: #111827;
+  --red: #ef4444; --red-bg: #fef2f2; --red-dim: rgba(239,68,68,0.12);
+  --amber: #f59e0b; --amber-bg: #fffbeb; --amber-dim: rgba(245,158,11,0.12);
+  --emerald: #10b981; --emerald-bg: #ecfdf5; --emerald-dim: rgba(16,185,129,0.12);
+  --blue: #3b82f6; --blue-bg: #eff6ff; --blue-dim: rgba(59,130,246,0.12);
+  --violet: #8b5cf6; --violet-bg: #f5f3ff;
+  --sidebar-w: 260px;
+  --radius: 12px; --radius-sm: 8px; --radius-xs: 6px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 20px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.04);
+  --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',system-ui,-apple-system,sans-serif; background:var(--gray-50); color:var(--gray-900); line-height:1.6; overflow-x:hidden; }
+button { font-family:inherit; cursor:pointer; border:none; }
+input, textarea, select { font-family:inherit; }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--gray-300); border-radius:3px; }
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  position:fixed; left:0; top:0; bottom:0; width:var(--sidebar-w); background:var(--navy);
+  display:flex; flex-direction:column; z-index:200; transition:transform var(--transition);
+}
+.sidebar-brand { padding:1.25rem 1.25rem 0.75rem; border-bottom:1px solid rgba(255,255,255,0.06); }
+.sidebar-brand h1 { color:var(--white); font-size:1.05rem; font-weight:800; letter-spacing:-0.02em; display:flex; align-items:center; gap:0.5rem; }
+.sidebar-brand h1 span { background:var(--gold); color:var(--navy); font-size:0.6rem; padding:0.15rem 0.5rem; border-radius:4px; font-weight:800; letter-spacing:0.5px; }
+.sidebar-brand p { color:var(--gray-400); font-size:0.72rem; margin-top:0.2rem; }
+.sidebar-section { padding:1rem 0.75rem 0.5rem; }
+.sidebar-section-label { color:var(--gray-500); font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0 0.5rem; margin-bottom:0.5rem; }
+.sidebar-products { flex:1; overflow-y:auto; padding:0 0.75rem; }
+.sidebar-item {
+  display:flex; align-items:center; gap:0.6rem; padding:0.6rem 0.75rem; border-radius:var(--radius-sm);
+  color:var(--gray-400); font-size:0.82rem; font-weight:500; cursor:pointer; transition:all var(--transition);
+  margin-bottom:2px; position:relative;
+}
+.sidebar-item:hover { background:var(--navy-hover); color:var(--gray-200); }
+.sidebar-item.active { background:var(--navy-hover); color:var(--white); }
+.sidebar-item.active::before { content:''; position:absolute; left:0; top:50%; transform:translateY(-50%); width:3px; height:60%; background:var(--gold); border-radius:0 3px 3px 0; }
+.sidebar-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.sidebar-progress { font-size:0.68rem; color:var(--gray-500); margin-left:auto; font-weight:600; }
+.sidebar-item.active .sidebar-progress { color:var(--gold); }
+.sidebar-add-btn {
+  display:flex; align-items:center; gap:0.5rem; padding:0.55rem 0.75rem; margin:0.5rem 0.75rem;
+  border-radius:var(--radius-sm); color:var(--gold); font-size:0.8rem; font-weight:600;
+  background:var(--gold-dim); transition:all var(--transition); border:1px dashed rgba(195,146,77,0.3);
+}
+.sidebar-add-btn:hover { background:rgba(195,146,77,0.25); }
+.sidebar-bottom { padding:0.75rem; border-top:1px solid rgba(255,255,255,0.06); }
+.sidebar-bottom-btn {
+  display:flex; align-items:center; gap:0.5rem; padding:0.55rem 0.75rem; width:100%;
+  border-radius:var(--radius-sm); color:var(--gray-400); font-size:0.78rem; font-weight:500;
+  background:transparent; transition:all var(--transition);
+}
+.sidebar-bottom-btn:hover { background:var(--navy-hover); color:var(--gray-200); }
+
+/* ─── MAIN AREA ─── */
+.main { margin-left:var(--sidebar-w); min-height:100vh; }
+
+/* ─── HUB VIEW ─── */
+.hub-header { background:linear-gradient(135deg, var(--navy) 0%, #0f1419 100%); padding:2.5rem 2.5rem 2rem; }
+.hub-header h2 { color:var(--white); font-size:1.6rem; font-weight:800; letter-spacing:-0.03em; }
+.hub-header p { color:var(--gray-400); font-size:0.88rem; margin-top:0.25rem; }
+.hub-stats { display:flex; gap:1rem; margin-top:1.25rem; flex-wrap:wrap; }
+.hub-stat { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-sm); padding:0.7rem 1rem; min-width:130px; }
+.hub-stat-value { color:var(--white); font-size:1.4rem; font-weight:800; }
+.hub-stat-label { color:var(--gray-400); font-size:0.7rem; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+.hub-body { padding:2rem 2.5rem; }
+.hub-body-title { font-size:1rem; font-weight:700; color:var(--gray-700); margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem; }
+.product-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:1.25rem; }
+.product-card {
+  background:var(--white); border-radius:var(--radius); border:1px solid var(--gray-200);
+  overflow:hidden; cursor:pointer; transition:all var(--transition); position:relative;
+}
+.product-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-2px); border-color:var(--gray-300); }
+.product-card-accent { height:4px; }
+.product-card-body { padding:1.25rem; }
+.product-card-top { display:flex; justify-content:space-between; align-items:flex-start; }
+.product-card-name { font-size:1.05rem; font-weight:700; color:var(--gray-900); }
+.product-card-tagline { font-size:0.78rem; color:var(--gray-500); margin-top:0.15rem; }
+.product-card-ring { position:relative; width:52px; height:52px; flex-shrink:0; }
+.product-card-ring svg { transform:rotate(-90deg); }
+.product-card-ring-text { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:800; color:var(--gray-700); }
+.product-card-stats { display:flex; gap:1rem; margin-top:1rem; padding-top:0.75rem; border-top:1px solid var(--gray-100); }
+.product-card-stat { font-size:0.72rem; color:var(--gray-500); display:flex; align-items:center; gap:0.3rem; }
+.product-card-stat strong { color:var(--gray-700); }
+.product-card-actions { position:absolute; top:1rem; right:1rem; display:flex; gap:0.4rem; opacity:0; transition:opacity var(--transition); }
+.product-card:hover .product-card-actions { opacity:1; }
+.product-card-action {
+  width:28px; height:28px; border-radius:6px; background:var(--gray-100); color:var(--gray-500);
+  display:flex; align-items:center; justify-content:center; font-size:0.75rem; transition:all var(--transition);
+}
+.product-card-action:hover { background:var(--red-dim); color:var(--red); }
+
+/* ─── ADD PRODUCT CARD ─── */
+.product-card-add {
+  border:2px dashed var(--gray-200); background:transparent; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; min-height:180px; color:var(--gray-400);
+  transition:all var(--transition); cursor:pointer;
+}
+.product-card-add:hover { border-color:var(--gold); color:var(--gold); background:var(--gold-dim); }
+.product-card-add-icon { font-size:1.8rem; font-weight:300; line-height:1; }
+.product-card-add-text { font-size:0.82rem; font-weight:600; margin-top:0.3rem; }
+
+/* ─── REVIEW VIEW ─── */
+.review-header { background:linear-gradient(135deg, var(--navy) 0%, #0f1419 100%); padding:2rem 2.5rem 1.5rem; position:relative; }
+.review-back { color:var(--gray-400); font-size:0.8rem; font-weight:500; display:inline-flex; align-items:center; gap:0.3rem; margin-bottom:0.75rem; cursor:pointer; transition:color var(--transition); background:none; }
+.review-back:hover { color:var(--white); }
+.review-header h2 { color:var(--white); font-size:1.5rem; font-weight:800; display:flex; align-items:center; gap:0.5rem; }
+.review-header h2 .badge { font-size:0.65rem; padding:0.15rem 0.55rem; border-radius:4px; font-weight:800; }
+.review-header-sub { color:var(--gray-400); font-size:0.85rem; margin-top:0.2rem; }
+
+/* Progress Bar */
+.progress-bar-section { background:var(--white); border-bottom:1px solid var(--gray-200); padding:1rem 2.5rem; position:sticky; top:0; z-index:100; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.progress-stats { display:flex; gap:1.25rem; align-items:center; flex-wrap:wrap; margin-bottom:0.6rem; }
+.progress-stat { display:flex; align-items:center; gap:0.35rem; font-size:0.78rem; font-weight:600; color:var(--gray-600); }
+.progress-dot { width:8px; height:8px; border-radius:50%; }
+.dot-approved { background:var(--emerald); } .dot-edits { background:var(--amber); }
+.dot-rejected { background:var(--red); } .dot-pending { background:var(--gray-300); }
+.progress-bar-wrap { height:6px; background:var(--gray-100); border-radius:3px; overflow:hidden; }
+.progress-bar-fill { height:100%; border-radius:3px; transition:width 0.4s ease; }
+.progress-actions { display:flex; gap:0.5rem; margin-left:auto; }
+.btn-sm {
+  padding:0.4rem 0.9rem; border-radius:var(--radius-xs); font-size:0.75rem; font-weight:600;
+  transition:all var(--transition);
+}
+.btn-navy { background:var(--navy); color:var(--white); }
+.btn-navy:hover { background:var(--navy-light); }
+.btn-gold { background:var(--gold); color:var(--white); }
+.btn-gold:hover { background:var(--gold-light); }
+.btn-outline { background:transparent; border:1px solid var(--gray-200); color:var(--gray-600); }
+.btn-outline:hover { border-color:var(--gray-300); background:var(--gray-50); }
+
+/* General Review Notes */
+.general-review { background:var(--white); border:2px solid var(--gold); border-radius:var(--radius); padding:1.25rem; margin:1.5rem 2.5rem; box-shadow:0 4px 15px rgba(195,146,77,0.08); }
+.general-review-title { font-size:1rem; font-weight:800; color:var(--navy); }
+.general-review-desc { font-size:0.78rem; color:var(--gray-500); margin-top:0.1rem; }
+.general-review textarea { width:100%; min-height:90px; padding:0.75rem; border:1px solid var(--gray-200); border-radius:var(--radius-sm); font-size:0.85rem; resize:vertical; line-height:1.7; margin-top:0.75rem; }
+.general-review textarea:focus { outline:none; border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-dim); }
+.general-review select { padding:0.4rem 0.7rem; border:2px solid var(--gray-200); border-radius:var(--radius-sm); font-size:0.82rem; font-weight:700; cursor:pointer; }
+.general-review select:focus { outline:none; border-color:var(--gold); }
+
+/* Review Sections */
+.review-body { padding:0 2.5rem 2.5rem; }
+.review-section { margin-top:2rem; }
+.review-section-head { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem; }
+.review-section-title { font-size:1.1rem; font-weight:700; color:var(--navy); }
+.review-section-count { background:var(--gold-bg); color:var(--gold); padding:0.12rem 0.5rem; border-radius:20px; font-size:0.68rem; font-weight:700; }
+.review-section-add {
+  margin-left:auto; padding:0.3rem 0.7rem; border-radius:var(--radius-xs); font-size:0.72rem;
+  font-weight:600; color:var(--gold); background:var(--gold-dim); transition:all var(--transition);
+}
+.review-section-add:hover { background:rgba(195,146,77,0.25); }
+
+/* Review Cards */
+.review-cards { display:grid; grid-template-columns:repeat(auto-fill, minmax(480px, 1fr)); gap:1rem; }
+.review-card {
+  background:var(--white); border-radius:var(--radius); border:1px solid var(--gray-200);
+  overflow:hidden; transition:all var(--transition);
+}
+.review-card:hover { box-shadow:var(--shadow); }
+.review-card.st-approved { border-left:4px solid var(--emerald); }
+.review-card.st-edits { border-left:4px solid var(--amber); }
+.review-card.st-rejected { border-left:4px solid var(--red); }
+.review-card.st-pending { border-left:4px solid var(--gray-300); }
+.rc-top { padding:1rem 1.15rem; cursor:pointer; display:flex; justify-content:space-between; align-items:flex-start; gap:0.75rem; }
+.rc-id { font-size:0.68rem; color:var(--gray-500); font-weight:700; text-transform:uppercase; letter-spacing:0.3px; }
+.rc-title { font-size:0.92rem; font-weight:700; color:var(--gray-900); margin-top:0.1rem; }
+.rc-summary { font-size:0.78rem; color:var(--gray-500); margin-top:0.2rem; line-height:1.5; }
+.rc-tags { display:flex; gap:0.25rem; flex-wrap:wrap; margin-top:0.35rem; }
+.rc-tag { padding:0.1rem 0.4rem; border-radius:4px; font-size:0.65rem; font-weight:600; }
+.tag-ar { background:var(--emerald-dim); color:var(--emerald); }
+.tag-en { background:var(--blue-dim); color:var(--blue); }
+.tag-li { background:#eef2ff; color:#4f46e5; }
+.tag-tw { background:#f0f9ff; color:#0284c7; }
+.tag-email { background:var(--amber-dim); color:var(--amber); }
+.tag-sms { background:var(--violet-bg); color:var(--violet); }
+.tag-video { background:var(--red-dim); color:var(--red); }
+.tag-visual { background:var(--gold-bg); color:var(--gold); }
+.rc-arrow { color:var(--gray-300); font-size:0.8rem; transition:transform var(--transition); flex-shrink:0; margin-top:0.2rem; }
+.review-card.open .rc-arrow { transform:rotate(90deg); color:var(--gold); }
+.rc-body { display:none; padding:0 1.15rem; border-top:1px solid var(--gray-100); }
+.review-card.open .rc-body { display:block; }
+.rc-content { padding:0.75rem 0; font-size:0.82rem; line-height:1.8; color:var(--gray-700); white-space:pre-wrap; }
+.rc-content strong { color:var(--navy); }
+.rc-label { font-size:0.68rem; color:var(--gray-500); font-weight:700; text-transform:uppercase; letter-spacing:0.3px; margin-bottom:0.2rem; display:flex; align-items:center; gap:0.3rem; }
+.rc-label::before { content:''; width:7px; height:7px; border-radius:2px; display:inline-block; }
+.rc-label-ar::before { background:var(--emerald); }
+.rc-label-en::before { background:var(--blue); }
+.rc-divider { border-top:1px dashed var(--gray-200); margin:0.4rem 0; }
+.rc-controls { padding:0.75rem 1.15rem; background:var(--gray-50); border-top:1px solid var(--gray-100); display:flex; gap:0.75rem; align-items:flex-start; flex-wrap:wrap; }
+.rc-control-group { display:flex; flex-direction:column; gap:0.2rem; }
+.rc-control-group label { font-size:0.68rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.3px; }
+.rc-select { padding:0.4rem 0.6rem; border:1px solid var(--gray-200); border-radius:var(--radius-xs); font-size:0.8rem; font-weight:600; cursor:pointer; background:var(--white); min-width:130px; }
+.rc-select:focus { outline:none; border-color:var(--gold); box-shadow:0 0 0 2px var(--gold-dim); }
+.rc-comment { flex:1; min-width:220px; padding:0.4rem 0.6rem; border:1px solid var(--gray-200); border-radius:var(--radius-xs); font-size:0.8rem; resize:none; height:2.2rem; }
+.rc-comment:focus { outline:none; border-color:var(--gold); box-shadow:0 0 0 2px var(--gold-dim); }
+.rc-comment::placeholder { color:var(--gray-300); }
+.rc-delete-btn { margin-left:auto; padding:0.35rem 0.6rem; border-radius:var(--radius-xs); font-size:0.7rem; font-weight:600; color:var(--gray-400); background:transparent; transition:all var(--transition); align-self:center; }
+.rc-delete-btn:hover { color:var(--red); background:var(--red-dim); }
+
+/* ─── MODALS ─── */
+.modal-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px);
+  z-index:500; align-items:center; justify-content:center; padding:1rem;
+}
+.modal-overlay.show { display:flex; }
+.modal {
+  background:var(--white); border-radius:var(--radius); width:100%; max-width:520px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.15); max-height:90vh; overflow-y:auto;
+}
+.modal-head { padding:1.25rem 1.5rem; border-bottom:1px solid var(--gray-100); display:flex; justify-content:space-between; align-items:center; }
+.modal-head h3 { font-size:1.05rem; font-weight:700; color:var(--navy); }
+.modal-close { width:30px; height:30px; border-radius:6px; background:var(--gray-100); color:var(--gray-500); display:flex; align-items:center; justify-content:center; font-size:1.1rem; transition:all var(--transition); }
+.modal-close:hover { background:var(--red-dim); color:var(--red); }
+.modal-body { padding:1.5rem; }
+.form-group { margin-bottom:1rem; }
+.form-label { display:block; font-size:0.78rem; font-weight:600; color:var(--gray-700); margin-bottom:0.3rem; }
+.form-input, .form-select, .form-textarea {
+  width:100%; padding:0.55rem 0.75rem; border:1px solid var(--gray-200); border-radius:var(--radius-sm);
+  font-size:0.85rem; transition:all var(--transition);
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { outline:none; border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-dim); }
+.form-textarea { min-height:100px; resize:vertical; line-height:1.6; }
+.form-hint { font-size:0.7rem; color:var(--gray-400); margin-top:0.2rem; }
+.form-colors { display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.3rem; }
+.form-color {
+  width:32px; height:32px; border-radius:8px; border:2px solid transparent; cursor:pointer;
+  transition:all var(--transition);
+}
+.form-color:hover, .form-color.selected { border-color:var(--navy); transform:scale(1.1); }
+.modal-footer { padding:1rem 1.5rem; border-top:1px solid var(--gray-100); display:flex; justify-content:flex-end; gap:0.5rem; }
+.btn { padding:0.55rem 1.2rem; border-radius:var(--radius-sm); font-size:0.82rem; font-weight:600; transition:all var(--transition); }
+.btn-cancel { background:var(--gray-100); color:var(--gray-600); }
+.btn-cancel:hover { background:var(--gray-200); }
+.btn-primary { background:var(--gold); color:var(--white); }
+.btn-primary:hover { background:var(--gold-light); }
+.btn-danger { background:var(--red); color:var(--white); }
+.btn-danger:hover { opacity:0.9; }
+
+/* ─── EMPTY STATE ─── */
+.empty-state { text-align:center; padding:3rem 1rem; color:var(--gray-400); }
+.empty-state-icon { font-size:2.5rem; margin-bottom:0.5rem; }
+.empty-state-text { font-size:0.9rem; font-weight:500; }
+
+/* ─── TOAST ─── */
+.toast {
+  position:fixed; bottom:1.5rem; right:1.5rem; background:var(--navy); color:var(--white);
+  padding:0.7rem 1.2rem; border-radius:var(--radius-sm); font-size:0.82rem; font-weight:500;
+  z-index:600; transform:translateY(100px); opacity:0; transition:all 0.3s ease;
+  box-shadow:0 8px 24px rgba(0,0,0,0.15);
+}
+.toast.show { transform:translateY(0); opacity:1; }
+
+/* ─── RESPONSIVE ─── */
+.menu-toggle { display:none; position:fixed; top:1rem; left:1rem; z-index:300; width:36px; height:36px; border-radius:8px; background:var(--navy); color:var(--white); align-items:center; justify-content:center; font-size:1.1rem; box-shadow:var(--shadow); }
+@media (max-width:768px) {
+  .sidebar { transform:translateX(-100%); }
+  .sidebar.open { transform:translateX(0); }
+  .main { margin-left:0; }
+  .menu-toggle { display:flex; }
+  .hub-header, .review-header { padding-left:4rem; }
+  .hub-body, .review-body, .general-review, .progress-bar-section { padding-left:1.25rem; padding-right:1.25rem; }
+  .review-cards { grid-template-columns:1fr; }
+  .product-grid { grid-template-columns:1fr; }
+  .hub-header { padding:1.5rem 1.25rem 1.25rem 4rem; }
+  .review-header { padding:1.5rem 1.25rem 1.25rem 4rem; }
+  .general-review { margin:1rem 1.25rem; }
+}
+@media (max-width:480px) {
+  .rc-controls { flex-direction:column; }
+  .rc-comment { min-width:100%; }
+  .progress-actions { flex-wrap:wrap; }
+}
+</style>
+</head>
+<body>
+
+<!-- Menu Toggle (Mobile) -->
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <h1>GTM Hub <span>REVIEW</span></h1>
+    <p>Multi-Product Launch Manager</p>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Products</div>
+  </div>
+  <div class="sidebar-products" id="sidebarProducts"></div>
+  <button class="sidebar-add-btn" onclick="showModal('product')">+ Add Product</button>
+  <div class="sidebar-bottom">
+    <button class="sidebar-bottom-btn" onclick="showModal('import')">↑↓ Import / Export Data</button>
+    <button class="sidebar-bottom-btn" onclick="navigate('hub')">◉ Hub Dashboard</button>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main" id="mainContent"></div>
+
+<!-- Add/Edit Product Modal -->
+<div class="modal-overlay" id="modalProduct">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modalProductTitle">Add New Product</h3>
+      <button class="modal-close" onclick="hideModal('product')">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editProductId">
+      <div class="form-group">
+        <label class="form-label">Product Name *</label>
+        <input class="form-input" id="prodName" placeholder="e.g. Musahm Vault">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tagline</label>
+        <input class="form-input" id="prodTagline" placeholder="e.g. Saudi governance. World-class platform.">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Accent Color</label>
+        <div class="form-colors" id="colorPicker">
+          <div class="form-color selected" data-color="#c3924d" style="background:#c3924d" onclick="pickColor(this)"></div>
+          <div class="form-color" data-color="#3b82f6" style="background:#3b82f6" onclick="pickColor(this)"></div>
+          <div class="form-color" data-color="#10b981" style="background:#10b981" onclick="pickColor(this)"></div>
+          <div class="form-color" data-color="#8b5cf6" style="background:#8b5cf6" onclick="pickColor(this)"></div>
+          <div class="form-color" data-color="#ef4444" style="background:#ef4444" onclick="pickColor(this)"></div>
+          <div class="form-color" data-color="#f59e0b" style="background:#f59e0b" onclick="pickColor(this)"></div>
+          <div class="form-color" data-color="#ec4899" style="background:#ec4899" onclick="pickColor(this)"></div>
+          <div class="form-color" data-color="#06b6d4" style="background:#06b6d4" onclick="pickColor(this)"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-cancel" onclick="hideModal('product')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProduct()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Content Modal -->
+<div class="modal-overlay" id="modalContent">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Add Content Item</h3>
+      <button class="modal-close" onclick="hideModal('content')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Section *</label>
+        <select class="form-select" id="contentSection">
+          <option value="social">Social Media</option>
+          <option value="email">Email</option>
+          <option value="sms">SMS</option>
+          <option value="video">Video</option>
+          <option value="visual">Visual / Graphics</option>
+          <option value="sales">Sales</option>
+          <option value="content">Content / Blog</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Title *</label>
+        <input class="form-input" id="contentTitle" placeholder="e.g. LinkedIn Launch Post (Arabic)">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Summary</label>
+        <input class="form-input" id="contentSummary" placeholder="Brief description of this content piece">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Content / Copy</label>
+        <textarea class="form-textarea" id="contentBody" placeholder="Paste the actual content here for review..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tags (comma-separated)</label>
+        <input class="form-input" id="contentTags" placeholder="e.g. Arabic, LinkedIn, Launch">
+        <div class="form-hint">Common tags: Arabic, English, LinkedIn, Twitter, Launch, Feature, Compliance</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-cancel" onclick="hideModal('content')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveContent()">Add Content</button>
+    </div>
+  </div>
+</div>
+
+<!-- Import/Export Modal -->
+<div class="modal-overlay" id="modalImport">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Import / Export Data</h3>
+      <button class="modal-close" onclick="hideModal('import')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Export All Data</label>
+        <p style="font-size:0.78rem;color:var(--gray-500);margin-bottom:0.5rem">Download a JSON backup of all products, content, and review decisions. Share with your team.</p>
+        <button class="btn btn-navy" onclick="exportJSON()" style="width:100%">↓ Download JSON Backup</button>
+      </div>
+      <div style="border-top:1px solid var(--gray-100);margin:1.25rem 0;position:relative">
+        <span style="position:absolute;top:-0.6rem;left:50%;transform:translateX(-50%);background:var(--white);padding:0 0.75rem;font-size:0.72rem;color:var(--gray-400);font-weight:600">OR</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Import Data</label>
+        <p style="font-size:0.78rem;color:var(--gray-500);margin-bottom:0.5rem">Load a previously exported JSON file. This will <strong>replace</strong> all current data.</p>
+        <input type="file" id="importFile" accept=".json" style="font-size:0.82rem" onchange="importJSON(event)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA LAYER ───
+const STORAGE_KEY = 'gtm-review-hub';
+let state = { products: [], activeProduct: null, view: 'hub' };
+
+function load() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try { state = JSON.parse(saved); } catch(e) { state = { products: [], activeProduct: null, view: 'hub' }; }
+  }
+  if (!state.products || state.products.length === 0) {
+    state.products = getDefaultData();
+    save();
+  }
+}
+
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+
+// ─── NAVIGATION ───
+function navigate(view, productId) {
+  state.view = view;
+  state.activeProduct = productId || null;
+  save();
+  render();
+}
+
+// ─── RENDERING ───
+function render() {
+  renderSidebar();
+  if (state.view === 'hub') renderHub();
+  else if (state.view === 'review' && state.activeProduct) renderReview();
+  else renderHub();
+}
+
+function renderSidebar() {
+  const container = document.getElementById('sidebarProducts');
+  container.innerHTML = state.products.map(p => {
+    const stats = getProductStats(p);
+    const isActive = state.view === 'review' && state.activeProduct === p.id;
+    return `<div class="sidebar-item ${isActive ? 'active' : ''}" onclick="navigate('review','${p.id}')">
+      <div class="sidebar-dot" style="background:${p.color}"></div>
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.name)}</span>
+      <span class="sidebar-progress">${stats.pct}%</span>
+    </div>`;
+  }).join('');
+}
+
+function renderHub() {
+  const totalItems = state.products.reduce((s,p) => s + countItems(p), 0);
+  const totalReviewed = state.products.reduce((s,p) => { const st = getProductStats(p); return s + st.approved + st.edits + st.rejected; }, 0);
+  const main = document.getElementById('mainContent');
+  main.innerHTML = `
+    <div class="hub-header">
+      <h2>GTM Review Hub</h2>
+      <p>Manage and review go-to-market content across all your products</p>
+      <div class="hub-stats">
+        <div class="hub-stat"><div class="hub-stat-value">${state.products.length}</div><div class="hub-stat-label">Products</div></div>
+        <div class="hub-stat"><div class="hub-stat-value">${totalItems}</div><div class="hub-stat-label">Content Items</div></div>
+        <div class="hub-stat"><div class="hub-stat-value">${totalReviewed}</div><div class="hub-stat-label">Reviewed</div></div>
+        <div class="hub-stat"><div class="hub-stat-value">${totalItems > 0 ? Math.round(totalReviewed/totalItems*100) : 0}%</div><div class="hub-stat-label">Complete</div></div>
+      </div>
+    </div>
+    <div class="hub-body">
+      <div class="hub-body-title">Your Products</div>
+      <div class="product-grid">
+        ${state.products.map(p => renderProductCard(p)).join('')}
+        <div class="product-card product-card-add" onclick="showModal('product')">
+          <div class="product-card-add-icon">+</div>
+          <div class="product-card-add-text">Add Product</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderProductCard(p) {
+  const stats = getProductStats(p);
+  const total = countItems(p);
+  const circumference = 2 * Math.PI * 20;
+  const offset = circumference - (stats.pct / 100) * circumference;
+  return `<div class="product-card" onclick="navigate('review','${p.id}')">
+    <div class="product-card-accent" style="background:${p.color}"></div>
+    <div class="product-card-actions">
+      <button class="product-card-action" onclick="event.stopPropagation();editProduct('${p.id}')" title="Edit">✎</button>
+      <button class="product-card-action" onclick="event.stopPropagation();deleteProduct('${p.id}')" title="Delete">×</button>
+    </div>
+    <div class="product-card-body">
+      <div class="product-card-top">
+        <div>
+          <div class="product-card-name">${esc(p.name)}</div>
+          <div class="product-card-tagline">${esc(p.tagline || '')}</div>
+        </div>
+        <div class="product-card-ring">
+          <svg width="52" height="52"><circle cx="26" cy="26" r="20" fill="none" stroke="#e5e7eb" stroke-width="4"/>
+          <circle cx="26" cy="26" r="20" fill="none" stroke="${p.color}" stroke-width="4" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" stroke-linecap="round"/></svg>
+          <div class="product-card-ring-text">${stats.pct}%</div>
+        </div>
+      </div>
+      <div class="product-card-stats">
+        <div class="product-card-stat"><strong>${total}</strong> items</div>
+        <div class="product-card-stat" style="color:var(--emerald)"><strong>${stats.approved}</strong> approved</div>
+        <div class="product-card-stat" style="color:var(--amber)"><strong>${stats.edits}</strong> edits</div>
+        <div class="product-card-stat" style="color:var(--gray-400)"><strong>${stats.pending}</strong> pending</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderReview() {
+  const p = state.products.find(x => x.id === state.activeProduct);
+  if (!p) return navigate('hub');
+  const stats = getProductStats(p);
+  const sections = groupBySection(p);
+  const main = document.getElementById('mainContent');
+
+  main.innerHTML = `
+    <div class="review-header">
+      <button class="review-back" onclick="navigate('hub')">← All Products</button>
+      <h2>${esc(p.name)} <span class="badge" style="background:${p.color}">GTM REVIEW</span></h2>
+      <div class="review-header-sub">${esc(p.tagline || 'Review and approve all content items')}</div>
+    </div>
+    <div class="progress-bar-section">
+      <div class="progress-stats">
+        <div class="progress-stat"><span class="progress-dot dot-approved"></span> Approved: <strong>${stats.approved}</strong></div>
+        <div class="progress-stat"><span class="progress-dot dot-edits"></span> Needs Edits: <strong>${stats.edits}</strong></div>
+        <div class="progress-stat"><span class="progress-dot dot-rejected"></span> Rejected: <strong>${stats.rejected}</strong></div>
+        <div class="progress-stat"><span class="progress-dot dot-pending"></span> Pending: <strong>${stats.pending}</strong></div>
+        <div class="progress-stat" style="margin-left:auto"><strong>${stats.pct}%</strong> reviewed</div>
+        <div class="progress-actions">
+          <button class="btn-sm btn-outline" onclick="exportProductCSV('${p.id}')">Export CSV</button>
+          <button class="btn-sm btn-gold" onclick="showContentModal('${p.id}')">+ Add Content</button>
+        </div>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${stats.pct}%;background:linear-gradient(90deg,${p.color},var(--emerald))"></div></div>
+    </div>
+    <div class="general-review">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><div class="general-review-title">General Review Notes</div><div class="general-review-desc">Overall feedback for this product. Saved automatically.</div></div>
+        <select onchange="saveGeneralReview('${p.id}', this.value, null)" id="genVerdict">
+          <option value="pending" ${(p.generalVerdict||'pending')==='pending'?'selected':''}>Overall: Pending</option>
+          <option value="approved" ${p.generalVerdict==='approved'?'selected':''}>Overall: Approved</option>
+          <option value="edits" ${p.generalVerdict==='edits'?'selected':''}>Overall: Needs Revisions</option>
+          <option value="rejected" ${p.generalVerdict==='rejected'?'selected':''}>Overall: Not Ready</option>
+        </select>
+      </div>
+      <textarea placeholder="Write your overall review here..." oninput="saveGeneralReview('${p.id}', null, this.value)">${esc(p.generalNotes || '')}</textarea>
+    </div>
+    <div class="review-body">
+      ${Object.keys(sections).length === 0 ? `<div class="empty-state"><div class="empty-state-icon">📄</div><div class="empty-state-text">No content items yet. Click "+ Add Content" to get started.</div></div>` : ''}
+      ${Object.entries(sections).map(([sec, items]) => `
+        <div class="review-section">
+          <div class="review-section-head">
+            <div class="review-section-title">${sectionLabel(sec)}</div>
+            <span class="review-section-count">${items.length} ${items.length===1?'ITEM':'ITEMS'}</span>
+            <button class="review-section-add" onclick="showContentModal('${p.id}','${sec}')">+ Add</button>
+          </div>
+          <div class="review-cards">${items.map((item, i) => renderReviewCard(p.id, item, i)).join('')}</div>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+function renderReviewCard(productId, item, idx) {
+  const statusClass = 'st-' + (item.status || 'pending');
+  const tags = (item.tags || []).map(t => {
+    const key = t.toLowerCase();
+    let cls = 'tag-en';
+    if (key.includes('arab')) cls = 'tag-ar';
+    else if (key.includes('linked')) cls = 'tag-li';
+    else if (key.includes('twit')) cls = 'tag-tw';
+    else if (key.includes('email')) cls = 'tag-email';
+    else if (key.includes('sms')) cls = 'tag-sms';
+    else if (key.includes('video')) cls = 'tag-video';
+    else if (key.includes('visual') || key.includes('graphic')) cls = 'tag-visual';
+    return `<span class="rc-tag ${cls}">${esc(t)}</span>`;
+  }).join('');
+
+  return `<div class="review-card ${statusClass}" data-item-id="${item.id}">
+    <div class="rc-top" onclick="toggleCard(this.parentElement)">
+      <div style="flex:1">
+        <div class="rc-id">#${idx+1} ${esc(item.section || '')}</div>
+        <div class="rc-title">${esc(item.title)}</div>
+        ${item.summary ? `<div class="rc-summary">${esc(item.summary)}</div>` : ''}
+        ${tags ? `<div class="rc-tags">${tags}</div>` : ''}
+      </div>
+      <span class="rc-arrow">▶</span>
+    </div>
+    ${item.content ? `<div class="rc-body">
+      ${item.contentAr ? `<div class="rc-label rc-label-en">English Translation</div>` : ''}
+      <div class="rc-content">${esc(item.content)}</div>
+      ${item.contentAr ? `<div class="rc-divider"></div><div class="rc-label rc-label-ar">Arabic Original</div><div class="rc-content" dir="rtl">${esc(item.contentAr)}</div>` : ''}
+    </div>` : ''}
+    <div class="rc-controls">
+      <div class="rc-control-group"><label>Status</label>
+        <select class="rc-select" onchange="updateItemStatus('${productId}','${item.id}',this.value)">
+          <option value="pending" ${(item.status||'pending')==='pending'?'selected':''}>Pending</option>
+          <option value="approved" ${item.status==='approved'?'selected':''}>Approved</option>
+          <option value="edits" ${item.status==='edits'?'selected':''}>Needs Edits</option>
+          <option value="rejected" ${item.status==='rejected'?'selected':''}>Rejected</option>
+        </select>
+      </div>
+      <div class="rc-control-group" style="flex:1"><label>Comments</label>
+        <textarea class="rc-comment" placeholder="Add feedback..." oninput="updateItemComment('${productId}','${item.id}',this.value)">${esc(item.comment || '')}</textarea>
+      </div>
+      <button class="rc-delete-btn" onclick="deleteItem('${productId}','${item.id}')">Delete</button>
+    </div>
+  </div>`;
+}
+
+// ─── CARD TOGGLE ───
+function toggleCard(el) { el.classList.toggle('open'); }
+
+// ─── PRODUCT CRUD ───
+function showModal(type) {
+  if (type === 'product') {
+    document.getElementById('editProductId').value = '';
+    document.getElementById('prodName').value = '';
+    document.getElementById('prodTagline').value = '';
+    document.getElementById('modalProductTitle').textContent = 'Add New Product';
+    document.querySelectorAll('.form-color').forEach((c,i) => c.classList.toggle('selected', i===0));
+  }
+  document.getElementById('modal' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('show');
+}
+function hideModal(type) { document.getElementById('modal' + type.charAt(0).toUpperCase() + type.slice(1)).classList.remove('show'); }
+
+function pickColor(el) {
+  document.querySelectorAll('.form-color').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function saveProduct() {
+  const name = document.getElementById('prodName').value.trim();
+  if (!name) return toast('Product name is required');
+  const tagline = document.getElementById('prodTagline').value.trim();
+  const colorEl = document.querySelector('.form-color.selected');
+  const color = colorEl ? colorEl.dataset.color : '#c3924d';
+  const editId = document.getElementById('editProductId').value;
+
+  if (editId) {
+    const p = state.products.find(x => x.id === editId);
+    if (p) { p.name = name; p.tagline = tagline; p.color = color; }
+  } else {
+    state.products.push({ id: uid(), name, tagline, color, items: [], generalNotes: '', generalVerdict: 'pending' });
+  }
+  save(); hideModal('product'); render();
+  toast(editId ? 'Product updated' : 'Product added');
+}
+
+function editProduct(id) {
+  const p = state.products.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('editProductId').value = id;
+  document.getElementById('prodName').value = p.name;
+  document.getElementById('prodTagline').value = p.tagline || '';
+  document.getElementById('modalProductTitle').textContent = 'Edit Product';
+  document.querySelectorAll('.form-color').forEach(c => c.classList.toggle('selected', c.dataset.color === p.color));
+  document.getElementById('modalProduct').classList.add('show');
+}
+
+function deleteProduct(id) {
+  const p = state.products.find(x => x.id === id);
+  if (!p) return;
+  if (!confirm(`Delete "${p.name}" and all its content? This cannot be undone.`)) return;
+  state.products = state.products.filter(x => x.id !== id);
+  if (state.activeProduct === id) { state.activeProduct = null; state.view = 'hub'; }
+  save(); render(); toast('Product deleted');
+}
+
+// ─── CONTENT CRUD ───
+function showContentModal(productId, section) {
+  state._addToProduct = productId;
+  document.getElementById('contentSection').value = section || 'social';
+  document.getElementById('contentTitle').value = '';
+  document.getElementById('contentSummary').value = '';
+  document.getElementById('contentBody').value = '';
+  document.getElementById('contentTags').value = '';
+  document.getElementById('modalContent').classList.add('show');
+}
+
+function saveContent() {
+  const productId = state._addToProduct;
+  const p = state.products.find(x => x.id === productId);
+  if (!p) return;
+  const title = document.getElementById('contentTitle').value.trim();
+  if (!title) return toast('Title is required');
+  const section = document.getElementById('contentSection').value;
+  const summary = document.getElementById('contentSummary').value.trim();
+  const content = document.getElementById('contentBody').value.trim();
+  const tags = document.getElementById('contentTags').value.split(',').map(t => t.trim()).filter(Boolean);
+  if (!p.items) p.items = [];
+  p.items.push({ id: uid(), section, title, summary, content, tags, status: 'pending', comment: '' });
+  save(); hideModal('content'); render(); navigate('review', productId);
+  toast('Content item added');
+}
+
+function deleteItem(productId, itemId) {
+  const p = state.products.find(x => x.id === productId);
+  if (!p || !p.items) return;
+  if (!confirm('Delete this content item?')) return;
+  p.items = p.items.filter(i => i.id !== itemId);
+  save(); render(); toast('Item deleted');
+}
+
+// ─── REVIEW ACTIONS ───
+function updateItemStatus(productId, itemId, status) {
+  const p = state.products.find(x => x.id === productId);
+  if (!p) return;
+  const item = p.items.find(i => i.id === itemId);
+  if (!item) return;
+  item.status = status;
+  save();
+  // Update card class without full re-render
+  const card = document.querySelector(`[data-item-id="${itemId}"]`);
+  if (card) { card.className = `review-card st-${status} ${card.classList.contains('open') ? 'open' : ''}`; }
+  // Update progress stats
+  renderProgressStats(p);
+  renderSidebar();
+}
+
+function updateItemComment(productId, itemId, comment) {
+  const p = state.products.find(x => x.id === productId);
+  if (!p) return;
+  const item = p.items.find(i => i.id === itemId);
+  if (item) { item.comment = comment; save(); }
+}
+
+function saveGeneralReview(productId, verdict, notes) {
+  const p = state.products.find(x => x.id === productId);
+  if (!p) return;
+  if (verdict !== null) p.generalVerdict = verdict;
+  if (notes !== null) p.generalNotes = notes;
+  save();
+}
+
+function renderProgressStats(p) {
+  const stats = getProductStats(p);
+  const section = document.querySelector('.progress-bar-section');
+  if (!section) return;
+  section.querySelectorAll('.progress-stat strong').forEach((el, i) => {
+    if (i === 0) el.textContent = stats.approved;
+    else if (i === 1) el.textContent = stats.edits;
+    else if (i === 2) el.textContent = stats.rejected;
+    else if (i === 3) el.textContent = stats.pending;
+    else if (i === 4) el.textContent = stats.pct + '%';
+  });
+  const fill = section.querySelector('.progress-bar-fill');
+  if (fill) fill.style.width = stats.pct + '%';
+}
+
+// ─── EXPORT ───
+function exportProductCSV(productId) {
+  const p = state.products.find(x => x.id === productId);
+  if (!p) return;
+  let csv = 'ID,Section,Title,Status,Comment\n';
+  csv += `"GENERAL","Overall","${esc(p.name)} Review","${p.generalVerdict||'pending'}","${(p.generalNotes||'').replace(/"/g,'""').replace(/\n/g,' ')}"\n`;
+  (p.items || []).forEach(item => {
+    csv += `"${item.id}","${item.section}","${item.title.replace(/"/g,'""')}","${item.status||'pending'}","${(item.comment||'').replace(/"/g,'""').replace(/\n/g,' ')}"\n`;
+  });
+  downloadFile(`${p.name.replace(/\s+/g,'-')}-gtm-review.csv`, csv, 'text/csv');
+  toast('CSV exported');
+}
+
+function exportJSON() {
+  const data = JSON.stringify(state, null, 2);
+  downloadFile('gtm-review-hub-backup.json', data, 'application/json');
+  hideModal('import'); toast('JSON backup downloaded');
+}
+
+function importJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.products) {
+        state = data;
+        save(); hideModal('import'); render();
+        toast('Data imported successfully');
+      } else { toast('Invalid file format'); }
+    } catch(err) { toast('Error reading file'); }
+  };
+  reader.readAsText(file);
+}
+
+function downloadFile(name, content, type) {
+  const blob = new Blob(['\ufeff' + content], { type: type + ';charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = name; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ─── HELPERS ───
+function getProductStats(p) {
+  const items = p.items || [];
+  let approved = 0, edits = 0, rejected = 0, pending = 0;
+  items.forEach(i => {
+    if (i.status === 'approved') approved++;
+    else if (i.status === 'edits') edits++;
+    else if (i.status === 'rejected') rejected++;
+    else pending++;
+  });
+  const total = items.length;
+  const reviewed = approved + edits + rejected;
+  return { approved, edits, rejected, pending, total, pct: total > 0 ? Math.round(reviewed/total*100) : 0 };
+}
+
+function countItems(p) { return (p.items || []).length; }
+
+function groupBySection(p) {
+  const groups = {};
+  (p.items || []).forEach(item => {
+    const sec = item.section || 'other';
+    if (!groups[sec]) groups[sec] = [];
+    groups[sec].push(item);
+  });
+  return groups;
+}
+
+function sectionLabel(key) {
+  const labels = { social:'Social Media', email:'Email', sms:'SMS', video:'Video', visual:'Visuals & Graphics', sales:'Sales Enablement', content:'Content & Blog', other:'Other' };
+  return labels[key] || key;
+}
+
+function esc(s) { if (!s) return ''; const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ─── DEFAULT MUSAHM VAULT DATA ───
+function getDefaultData() {
+  return [{
+    id: 'vault-gtm',
+    name: 'Musahm Vault',
+    tagline: 'Saudi governance. World-class platform.',
+    color: '#c3924d',
+    generalNotes: '',
+    generalVerdict: 'pending',
+    items: [
+      { id:'li1', section:'social', title:'LinkedIn: Launch Announcement (Arabic)', summary:'Main launch post. "Where are your docs right now?" 5 product pillars. 30-seat beta CTA.', content:'Where are your company\'s documents right now?\n\nIn the CFO\'s inbox? In a WhatsApp group? On the laptop of someone who left six months ago? The auditor asks, and the search takes days instead of minutes.\n\nSaudi companies rely on Musahm today to govern their decisions. Now we complete the picture.\n\nToday we launch Musahm Vault, a document management system built from scratch for Saudi governance:\n\n◼ Upload, classify, and organize your documents in workspaces with smart tags\n◼ Five permission levels per document, from Viewer to Admin\n◼ Approval workflows: no document goes live without review and sign-off\n◼ Audit trail for every action with user and timestamp\n◼ Direct integration with Shareholder Registry and meeting records in Musahm\n\nVault is more than file storage. A complete system to organize, protect, and govern your documents.\n\nBeta seats are limited. First 30 companies only.\nActivate Vault: [link]', tags:['Arabic','LinkedIn','Launch'], status:'pending', comment:'' },
+      { id:'li2', section:'social', title:'LinkedIn: Launch Announcement (English)', summary:'English mirror. Same structure: scatter problem, solution reveal, 5 feature bullets, Vision 2030 anchor, 30-seat CTA.', content:'Where are your company\'s most important documents right now?\n\nIn the CFO\'s inbox? In a WhatsApp group? On the laptop of someone who left six months ago?\n\nSaudi companies already rely on Musahm to govern their board decisions. Today we complete the picture.\n\nIntroducing Musahm Vault, a document management system built from scratch for Saudi governance:\n\n◼ Upload, classify, and organize documents in governed workspaces with smart tagging\n◼ Five-level permissions on every document, from Viewer through Admin\n◼ Approval workflows: no document goes live without review and sign-off\n◼ Full audit trail. Every action logged with user identity and timestamp\n◼ Direct integration with Shareholder Registry and board meeting records\n\nVault is more than file storage. A complete system to organize, protect, and govern your documents.\n\nBeta is limited to the first 30 companies. Activate Vault: [link]\n\n#Musahm #CorporateGovernance #SaudiTech #CompaniesLaw #DocumentManagement #Vault', tags:['English','LinkedIn','Launch'], status:'pending', comment:'' },
+      { id:'li3', section:'social', title:'LinkedIn: Shareholder Registry Angle (Arabic)', summary:'Unique differentiator: no competitor links shareholder registry to documents.', content:'Is your company\'s shareholder registry connected to its documents?\n\nIn most Saudi companies, general assembly decisions are in a Word file. The shareholder registry is in Excel. Contracts are in the lawyer\'s email.\n\nThat is why we built Musahm Vault, to connect governance documents to their proper context.\n\n◼ Shareholder registry in Musahm ← their documents in Vault\n◼ Board meeting minutes ← in a governed workspace with five-level permissions\n◼ Comprehensive audit trail proving chain of custody\n◼ Approval workflows: no document goes out without review and sign-off\n◼ Version control: every edit saved automatically with rollback to any version\n\nFirst 30 companies get exclusive beta access. Activate Vault: [link]', tags:['Arabic','LinkedIn','Feature'], status:'pending', comment:'' },
+      { id:'li4', section:'social', title:'LinkedIn: Audit/Compliance Angle (English)', summary:'Targets CFOs and auditors. "When a regulator asks for your board resolution, how fast can you produce it?"', content:'When a regulator asks for your board resolution from last quarter, how fast can you produce it?\n\nIf the answer is "days, not minutes," your governance has a documentation gap.\n\nMusahm Vault, governed document management:\n\n◼ Every document tagged, classified, and connected to the decision it supports\n◼ Five-tier access control with per-document permissions\n◼ Audit trail that proves chain of custody: user, action, timestamp\n◼ OTP-verified external sharing with watermarked copies\n◼ Approval workflows that block publishing until every reviewer signs off\n\nLimited beta. First 30 companies only. Activate Vault: [link]', tags:['English','LinkedIn','Compliance'], status:'pending', comment:'' },
+      { id:'li5', section:'social', title:'LinkedIn: Vault as a Place / Bank Metaphor (Arabic)', summary:'"Your docs deserve a vault, not a shared folder." Bank analogy.', content:'Your company\'s documents deserve a vault, not a shared folder.\n\nYour company keeps its money in a bank. Its data on secure servers. But governance documents? In a WhatsApp group.\n\nMusahm Vault is your digital vault. One place for every governance document:\n\n◼ Every document in its proper place, classified and protected with permissions\n◼ Approval workflows: no document goes out without review and sign-off\n◼ Auditor requests a document? Retrieve it in seconds, not days\n\nFirst 30 companies only. Activate Vault: [link]', tags:['Arabic','LinkedIn','Brand'], status:'pending', comment:'' },
+      { id:'tw1', section:'social', title:'Twitter: Triple Beat (Arabic + English)', summary:'"Your docs scattered between email and WhatsApp?" Three-word punch.', content:'Your company docs are scattered between email and WhatsApp?\n\nWe built Musahm Vault for Saudi governance, a document system with a complete audit trail.\n\nPermissions, audit, and protection.\n\nFirst 30 companies only.\nActivate Vault: [link]', tags:['Arabic','English','Twitter','Launch'], status:'pending', comment:'' },
+      { id:'tw2', section:'social', title:'Twitter: Vision 2030 Hook', summary:'"Vision 2030 raised governance standards. Are your documents ready?"', content:'Vision 2030 raised governance standards. Are your company\'s documents ready?\n\nMusahm Vault, a Saudi document system with full audit trail and governed permissions.\n\nFirst 30 companies. Activate Vault: [link]', tags:['Arabic','English','Twitter'], status:'pending', comment:'' },
+      { id:'tw3', section:'social', title:'Twitter: Contrast Declaration', summary:'"Instead of importing a foreign DMS, we built Vault."', content:'Instead of importing a foreign document system, we built Vault. Saudi, governed, with an audit trail for every action.\n\nBecause our companies deserve document protection that understands their regulations.\n\nFirst 30 companies in beta. Activate Vault: [link]', tags:['Arabic','English','Twitter','Brand'], status:'pending', comment:'' },
+      { id:'tw4', section:'social', title:'Twitter: Vault as a Place (Arabic)', summary:'"Your money in a bank. Your data on a server. Your governance docs?"', content:'Your money in a bank. Your data on a server. Your governance documents?\n\nMusahm Vault. Your digital vault.\n\nFirst 30 companies. Activate Vault: [link]', tags:['Arabic','Twitter'], status:'pending', comment:'' },
+      { id:'em1', section:'email', title:'Beta Announcement Email (Arabic)', summary:'To existing Musahm clients. Board Secretary pain opener. 8 feature bullets.', content:'Subject: Your governance documents deserve Saudi-grade protection\n\nDear [Company Name],\n\nYou manage your company\'s governance through Musahm. But where are those governance documents now?\n\nMeeting minutes scattered across emails. Contracts on personal devices. Board decisions in folders no one can find.\n\nWe built Vault from scratch.\n\n• Shareholder registry linked to documents\n• Six governed workspaces\n• Five permission levels\n• Complete audit trail\n• Automated approval and review chains\n• Protected external sharing with OTP and watermarks\n• Electronic signatures integrated into workflows\n• Full version control\n\nOnly 30 beta seats. Registration closes soon.', tags:['Arabic','Email','Launch'], status:'pending', comment:'' },
+      { id:'em2', section:'email', title:'Beta Announcement Email (English)', summary:'English mirror. Same 8 feature bullets. "30 beta seats remain."', content:'Subject: Your governance documents deserve Saudi-grade protection\n\nDear [Client Name],\n\nYou already govern your board meetings through Musahm. But where do the documents behind those decisions live?\n\nWe built Vault from scratch for Saudi governance.\n\n• Shareholder documents linked to the registry. No separate folders.\n• Six governed workspaces for board meetings, committees, decisions, contracts, policies.\n• Five levels of access control, from Viewer to Admin.\n• Complete audit trail. Every action logged. No deletions without record.\n• Approval chains enforced automatically.\n• OTP-verified external sharing with watermarked copies.\n• Electronic signatures integrated into document workflows.\n• Full version control with rollback.\n\n30 beta seats remain. Registration closes soon.', tags:['English','Email','Launch'], status:'pending', comment:'' },
+      { id:'sms1', section:'sms', title:'SMS: Arabic Single (62 chars)', summary:'Core hook + CTA. 1 segment.', content:'Musahm Vault, governed documents, built Saudi. 30 seats. Register: [link]', tags:['Arabic','SMS'], status:'pending', comment:'' },
+      { id:'sms2', section:'sms', title:'SMS: Arabic Extended (125 chars)', summary:'Wave 1 VIPs. Adds audit trail + "you are the first 30 invited." 2 segments.', content:'Musahm Vault is now available in beta, a Saudi document system with audit trail and governed permissions. As Musahm clients, you are the first 30 invited. Register: [link]', tags:['Arabic','SMS'], status:'pending', comment:'' },
+      { id:'sms3', section:'sms', title:'SMS: English Single (118 chars)', summary:'1 segment GSM-7.', content:'Musahm Vault - Saudi-built document governance. Full audit trail, governed access. 30 beta seats only. Register: [link]', tags:['English','SMS'], status:'pending', comment:'' },
+      { id:'sms4', section:'sms', title:'SMS: English Extended (147 chars)', summary:'1 segment.', content:'Musahm Vault beta is live. Saudi-built governance DMS - audit trail, five-level access, governed workflows. First 30 seats only. Register: [link]', tags:['English','SMS'], status:'pending', comment:'' },
+      { id:'vid1', section:'video', title:'Brand Video Script (~78 seconds)', summary:'Cinematic intro. 6 scenes. Arabic VO + English subtitles. "Built Saudi" positioning.', content:'Scene 1 (0:00-0:18) The Problem: Scattered docs across email, WhatsApp, personal devices. No one knows who has access.\n\nScene 2 (0:18-0:28) The Stakes: Lost docs stall deals. Unauthorized access costs reputation. CMA + Vision 2030 compliance.\n\nScene 3 (0:28-0:42) Solution Reveal: "We didn\'t import a foreign system. We built Vault from scratch in Riyadh, for Saudi governance."\n\nScene 4 (0:42-0:60) Features: Smart organization, role-based permissions, audit trail, shareholder registry integration.\n\nScene 5 (0:60-0:70) Complete Stack: Musahm (governance decisions) + Vault (governance documents) together.\n\nScene 6 (0:70-0:78) CTA: First 30 companies. Register now. Gold CTA card.', tags:['Video','Arabic','Brand'], status:'pending', comment:'' },
+      { id:'vid2', section:'video', title:'Product Demo Video (~2:40)', summary:'Screen-capture walkthrough. 8 scenes showing actual Vault UI. Board Secretary workflow.', content:'Scene 0 (0:00-0:12) Hook: "Imagine all governance docs in one place. Organized. Protected."\n\nScene 1 (0:12-0:30) Dashboard: Stats, pending tasks, 6 governance workspaces.\n\nScene 2 (0:30-0:55) File Upload: Drag-drop, metadata tagging, workspace assignment.\n\nScene 3 (0:55-1:10) Search: Keyword search + multi-filter.\n\nScene 4 (1:10-1:35) Permissions: 5 roles, per-document access, OTP external sharing.\n\nScene 5 (1:35-2:00) Workflows: Auto-routing approval chains.\n\nScene 6 (2:00-2:25) Audit + Versioning: Complete trail, version rollback.\n\nScene 7 (2:25-2:40) CTA: 30-seat urgency. Register now.', tags:['Video','Demo'], status:'pending', comment:'' },
+      { id:'vis1', section:'visual', title:'Slide 1: Launch Announcement', summary:'Navy background, gold accents, Cairo font. 4 feature bullets. LinkedIn 1200x628 + Square 1080x1080.', content:'', tags:['Visual','LinkedIn','Square'], status:'pending', comment:'' },
+      { id:'vis2', section:'visual', title:'Slide 2: Shareholder Registry', summary:'"Is your shareholder registry connected to your documents?" 3 integration points.', content:'', tags:['Visual','LinkedIn','Square'], status:'pending', comment:'' },
+      { id:'vis3', section:'visual', title:'Slide 3: DMS Workflow', summary:'4-step numbered flow: Upload > Classify > Approve > Share.', content:'', tags:['Visual','LinkedIn','Square'], status:'pending', comment:'' },
+      { id:'sal1', section:'sales', title:'Battle Cards', summary:'4 competitive cards (Majles, Ebana, Diligent, WhatsApp). FIA framework with trap-setting questions.', content:'Competitive battle cards covering:\n\n1. Majles.tech — Board management focus, no DMS\n2. Ebana — Compliance focus, no document governance\n3. Diligent — Enterprise pricing, not Saudi-native\n4. WhatsApp/SharePoint — No governance controls\n\nEach card includes:\n• Competitor positioning\n• Our advantages\n• Trap-setting discovery questions\n• Objection handling', tags:['Sales','Competitive'], status:'pending', comment:'' },
+      { id:'sal2', section:'sales', title:'Demo Script (25 minutes)', summary:'6-scene scripted demo for sales calls. Board Secretary morning workflow story.', content:'', tags:['Sales','Demo'], status:'pending', comment:'' },
+      { id:'sal3', section:'sales', title:'Pricing Tiers', summary:'3 tiers: Starter / Professional / Enterprise. SAR amounts pending client decision.', content:'Tier 1: Starter — Small companies (20-50 employees)\nTier 2: Professional — Mid-size (50-200 employees)\nTier 3: Enterprise — Large (200+ employees)\n\n⚠ SAR pricing amounts pending client decision (Blocker D1)', tags:['Sales','Pricing'], status:'pending', comment:'' },
+      { id:'con1', section:'content', title:'Landing Page Copy', summary:'Full landing page content with hero, features, social proof, CTA sections.', content:'', tags:['Content','Website'], status:'pending', comment:'' },
+      { id:'con2', section:'content', title:'FAQ (28 items)', summary:'28-item FAQ with Schema.org markup ready. Covers features, security, pricing, onboarding.', content:'', tags:['Content','FAQ'], status:'pending', comment:'' },
+    ]
+  }];
+}
+
+// ─── INIT ───
+load();
+render();
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('show'); });
+});
+// Close sidebar on mobile when navigating
+document.addEventListener('click', e => {
+  if (window.innerWidth <= 768 && e.target.closest('.sidebar-item')) {
+    document.querySelector('.sidebar').classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>

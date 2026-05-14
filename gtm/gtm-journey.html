@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Musahm Vault - GTM Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --vault-green: #1B4332;
+  --vault-gold: #c3924d;
+  --vault-blue: #2563EB;
+  --vault-gold-light: #d4a96a;
+  --bg-dark: #0a0f0d;
+  --bg-section: #111a16;
+  --bg-card: rgba(27,67,50,0.25);
+  --bg-card-hover: rgba(27,67,50,0.4);
+  --border-gold: rgba(195,146,77,0.15);
+  --border-gold-hover: rgba(195,146,77,0.35);
+  --text-primary: #f0f0f0;
+  --text-secondary: #9ca3af;
+  --text-gold: #c3924d;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, Tahoma, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+[dir="rtl"] body { font-family: 'Cairo', Tahoma, 'Segoe UI', sans-serif; }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+/* Language Toggle */
+.lang-toggle {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.5rem;
+  z-index: 1000;
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-gold);
+  border-radius: 50px;
+  padding: 0.4rem 1rem;
+  color: var(--text-gold);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.lang-toggle:hover { border-color: var(--border-gold-hover); background: var(--bg-card-hover); }
+[dir="rtl"] .lang-toggle { right: auto; left: 1.5rem; }
+
+/* Sticky Nav */
+.sticky-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  background: rgba(10,15,13,0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-gold);
+  transform: translateY(-100%);
+  transition: transform 0.3s;
+  padding: 0.7rem 0;
+}
+.sticky-nav.visible { transform: translateY(0); }
+.sticky-nav .container { display: flex; align-items: center; gap: 1.5rem; overflow-x: auto; }
+.sticky-nav a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.sticky-nav a:hover, .sticky-nav a.active { color: var(--text-gold); }
+.sticky-nav .nav-brand {
+  color: var(--text-gold);
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-right: 1rem;
+}
+[dir="rtl"] .sticky-nav .nav-brand { margin-right: 0; margin-left: 1rem; }
+
+.lang-en { display: inline; }
+.lang-ar { display: none; }
+[dir="rtl"] .lang-en { display: none; }
+[dir="rtl"] .lang-ar { display: inline; }
+.lang-en-block { display: block; }
+.lang-ar-block { display: none; }
+[dir="rtl"] .lang-en-block { display: none; }
+[dir="rtl"] .lang-ar-block { display: block; }
+
+/* Glass Card */
+.glass {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-gold);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+}
+.glass:hover { border-color: var(--border-gold-hover); transform: translateY(-2px); }
+
+/* Section */
+section { padding: 5rem 0; }
+.section-dark { background: var(--bg-dark); }
+.section-alt { background: var(--bg-section); }
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-gold);
+  margin-bottom: 0.5rem;
+}
+.section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+.section-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  max-width: 600px;
+  margin-bottom: 3rem;
+}
+
+/* Animations */
+.anim { opacity: 0; transform: translateY(30px); transition: opacity 0.6s, transform 0.6s; }
+.anim.visible { opacity: 1; transform: translateY(0); }
+.anim-delay-1 { transition-delay: 0.1s; }
+.anim-delay-2 { transition-delay: 0.2s; }
+.anim-delay-3 { transition-delay: 0.3s; }
+.anim-delay-4 { transition-delay: 0.4s; }
+.anim-delay-5 { transition-delay: 0.5s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim { opacity: 1; transform: none; transition: none; }
+}
+
+/* ============ HERO ============ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  background: radial-gradient(ellipse at 50% 40%, rgba(195,146,77,0.06) 0%, transparent 70%),
+              radial-gradient(ellipse at 20% 80%, rgba(27,67,50,0.3) 0%, transparent 50%),
+              var(--bg-dark);
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30Z' fill='none' stroke='rgba(195,146,77,0.04)' stroke-width='0.5'/%3E%3C/svg%3E");
+  background-size: 60px 60px;
+}
+.hero-content { position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-block;
+  background: rgba(195,146,77,0.12);
+  border: 1px solid rgba(195,146,77,0.25);
+  border-radius: 50px;
+  padding: 0.4rem 1.2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-gold);
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+}
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+}
+.hero h1 .gold { color: var(--text-gold); }
+.hero .tagline {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+.hero .tagline-ar {
+  font-family: 'Cairo', Tahoma, sans-serif;
+  font-size: 1.3rem;
+  color: var(--text-gold);
+  margin-bottom: 0.3rem;
+  direction: rtl;
+}
+.hero-metric {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 3rem;
+}
+.hero-metric strong { color: var(--text-primary); font-size: 1.3rem; }
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: bounce 2s infinite;
+}
+.scroll-hint svg { width: 24px; height: 24px; stroke: var(--text-gold); opacity: 0.6; }
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ============ STATS GRID ============ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  margin-top: 2rem;
+}
+.stat-card { text-align: center; padding: 1.5rem 1rem; }
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-gold);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.stat-label { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; }
+
+/* ============ TIMELINE ============ */
+.timeline { position: relative; padding: 2rem 0; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 28px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--vault-gold), var(--vault-gold), transparent);
+}
+[dir="rtl"] .timeline::before { left: auto; right: 28px; }
+
+.phase {
+  position: relative;
+  padding-left: 72px;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+}
+[dir="rtl"] .phase { padding-left: 0; padding-right: 72px; }
+
+.phase-dot {
+  position: absolute;
+  left: 16px;
+  top: 1.2rem;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--bg-dark);
+  border: 3px solid var(--vault-gold);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--vault-gold);
+  transition: all 0.3s;
+}
+[dir="rtl"] .phase-dot { left: auto; right: 16px; }
+.phase.active .phase-dot { background: var(--vault-gold); color: var(--bg-dark); }
+
+.phase-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-gold);
+  border-radius: 14px;
+  padding: 1.2rem 1.5rem;
+  transition: all 0.3s;
+}
+.phase:hover .phase-card { border-color: var(--border-gold-hover); }
+.phase.active .phase-card { border-color: var(--vault-gold); background: rgba(27,67,50,0.35); }
+
+.phase-header { display: flex; align-items: center; justify-content: space-between; }
+.phase-name { font-size: 1.1rem; font-weight: 700; }
+.phase-name .gold { color: var(--text-gold); }
+.phase-meta { display: flex; align-items: center; gap: 0.8rem; }
+.phase-count {
+  font-size: 0.75rem;
+  background: rgba(195,146,77,0.15);
+  color: var(--text-gold);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+.phase-chevron {
+  transition: transform 0.3s;
+  color: var(--text-gold);
+  font-size: 0.85rem;
+}
+.phase.active .phase-chevron { transform: rotate(180deg); }
+
+.phase-summary { color: var(--text-secondary); font-size: 0.88rem; margin-top: 0.4rem; }
+
+.phase-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.phase.active .phase-details { max-height: 600px; }
+
+.phase-details-inner {
+  padding-top: 1rem;
+  border-top: 1px solid rgba(195,146,77,0.1);
+  margin-top: 1rem;
+}
+.phase-details-inner ul {
+  list-style: none;
+  padding: 0;
+}
+.phase-details-inner li {
+  padding: 0.4rem 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.phase-details-inner li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--vault-gold);
+  flex-shrink: 0;
+  margin-top: 0.55rem;
+}
+.detail-file { color: var(--text-gold); font-weight: 500; font-size: 0.8rem; }
+
+/* ============ METHODOLOGY ============ */
+.agent-flow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+.agent-card {
+  text-align: center;
+  padding: 1.5rem 0.8rem;
+  position: relative;
+}
+.agent-card::after {
+  content: '';
+  position: absolute;
+  right: -0.6rem;
+  top: 50%;
+  width: 8px;
+  height: 2px;
+  background: var(--vault-gold);
+}
+.agent-card:last-child::after { display: none; }
+[dir="rtl"] .agent-card::after { right: auto; left: -0.6rem; }
+[dir="rtl"] .agent-card:last-child::after { display: none; }
+
+.agent-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  margin: 0 auto 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+.agent-icon.gold { background: rgba(195,146,77,0.15); border: 1px solid rgba(195,146,77,0.3); }
+.agent-icon.blue { background: rgba(37,99,235,0.15); border: 1px solid rgba(37,99,235,0.3); }
+.agent-icon.green { background: rgba(27,67,50,0.4); border: 1px solid rgba(27,67,50,0.6); }
+
+.agent-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.2rem; }
+.agent-role { font-size: 0.75rem; color: var(--text-secondary); }
+
+.framework-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.8rem;
+}
+.fw-chip {
+  background: rgba(27,67,50,0.3);
+  border: 1px solid rgba(195,146,77,0.1);
+  border-radius: 10px;
+  padding: 0.7rem 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-secondary);
+  transition: all 0.3s;
+}
+.fw-chip:hover { border-color: var(--border-gold-hover); color: var(--text-primary); }
+
+/* ============ METRICS ============ */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.2rem;
+}
+.metric-card { text-align: center; padding: 1.8rem 1rem; }
+.metric-value {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--text-gold);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.metric-suffix { font-size: 1.4rem; }
+.metric-label { font-size: 0.82rem; color: var(--text-secondary); }
+
+/* ============ CHANNELS ============ */
+.channel-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.channel-card { padding: 1.3rem; cursor: pointer; }
+.channel-icon { font-size: 1.5rem; margin-bottom: 0.6rem; }
+.channel-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.2rem; }
+.channel-detail { font-size: 0.78rem; color: var(--text-secondary); }
+.channel-expand {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s;
+}
+.channel-card.active .channel-expand { max-height: 200px; }
+.channel-expand-inner {
+  padding-top: 0.8rem;
+  margin-top: 0.8rem;
+  border-top: 1px solid rgba(195,146,77,0.1);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ============ QUALITY ============ */
+.qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.score-ring-wrap { text-align: center; margin-bottom: 2rem; }
+.score-ring {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 1rem;
+  position: relative;
+}
+.score-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.score-ring circle {
+  fill: none;
+  stroke-width: 8;
+  cx: 80;
+  cy: 80;
+  r: 70;
+}
+.score-ring .ring-bg { stroke: rgba(195,146,77,0.12); }
+.score-ring .ring-fill {
+  stroke: var(--vault-gold);
+  stroke-dasharray: 440;
+  stroke-dashoffset: 440;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.5s ease;
+}
+.score-ring .ring-fill.animated { stroke-dashoffset: 114.4; }
+.score-ring-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-gold);
+}
+.score-ring-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+.dim-bar { margin-bottom: 0.8rem; }
+.dim-header { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.3rem; }
+.dim-name { color: var(--text-secondary); }
+.dim-score { color: var(--text-gold); font-weight: 700; }
+.dim-track {
+  height: 6px;
+  background: rgba(195,146,77,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.dim-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--vault-gold), var(--vault-gold-light));
+  border-radius: 3px;
+  width: 0;
+  transition: width 1.2s ease;
+}
+
+.fix-list { list-style: none; padding: 0; }
+.fix-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(195,146,77,0.06);
+}
+.fix-check { color: #22c55e; font-weight: 700; flex-shrink: 0; }
+
+/* ============ DECISIONS ============ */
+.decisions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.decision-card { padding: 1.2rem 1.3rem; display: flex; align-items: flex-start; gap: 1rem; }
+.decision-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.decision-badge.high { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+.decision-badge.medium { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+.decision-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.15rem; }
+.decision-desc { font-size: 0.78rem; color: var(--text-secondary); }
+
+/* ============ FOOTER ============ */
+.footer {
+  padding: 3rem 0;
+  text-align: center;
+  border-top: 1px solid var(--border-gold);
+  background: var(--bg-dark);
+}
+.footer-tagline { color: var(--text-gold); font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+.footer-tagline-ar { font-family: 'Cairo', Tahoma, sans-serif; direction: rtl; }
+.footer-sub { font-size: 0.8rem; color: var(--text-secondary); }
+
+/* ============ FILE INVENTORY OVERLAY ============ */
+.inv-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(195,146,77,0.12);
+  border: 1px solid rgba(195,146,77,0.3);
+  border-radius: 50px;
+  padding: 0.6rem 1.4rem;
+  color: var(--text-gold);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 1rem;
+}
+.inv-btn:hover { background: rgba(195,146,77,0.2); border-color: var(--vault-gold); }
+
+.inv-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(10,15,13,0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow-y: auto;
+  display: none;
+  padding: 2rem;
+}
+.inv-overlay.open { display: block; }
+.inv-close {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.5rem;
+  z-index: 2001;
+  background: rgba(195,146,77,0.15);
+  border: 1px solid rgba(195,146,77,0.3);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-gold);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.inv-close:hover { background: rgba(195,146,77,0.3); }
+[dir="rtl"] .inv-close { right: auto; left: 1.5rem; }
+.inv-inner { max-width: 900px; margin: 0 auto; padding-top: 1rem; }
+.inv-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.3rem; }
+.inv-sub { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem; }
+.inv-folder {
+  margin-bottom: 2rem;
+}
+.inv-folder-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-gold);
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(195,146,77,0.15);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.inv-folder-count {
+  font-size: 0.7rem;
+  background: rgba(195,146,77,0.15);
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+.inv-file {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(195,146,77,0.05);
+  font-size: 0.82rem;
+}
+.inv-file-name {
+  color: var(--text-primary);
+  font-weight: 600;
+  min-width: 220px;
+  flex-shrink: 0;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.78rem;
+}
+.inv-file-desc { color: var(--text-secondary); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero h1 { font-size: 2.5rem; }
+  .stats-grid, .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .agent-flow { grid-template-columns: repeat(3, 1fr); }
+  .agent-card::after { display: none; }
+  .framework-grid { grid-template-columns: repeat(3, 1fr); }
+  .channel-grid { grid-template-columns: repeat(2, 1fr); }
+  .qa-grid { grid-template-columns: 1fr; }
+  .decisions-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .hero h1 { font-size: 2rem; }
+  .stats-grid, .metrics-grid { grid-template-columns: 1fr 1fr; }
+  .agent-flow { grid-template-columns: repeat(2, 1fr); }
+  .framework-grid { grid-template-columns: repeat(2, 1fr); }
+  .channel-grid { grid-template-columns: 1fr; }
+  section { padding: 3rem 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- Language Toggle -->
+<button class="lang-toggle" onclick="toggleLang()" aria-label="Toggle language">
+  <span class="lang-en">AR</span>
+  <span class="lang-ar">EN</span>
+</button>
+
+<!-- Sticky Nav -->
+<nav class="sticky-nav" id="stickyNav">
+  <div class="container">
+    <span class="nav-brand">Musahm</span>
+    <a href="#summary"><span class="lang-en">Summary</span><span class="lang-ar">ملخص</span></a>
+    <a href="#timeline"><span class="lang-en">Phases</span><span class="lang-ar">المراحل</span></a>
+    <a href="#method"><span class="lang-en">Method</span><span class="lang-ar">المنهجية</span></a>
+    <a href="#metrics"><span class="lang-en">Metrics</span><span class="lang-ar">الأرقام</span></a>
+    <a href="#channels"><span class="lang-en">Channels</span><span class="lang-ar">القنوات</span></a>
+    <a href="#quality"><span class="lang-en">Quality</span><span class="lang-ar">الجودة</span></a>
+    <a href="#next"><span class="lang-en">Next Steps</span><span class="lang-ar">الخطوات</span></a>
+  </div>
+</nav>
+
+<!-- ============ SECTION 1: HERO ============ -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="lang-en">GO-TO-MARKET STRATEGY</span>
+      <span class="lang-ar">استراتيجية دخول السوق</span>
+    </div>
+    <h1>
+      <span class="lang-en">Musahm Vault</span><span class="lang-ar">مساهم Vault</span><br>
+      <span class="gold">
+        <span class="lang-en">GTM Journey</span>
+        <span class="lang-ar">رحلة دخول السوق</span>
+      </span>
+    </h1>
+    <p class="tagline-ar">حوكمة سعودية. منصة عالمية.</p>
+    <p class="tagline">Saudi governance. World-class platform.</p>
+    <p class="hero-metric">
+      <span class="lang-en"><strong>68</strong> files &middot; <strong>7</strong> milestones &middot; <strong>4</strong> audits &middot; <strong>12+</strong> channels &middot; <strong>1</strong> complete GTM</span>
+      <span class="lang-ar"><strong>68</strong> ملفاً &middot; <strong>7</strong> معالم &middot; <strong>4</strong> تدقيقات &middot; <strong>12+</strong> قناة &middot; <strong>1</strong> استراتيجية متكاملة</span>
+    </p>
+    <button class="inv-btn" onclick="document.getElementById('fileInventory').classList.add('open')">
+      <span class="lang-en">&#x1F4C2; View All 68 Files</span>
+      <span class="lang-ar">&#x1F4C2; عرض جميع الملفات (68)</span>
+    </button>
+  </div>
+  <div class="scroll-hint">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+  </div>
+</section>
+
+<!-- ============ SECTION 2: EXECUTIVE SUMMARY ============ -->
+<section class="section-alt" id="summary">
+  <div class="container">
+    <div class="anim">
+      <p class="section-label">
+        <span class="lang-en">Executive Summary</span>
+        <span class="lang-ar">الملخص التنفيذي</span>
+      </p>
+      <h2 class="section-title">
+        <span class="lang-en">From Zero to Launch-Ready</span>
+        <span class="lang-ar">من الصفر إلى جاهزية الإطلاق</span>
+      </h2>
+      <p class="section-subtitle">
+        <span class="lang-en">We built a complete go-to-market strategy for Musahm Vault across 6 phases, producing 60+ files covering buyer research, brand identity, messaging, content for 12+ channels, launch operations, and quality assurance. Every claim was verified against the actual codebase.</span>
+        <span class="lang-ar">بنينا استراتيجية دخول سوق متكاملة لمنصة مساهم Vault عبر 6 مراحل، أنتجنا أكثر من 60 ملفاً تغطي بحث المشترين والهوية التجارية والرسائل التسويقية ومحتوى لأكثر من 12 قناة وعمليات الإطلاق وضمان الجودة. كل ادعاء تم التحقق منه مقابل الكود الفعلي.</span>
+      </p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="glass stat-card anim anim-delay-1">
+        <div class="stat-number" data-target="68">0</div>
+        <div class="stat-label"><span class="lang-en">Files in Corpus</span><span class="lang-ar">ملف في المجموعة</span></div>
+      </div>
+      <div class="glass stat-card anim anim-delay-2">
+        <div class="stat-number" data-target="4">0</div>
+        <div class="stat-label"><span class="lang-en">Audits Run</span><span class="lang-ar">تدقيقات</span></div>
+      </div>
+      <div class="glass stat-card anim anim-delay-3">
+        <div class="stat-number" data-target="7">0</div>
+        <div class="stat-label"><span class="lang-en">Milestones Completed</span><span class="lang-ar">معالم مكتملة</span></div>
+      </div>
+      <div class="glass stat-card anim anim-delay-4">
+        <div class="stat-number" data-target="15">0</div>
+        <div class="stat-label"><span class="lang-en">CEO-Ready Deliverables</span><span class="lang-ar">مخرجات جاهزة للقيادة</span></div>
+      </div>
+      <div class="glass stat-card anim anim-delay-5">
+        <div class="stat-number" data-target="12" data-suffix="+">0</div>
+        <div class="stat-label"><span class="lang-en">Marketing Channels</span><span class="lang-ar">قناة تسويقية</span></div>
+      </div>
+      <div class="glass stat-card anim anim-delay-5">
+        <div class="stat-number" data-target="74" data-suffix="/100">0</div>
+        <div class="stat-label"><span class="lang-en">Audit Score</span><span class="lang-ar">درجة التدقيق</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 3: TIMELINE (Real Workflow) ============ -->
+<section class="section-dark" id="timeline">
+  <div class="container">
+    <div class="anim">
+      <p class="section-label">
+        <span class="lang-en">The Real Workflow</span>
+        <span class="lang-ar">سير العمل الفعلي</span>
+      </p>
+      <h2 class="section-title">
+        <span class="lang-en">How It Was Actually Built</span>
+        <span class="lang-ar">كيف بُنيت فعلياً</span>
+      </h2>
+      <p class="section-subtitle">
+        <span class="lang-en">Not folder order. Actual execution sequence. Click any step to expand.</span>
+        <span class="lang-ar">ليس ترتيب المجلدات. تسلسل التنفيذ الفعلي. اضغط على أي خطوة للتوسيع.</span>
+      </p>
+    </div>
+
+    <div class="timeline">
+      <!-- Step 1: Genesis -->
+      <div class="phase anim" data-phase="1">
+        <div class="phase-dot">1</div>
+        <div class="phase-card">
+          <div class="phase-header">
+            <div class="phase-name"><span class="gold"><span class="lang-en">Genesis: Codebase + Market Research</span><span class="lang-ar">التأسيس: قراءة الكود + بحث السوق</span></span></div>
+            <div class="phase-meta">
+              <span class="phase-count"><span class="lang-en">~50 files created</span><span class="lang-ar">~50 ملفاً أُنشئ</span></span>
+              <span class="phase-chevron">&#9660;</span>
+            </div>
+          </div>
+          <p class="phase-summary"><span class="lang-en">Started from nothing. Read the actual .NET 10 source code, visited competitor websites, built ICP, explored 3 brand concepts, mined a GTM agents repo (67 plugins), then generated content across 5 phase folders.</span><span class="lang-ar">بدأنا من الصفر. قرأنا كود .NET 10 الفعلي، زرنا مواقع المنافسين، بنينا شخصيات العملاء، استكشفنا 3 مفاهيم علامة، استخرجنا أطر عمل من مستودع GTM agents (67 إضافة)، ثم أنتجنا المحتوى.</span></p>
+          <div class="phase-details"><div class="phase-details-inner"><ul>
+            <li><span class="lang-en"><strong>Step 1: Read the codebase</strong> -- Controllers, services, entities, permissions, SearchService.cs, AuditLog.cs. Established what is real vs. what is stub code</span><span class="lang-ar"><strong>الخطوة 1: قراءة الكود</strong> -- المتحكمات، الخدمات، الكيانات، الصلاحيات. أسسنا ما هو حقيقي مقابل ما هو كود تجريبي</span></li>
+            <li><span class="lang-en"><strong>Step 2: Competitor websites</strong> -- Fetched and analyzed musahm.com, majles.tech, Ebana DMS, Diligent. Built 40-feature comparison matrix</span><span class="lang-ar"><strong>الخطوة 2: مواقع المنافسين</strong> -- حللنا musahm.com، مجلس، إبانة، Diligent. بنينا مصفوفة مقارنة 40 ميزة</span></li>
+            <li><span class="lang-en"><strong>Step 3: ICP + sector research</strong> -- 4 buyer personas, 6 sectors ranked, explicit data-source labeling ("Inferred" vs "Public policy")</span><span class="lang-ar"><strong>الخطوة 3: بحث العملاء والقطاعات</strong> -- 4 شخصيات مشتري، 6 قطاعات مرتبة، تصنيف مصادر البيانات</span></li>
+            <li><span class="lang-en"><strong>Step 4: Brand concepts</strong> -- 3 concepts scored (Trust-Heritage 40.5, Modern-Digital 26.5, KSA-Native-Tech 50.5). Winner selected with 5 modifications</span><span class="lang-ar"><strong>الخطوة 4: مفاهيم العلامة</strong> -- 3 مفاهيم (الثقة 40.5، الرقمي 26.5، التقنية السعودية 50.5). الفائز مع 5 تعديلات</span></li>
+            <li><span class="lang-en"><strong>Step 5: GTM agents repo</strong> -- Cloned 67 plugins, 244 skills. Produced 7,230-line extraction. Extracted 10 structured frameworks</span><span class="lang-ar"><strong>الخطوة 5: مستودع GTM agents</strong> -- 67 إضافة، 244 مهارة. استخراج 7,230 سطراً. 10 أطر عمل</span></li>
+            <li><span class="lang-en"><strong>Step 6: Content generation</strong> -- ~50 files across 5 phase folders (discovery, brand, segmentation, content, launch). Bilingual AR/EN</span><span class="lang-ar"><strong>الخطوة 6: إنتاج المحتوى</strong> -- ~50 ملفاً عبر 5 مجلدات. ثنائي اللغة عربي/إنجليزي</span></li>
+            <li><span class="lang-en"><strong>Step 7: Tool stack</strong> -- 80+ tools evaluated, 11 Tier-S picks (Brevo, Clarity, Tally, Cal.com...). Total cost: ~$45/month</span><span class="lang-ar"><strong>الخطوة 7: تقييم الأدوات</strong> -- 80+ أداة، 11 من الفئة S. التكلفة: ~45$/شهر</span></li>
+          </ul></div></div>
+        </div>
+      </div>
+
+      <!-- Step 2: Multi-Layer Auditing -->
+      <div class="phase anim" data-phase="2">
+        <div class="phase-dot">2</div>
+        <div class="phase-card">
+          <div class="phase-header">
+            <div class="phase-name"><span class="gold"><span class="lang-en">Multi-Layer Auditing</span><span class="lang-ar">التدقيق المتعدد</span></span></div>
+            <div class="phase-meta">
+              <span class="phase-count"><span class="lang-en">4 audits</span><span class="lang-ar">4 تدقيقات</span></span>
+              <span class="phase-chevron">&#9660;</span>
+            </div>
+          </div>
+          <p class="phase-summary"><span class="lang-en">4 distinct audits, each catching what the previous one missed. Went from 62/100 to 74/100. Found 7 showstoppers that would have destroyed credibility.</span><span class="lang-ar">4 تدقيقات مختلفة، كل واحد يكتشف ما فاته السابق. من 62/100 إلى 74/100. اكتشفنا 7 مشاكل كانت ستدمر المصداقية.</span></p>
+          <div class="phase-details"><div class="phase-details-inner"><ul>
+            <li><span class="lang-en"><strong>Audit 1: PMM Audit (62/100)</strong> -- Found 10 CRITICAL issues. Brand voice absent (3.8/10). 263 em dashes. Zero social proof. Empty decision funnel stage</span><span class="lang-ar"><strong>التدقيق 1: PMM (62/100)</strong> -- 10 مشاكل حرجة. صوت العلامة غائب (3.8/10). 263 شرطة. لا إثبات اجتماعي</span></li>
+            <li><span class="lang-en"><strong>Audit 2: CEO Audit</strong> -- Executive readiness check. Could a CEO hand this to investors? Found strategic consistency gaps</span><span class="lang-ar"><strong>التدقيق 2: CEO</strong> -- فحص جاهزية تنفيذية. هل يمكن للمدير تقديمه للمستثمرين؟ وجدنا ثغرات استراتيجية</span></li>
+            <li><span class="lang-en"><strong>Audit 3: MEGA-AUDIT (74/100)</strong> -- 6 parallel agents, 7 dimensions, 42 files. Found 7 showstoppers: stub features sold as working, false IP logging claims, wrong OTP channel, unprovable "first" claims</span><span class="lang-ar"><strong>التدقيق 3: الشامل (74/100)</strong> -- 6 وكلاء متوازيين، 7 أبعاد، 42 ملفاً. 7 مشاكل حرجة: ميزات تجريبية وُصفت كعاملة</span></li>
+            <li><span class="lang-en"><strong>Audit 4: Final Two-Pass</strong> -- Pass 1 checked content folders. Pass 2 re-checked ALL 66 files and found 4 violations Pass 1 missed (IP claim in user docs, character-count overflows in ads)</span><span class="lang-ar"><strong>التدقيق 4: النهائي بتمريرين</strong> -- التمرير 1 فحص مجلدات المحتوى. التمرير 2 أعاد فحص 66 ملفاً ووجد 4 مخالفات إضافية</span></li>
+          </ul></div></div>
+        </div>
+      </div>
+
+      <!-- Step 3: Ground Rules -->
+      <div class="phase anim" data-phase="3">
+        <div class="phase-dot">3</div>
+        <div class="phase-card">
+          <div class="phase-header">
+            <div class="phase-name"><span class="gold"><span class="lang-en">Ground Rules Locked</span><span class="lang-ar">تثبيت القواعد</span></span></div>
+            <div class="phase-meta">
+              <span class="phase-count"><span class="lang-en">permanent rules</span><span class="lang-ar">قواعد دائمة</span></span>
+              <span class="phase-chevron">&#9660;</span>
+            </div>
+          </div>
+          <p class="phase-summary"><span class="lang-en">Before any content fix began, strict writing, product, and brand rules were locked. These never changed across the entire engagement.</span><span class="lang-ar">قبل أي إصلاح محتوى، تم تثبيت قواعد كتابة ومنتج وعلامة صارمة. لم تتغير أبداً.</span></p>
+          <div class="phase-details"><div class="phase-details-inner"><ul>
+            <li><span class="lang-en"><strong>Writing rules</strong> -- Zero em dashes (not fewer, zero). Zero AI vocabulary. Western numerals only. Arabic-first MSA. "Built FOR" not "Built IN"</span><span class="lang-ar"><strong>قواعد الكتابة</strong> -- صفر شرطات طويلة. صفر مفردات AI. أرقام غربية فقط. عربي أولاً. "مبنية للحوكمة" وليس "مبنية في السعودية"</span></li>
+            <li><span class="lang-en"><strong>Product rules</strong> -- Never claim a feature unless the backend code proves it. Semantic search / Ask Vault always "coming soon." No "first" or "only" without legal defense</span><span class="lang-ar"><strong>قواعد المنتج</strong> -- لا تدّعِ ميزة إلا إذا أثبتها الكود. البحث الدلالي / اسأل Vault دائماً "قريباً"</span></li>
+            <li><span class="lang-en"><strong>Brand rules</strong> -- Tagline in every major piece. Concept 3 voice throughout. Three known clients as social proof. Palette: #1B4332 + #c3924d + #2563EB</span><span class="lang-ar"><strong>قواعد العلامة</strong> -- الشعار في كل قطعة رئيسية. صوت المفهوم 3 في كل مكان. 3 عملاء كإثبات اجتماعي</span></li>
+          </ul></div></div>
+        </div>
+      </div>
+
+      <!-- Step 4: 7-Milestone Execution -->
+      <div class="phase anim" data-phase="4">
+        <div class="phase-dot">4</div>
+        <div class="phase-card">
+          <div class="phase-header">
+            <div class="phase-name"><span class="gold"><span class="lang-en">7-Milestone Execution</span><span class="lang-ar">تنفيذ 7 معالم</span></span></div>
+            <div class="phase-meta">
+              <span class="phase-count"><span class="lang-en">M0-M6</span><span class="lang-ar">M0-M6</span></span>
+              <span class="phase-chevron">&#9660;</span>
+            </div>
+          </div>
+          <p class="phase-summary"><span class="lang-en">7 milestones from showstopper fixes through sales enablement. Each milestone had specific deliverables, frameworks, and quality gates.</span><span class="lang-ar">7 معالم من إصلاح المشاكل الحرجة حتى تمكين المبيعات. كل معلم له مخرجات وأطر عمل وبوابات جودة محددة.</span></p>
+          <div class="phase-details"><div class="phase-details-inner"><ul>
+            <li><span class="lang-en"><strong>M0: Showstopper Fixes</strong> -- 7 critical fixes across 20+ files. Stub features reclassified. False claims removed. Seat count standardized to 30</span><span class="lang-ar"><strong>M0: إصلاح الحرجة</strong> -- 7 إصلاحات في 20+ ملفاً. ميزات تجريبية أُعيد تصنيفها. ادعاءات خاطئة أُزيلت</span></li>
+            <li><span class="lang-en"><strong>M1: Foundation</strong> -- Positioning Statement (FOR/WHO/OUR/UNLIKE/PROOF), Voice Guide (4-attribute matrix + 4-tier confidence), Battle Cards (7-section framework)</span><span class="lang-ar"><strong>M1: الأساس</strong> -- بيان التموضع، دليل الصوت (مصفوفة 4 سمات + 4 مستويات ثقة)، بطاقات المعركة</span></li>
+            <li><span class="lang-en"><strong>M2: Content Rebuild</strong> -- 6 content files rewritten with new voice. New sales docs: MEDDIC, CXO Value Story, Demo Script, Account Tiering Matrix</span><span class="lang-ar"><strong>M2: إعادة بناء المحتوى</strong> -- 6 ملفات أُعيد كتابتها. مستندات مبيعات جديدة: MEDDIC، قصة القيمة، نص العرض</span></li>
+            <li><span class="lang-en"><strong>M3: AI Cleanup</strong> -- Humanizer pass on 21 files. 263 em dashes to 0. Average score 8.9/10. Arabic "ليس...بل" intentionally retained (natural MSA)</span><span class="lang-ar"><strong>M3: تنظيف AI</strong> -- تمرير على 21 ملفاً. 263 شرطة إلى 0. المعدل 8.9/10. "ليس...بل" أُبقيت (عربية طبيعية)</span></li>
+            <li><span class="lang-en"><strong>M4: Decision Stage</strong> -- Landing page, sales deck, onboarding sequence, case study template, 28-item FAQ, nurture sequence, thank-you page</span><span class="lang-ar"><strong>M4: مرحلة القرار</strong> -- صفحة هبوط، عرض مبيعات، تسلسل تأهيل، قالب حالة، 28 سؤال شائع، صفحة شكر</span></li>
+            <li><span class="lang-en"><strong>M5: Distribution</strong> -- Cold outreach + scoring rubric, LinkedIn 5-phase credibility ladder, blog SCAR arcs, 48 social posts in 8-week calendar</span><span class="lang-ar"><strong>M5: التوزيع</strong> -- تواصل بارد + مقياس تقييم، LinkedIn سلم مصداقية، مدونة SCAR، 48 منشوراً في 8 أسابيع</span></li>
+            <li><span class="lang-en"><strong>M6: Sales &amp; Partner Enablement</strong> -- Pricing tiers (3 packages), Crisis playbook (P1-P4 severity), Brand governance checklist (14-item pre-publish gate)</span><span class="lang-ar"><strong>M6: تمكين المبيعات والشركاء</strong> -- باقات تسعير (3)، خطة أزمات (P1-P4)، قائمة حوكمة العلامة (14 بنداً)</span></li>
+          </ul></div></div>
+        </div>
+      </div>
+
+      <!-- Step 5: Final Audit -->
+      <div class="phase anim" data-phase="5">
+        <div class="phase-dot">5</div>
+        <div class="phase-card">
+          <div class="phase-header">
+            <div class="phase-name"><span class="gold"><span class="lang-en">Final Two-Pass Audit</span><span class="lang-ar">التدقيق النهائي بتمريرين</span></span></div>
+            <div class="phase-meta">
+              <span class="phase-count"><span class="lang-en">66 files checked</span><span class="lang-ar">66 ملفاً</span></span>
+              <span class="phase-chevron">&#9660;</span>
+            </div>
+          </div>
+          <p class="phase-summary"><span class="lang-en">Two-pass sweep across the entire 66-file corpus. Pass 1 found 7 issues. Pass 2 found 4 more that Pass 1 missed because it didn't check every folder.</span><span class="lang-ar">تمريران عبر 66 ملفاً. التمرير 1 وجد 7 مشاكل. التمرير 2 وجد 4 إضافية فاتها التمرير الأول.</span></p>
+          <div class="phase-details"><div class="phase-details-inner"><ul>
+            <li><span class="lang-en"><strong>Pass 1</strong> -- Checked phase4-content/ and deliverables/. Found banned hashtags, "الوحيدة" exclusivity claims, Vision 2030 in ads, "The Only Platform" in blog headers</span><span class="lang-ar"><strong>التمرير 1</strong> -- فحص مجلدات المحتوى والمخرجات. وجد هاشتاقات محظورة، ادعاءات حصرية، رؤية 2030 في الإعلانات</span></li>
+            <li><span class="lang-en"><strong>Pass 2</strong> -- Re-checked ALL 66 files. Found IP claim surviving in user docs, 97-char ad description (limit 90), "بحث ذكي" in 4 files (7 instances), "AI-Powered Search" in Google Ads headline</span><span class="lang-ar"><strong>التمرير 2</strong> -- أعاد فحص 66 ملفاً. وجد ادعاء IP في التوثيق، وصف إعلان 97 حرفاً (الحد 90)، "بحث ذكي" في 4 ملفات</span></li>
+            <li><span class="lang-en"><strong>Key lesson</strong> -- A single-pass audit gives false confidence. The second pass exists to prove the first one missed something. It always does</span><span class="lang-ar"><strong>الدرس الأساسي</strong> -- تمرير واحد يعطي ثقة زائفة. التمرير الثاني موجود لإثبات أن الأول فاته شيء. دائماً يفوته</span></li>
+          </ul></div></div>
+        </div>
+      </div>
+
+      <!-- Step 6: CEO-Ready Deliverables -->
+      <div class="phase anim" data-phase="6">
+        <div class="phase-dot">6</div>
+        <div class="phase-card">
+          <div class="phase-header">
+            <div class="phase-name"><span class="gold"><span class="lang-en">15 CEO-Ready Deliverables</span><span class="lang-ar">15 مخرجاً جاهزاً للقيادة</span></span></div>
+            <div class="phase-meta">
+              <span class="phase-count"><span class="lang-en">deliverables/</span><span class="lang-ar">المخرجات/</span></span>
+              <span class="phase-chevron">&#9660;</span>
+            </div>
+          </div>
+          <p class="phase-summary"><span class="lang-en">The polished final output. Every document internally consistent, voice-aligned, codebase-verified, and ready to hand to investors, partners, or the board.</span><span class="lang-ar">المخرجات النهائية المصقولة. كل وثيقة متسقة داخلياً، متوافقة مع الصوت، محققة مقابل الكود، وجاهزة للمستثمرين.</span></p>
+          <div class="phase-details"><div class="phase-details-inner"><ul>
+            <li><span class="lang-en"><strong>positioning-statement.md</strong> -- Single source of truth. FOR/WHO/OUR/UNLIKE/PROOF canvas. All content traces back to this</span><span class="lang-ar"><strong>positioning-statement.md</strong> -- المصدر الوحيد للحقيقة. كل المحتوى يعود إلى هذا</span></li>
+            <li><span class="lang-en"><strong>voice-guide.md</strong> -- How Musahm sounds. 4-attribute Voice Matrix, 4-tier confidence, 7 anti-patterns, persona adjustments</span><span class="lang-ar"><strong>voice-guide.md</strong> -- كيف يبدو صوت مساهم. مصفوفة 4 سمات، 4 مستويات ثقة، 7 أنماط ممنوعة</span></li>
+            <li><span class="lang-en"><strong>battle-cards.md</strong> -- 4 competitive cards (Majles, Ebana, Diligent, WhatsApp/Excel). 7-section framework with trap-setting questions</span><span class="lang-ar"><strong>battle-cards.md</strong> -- 4 بطاقات تنافسية. إطار 7 أقسام مع أسئلة استراتيجية</span></li>
+            <li><span class="lang-en"><strong>+ 12 more</strong> -- MEDDIC checklist, CXO value story, demo script, account tiering, pricing tiers, crisis playbook, brand governance checklist, humanizer report, thank-you page, win-loss template, final audit report, this process methodology</span><span class="lang-ar"><strong>+ 12 آخرين</strong> -- MEDDIC، قصة القيمة، نص العرض، تصنيف الحسابات، التسعير، خطة الأزمات، قائمة حوكمة العلامة، تقرير التطبيع، صفحة الشكر، نموذج الربح/الخسارة، التقرير النهائي، منهجية العملية</span></li>
+          </ul></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4: METHODOLOGY ============ -->
+<section class="section-alt" id="method">
+  <div class="container">
+    <div class="anim">
+      <p class="section-label">
+        <span class="lang-en">How We Built It</span>
+        <span class="lang-ar">كيف بنيناها</span>
+      </p>
+      <h2 class="section-title">
+        <span class="lang-en">AI-Powered, Human-Verified</span>
+        <span class="lang-ar">بالذكاء الاصطناعي، بتحقق بشري</span>
+      </h2>
+      <p class="section-subtitle">
+        <span class="lang-en">Specialized AI agents handled each domain. Every output was verified against the actual product codebase.</span>
+        <span class="lang-ar">وكلاء ذكاء اصطناعي متخصصون لكل مجال. كل مخرج تم التحقق منه مقابل الكود الفعلي للمنتج.</span>
+      </p>
+    </div>
+
+    <div class="agent-flow anim">
+      <div class="glass agent-card">
+        <div class="agent-icon gold">&#x1F3AF;</div>
+        <div class="agent-name">PMM Agent</div>
+        <div class="agent-role"><span class="lang-en">Strategy &amp; Positioning</span><span class="lang-ar">الاستراتيجية والتموضع</span></div>
+      </div>
+      <div class="glass agent-card">
+        <div class="agent-icon blue">&#x270D;&#xFE0F;</div>
+        <div class="agent-name">Content Agent</div>
+        <div class="agent-role"><span class="lang-en">Writing &amp; Channels</span><span class="lang-ar">الكتابة والقنوات</span></div>
+      </div>
+      <div class="glass agent-card">
+        <div class="agent-icon green">&#x1F50A;</div>
+        <div class="agent-name">Voice Agent</div>
+        <div class="agent-role"><span class="lang-en">Brand Consistency</span><span class="lang-ar">اتساق العلامة</span></div>
+      </div>
+      <div class="glass agent-card">
+        <div class="agent-icon gold">&#x1F50D;</div>
+        <div class="agent-name">Audit Agents (6)</div>
+        <div class="agent-role"><span class="lang-en">Quality Assurance</span><span class="lang-ar">ضمان الجودة</span></div>
+      </div>
+      <div class="glass agent-card">
+        <div class="agent-icon blue">&#x1F9F9;</div>
+        <div class="agent-name">Humanizer</div>
+        <div class="agent-role"><span class="lang-en">AI Detection Removal</span><span class="lang-ar">إزالة بصمات AI</span></div>
+      </div>
+    </div>
+
+    <div class="anim">
+      <p class="section-label" style="margin-top:2rem">
+        <span class="lang-en">10 Battle-Tested Frameworks</span>
+        <span class="lang-ar">10 أطر عمل مجربة</span>
+      </p>
+    </div>
+    <div class="framework-grid anim">
+      <div class="fw-chip">Positioning Canvas</div>
+      <div class="fw-chip">MEDDIC</div>
+      <div class="fw-chip">FIA Battle Cards</div>
+      <div class="fw-chip">Account Tiering</div>
+      <div class="fw-chip">Value Story</div>
+      <div class="fw-chip">Crisis P1-P4</div>
+      <div class="fw-chip">Brand Voice Matrix</div>
+      <div class="fw-chip">Cold Email Scoring</div>
+      <div class="fw-chip">Campaign 6-Step</div>
+      <div class="fw-chip">Pricing Packaging</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 5: METRICS ============ -->
+<section class="section-dark" id="metrics">
+  <div class="container">
+    <div class="anim">
+      <p class="section-label">
+        <span class="lang-en">By the Numbers</span>
+        <span class="lang-ar">بالأرقام</span>
+      </p>
+      <h2 class="section-title">
+        <span class="lang-en">Key Metrics</span>
+        <span class="lang-ar">الأرقام الرئيسية</span>
+      </h2>
+    </div>
+    <div class="metrics-grid" id="metricsGrid">
+      <div class="glass metric-card anim">
+        <div class="metric-value"><span class="counter" data-target="68">0</span></div>
+        <div class="metric-label"><span class="lang-en">Files in Corpus</span><span class="lang-ar">ملف في المجموعة</span></div>
+      </div>
+      <div class="glass metric-card anim anim-delay-1">
+        <div class="metric-value"><span class="counter" data-target="12">0</span><span class="metric-suffix">+</span></div>
+        <div class="metric-label"><span class="lang-en">Channels Covered</span><span class="lang-ar">قناة مغطاة</span></div>
+      </div>
+      <div class="glass metric-card anim anim-delay-2">
+        <div class="metric-value"><span class="counter" data-target="66">0</span></div>
+        <div class="metric-label"><span class="lang-en">Files Audited (Final)</span><span class="lang-ar">ملف مدقق (نهائي)</span></div>
+      </div>
+      <div class="glass metric-card anim anim-delay-3">
+        <div class="metric-value"><span class="counter" data-target="10">0</span></div>
+        <div class="metric-label"><span class="lang-en">Frameworks Applied</span><span class="lang-ar">إطار عمل مطبق</span></div>
+      </div>
+      <div class="glass metric-card anim anim-delay-4">
+        <div class="metric-value"><span class="counter" data-target="74">0</span><span class="metric-suffix">/100</span></div>
+        <div class="metric-label"><span class="lang-en">Audit Score</span><span class="lang-ar">درجة التدقيق</span></div>
+      </div>
+      <div class="glass metric-card anim anim-delay-1">
+        <div class="metric-value"><span class="counter" data-target="8.9" data-decimals="1">0</span><span class="metric-suffix">/10</span></div>
+        <div class="metric-label"><span class="lang-en">Humanizer Score</span><span class="lang-ar">درجة التطبيع</span></div>
+      </div>
+      <div class="glass metric-card anim anim-delay-2">
+        <div class="metric-value"><span class="counter" data-target="48">0</span></div>
+        <div class="metric-label"><span class="lang-en">Social Posts</span><span class="lang-ar">منشور اجتماعي</span></div>
+      </div>
+      <div class="glass metric-card anim anim-delay-3">
+        <div class="metric-value"><span class="counter" data-target="4">0</span></div>
+        <div class="metric-label"><span class="lang-en">Audits Run</span><span class="lang-ar">تدقيقات</span></div>
+      </div>
+      <div class="glass metric-card anim anim-delay-4">
+        <div class="metric-value"><span class="counter" data-target="15">0</span></div>
+        <div class="metric-label"><span class="lang-en">Final Deliverables</span><span class="lang-ar">مخرج نهائي</span></div>
+      </div>
+      <div class="glass metric-card anim anim-delay-5">
+        <div class="metric-value"><span class="counter" data-target="7">0</span></div>
+        <div class="metric-label"><span class="lang-en">Showstoppers Fixed</span><span class="lang-ar">مشكلة حرجة أُصلحت</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 6: CHANNELS ============ -->
+<section class="section-alt" id="channels">
+  <div class="container">
+    <div class="anim">
+      <p class="section-label">
+        <span class="lang-en">Channel Coverage</span>
+        <span class="lang-ar">تغطية القنوات</span>
+      </p>
+      <h2 class="section-title">
+        <span class="lang-en">12+ Marketing Channels</span>
+        <span class="lang-ar">أكثر من 12 قناة تسويقية</span>
+      </h2>
+      <p class="section-subtitle">
+        <span class="lang-en">Every channel has ready-to-deploy content. Click to see details.</span>
+        <span class="lang-ar">كل قناة لديها محتوى جاهز للنشر. اضغط للتفاصيل.</span>
+      </p>
+    </div>
+    <div class="channel-grid">
+      <div class="glass channel-card anim" onclick="toggleChannel(this)">
+        <div class="channel-icon">&#x1F4F1;</div>
+        <div class="channel-name"><span class="lang-en">Social Media</span><span class="lang-ar">وسائل التواصل</span></div>
+        <div class="channel-detail"><span class="lang-en">48 posts, 8-week calendar</span><span class="lang-ar">48 منشوراً، تقويم 8 أسابيع</span></div>
+        <div class="channel-expand"><div class="channel-expand-inner"><span class="lang-en">LinkedIn + Twitter/X. 4 campaign phases: Launch Buzz, Problem Education, Social Proof, Conversion Push. Persona-specific hooks for Board Secretary, CEO, CFO, Legal Counsel.</span><span class="lang-ar">LinkedIn + Twitter/X. 4 مراحل حملة: ضجة الإطلاق، تثقيف المشكلة، إثبات اجتماعي، دفع التحويل.</span></div></div>
+      </div>
+      <div class="glass channel-card anim anim-delay-1" onclick="toggleChannel(this)">
+        <div class="channel-icon">&#x2709;&#xFE0F;</div>
+        <div class="channel-name"><span class="lang-en">Email</span><span class="lang-ar">البريد الإلكتروني</span></div>
+        <div class="channel-detail"><span class="lang-en">Launch + nurture + onboarding</span><span class="lang-ar">إطلاق + رعاية + تأهيل</span></div>
+        <div class="channel-expand"><div class="channel-expand-inner"><span class="lang-en">Bilingual launch email with 8 feature bullets. Nurture sequence with 4-dimension scoring model. Behavioral onboarding with 5 activation milestones.</span><span class="lang-ar">بريد إطلاق ثنائي اللغة. سلسلة رعاية بنموذج تقييم 4 أبعاد. تأهيل سلوكي بـ5 معالم.</span></div></div>
+      </div>
+      <div class="glass channel-card anim anim-delay-2" onclick="toggleChannel(this)">
+        <div class="channel-icon">&#x1F4AC;</div>
+        <div class="channel-name"><span class="lang-en">SMS / WhatsApp</span><span class="lang-ar">SMS / واتساب</span></div>
+        <div class="channel-detail"><span class="lang-en">4 SMS + message library</span><span class="lang-ar">4 رسائل SMS + مكتبة واتساب</span></div>
+        <div class="channel-expand"><div class="channel-expand-inner"><span class="lang-en">4 SMS variants (2 languages x 2 lengths), UCS-2 compliant. WhatsApp template library with 20+ messages for support, updates, and engagement.</span><span class="lang-ar">4 أنواع SMS (لغتين x طولين). مكتبة قوالب واتساب بأكثر من 20 رسالة.</span></div></div>
+      </div>
+      <div class="glass channel-card anim anim-delay-3" onclick="toggleChannel(this)">
+        <div class="channel-icon">&#x1F3AC;</div>
+        <div class="channel-name"><span class="lang-en">Video</span><span class="lang-ar">فيديو</span></div>
+        <div class="channel-detail"><span class="lang-en">Brand (78s) + Demo (2:40)</span><span class="lang-ar">علامة (78 ث) + عرض (2:40)</span></div>
+        <div class="channel-expand"><div class="channel-expand-inner"><span class="lang-en">Brand intro video (6 scenes). Product demo with exact click paths, talk tracks, "wow moments," and objection handlers.</span><span class="lang-ar">فيديو تعريفي (6 مشاهد). عرض المنتج بمسارات نقر دقيقة ولحظات "واو".</span></div></div>
+      </div>
+      <div class="glass channel-card anim" onclick="toggleChannel(this)">
+        <div class="channel-icon">&#x1F310;</div>
+        <div class="channel-name"><span class="lang-en">Landing Page</span><span class="lang-ar">صفحة الهبوط</span></div>
+        <div class="channel-detail"><span class="lang-en">8 sections, bilingual</span><span class="lang-ar">8 أقسام، ثنائية اللغة</span></div>
+        <div class="channel-expand"><div class="channel-expand-inner"><span class="lang-en">8-section narrative arc: problem, solution, features, social proof, CTA. Urgency anchors and mid-page conversion strip.</span><span class="lang-ar">8 أقسام مع قوس سردي: المشكلة، الحل، الميزات، الإثبات، دعوة العمل.</span></div></div>
+      </div>
+      <div class="glass channel-card anim anim-delay-1" onclick="toggleChannel(this)">
+        <div class="channel-icon">&#x1F4CA;</div>
+        <div class="channel-name"><span class="lang-en">Sales Deck</span><span class="lang-ar">عرض المبيعات</span></div>
+        <div class="channel-detail"><span class="lang-en">15 slides + speaker notes</span><span class="lang-ar">15 شريحة + ملاحظات المتحدث</span></div>
+        <div class="channel-expand"><div class="channel-expand-inner"><span class="lang-en">Value Story Framework structure. Speaker notes with persona-specific talk tracks. Demo script with 6 scenes and exact UI clicks.</span><span class="lang-ar">هيكل إطار قصة القيمة. ملاحظات مع مسارات حديث مخصصة لكل شخصية.</span></div></div>
+      </div>
+      <div class="glass channel-card anim anim-delay-2" onclick="toggleChannel(this)">
+        <div class="channel-icon">&#x1F4B0;</div>
+        <div class="channel-name"><span class="lang-en">Google Ads</span><span class="lang-ar">إعلانات Google</span></div>
+        <div class="channel-detail"><span class="lang-en">Search + display campaigns</span><span class="lang-ar">حملات بحث + عرض</span></div>
+        <div class="channel-expand"><div class="channel-expand-inner"><span class="lang-en">6-step campaign framework with keyword strategy. 6 sitelink landing page requirements defined.</span><span class="lang-ar">إطار حملة من 6 خطوات مع استراتيجية كلمات مفتاحية.</span></div></div>
+      </div>
+      <div class="glass channel-card anim anim-delay-3" onclick="toggleChannel(this)">
+        <div class="channel-icon">&#x1F4BC;</div>
+        <div class="channel-name"><span class="lang-en">LinkedIn</span><span class="lang-ar">لينكدإن</span></div>
+        <div class="channel-detail"><span class="lang-en">5-phase credibility ladder</span><span class="lang-ar">سلم مصداقية من 5 مراحل</span></div>
+        <div class="channel-expand"><div class="channel-expand-inner"><span class="lang-en">Organic + paid strategy. 5-phase credibility ladder framework from awareness to advocacy.</span><span class="lang-ar">استراتيجية عضوية + مدفوعة. سلم مصداقية من 5 مراحل.</span></div></div>
+      </div>
+      <div class="glass channel-card anim" onclick="toggleChannel(this)">
+        <div class="channel-icon">&#x1F4DD;</div>
+        <div class="channel-name"><span class="lang-en">Blog / SEO</span><span class="lang-ar">المدونة / SEO</span></div>
+        <div class="channel-detail"><span class="lang-en">Content + 15 keywords</span><span class="lang-ar">محتوى + 15 كلمة مفتاحية</span></div>
+        <div class="channel-expand"><div class="channel-expand-inner"><span class="lang-en">SCAR arc framework (Situation/Complication/Action/Resolution). 15 primary keywords with Arabic morphology mapping.</span><span class="lang-ar">إطار SCAR. 15 كلمة مفتاحية رئيسية مع خرائط صرف عربية.</span></div></div>
+      </div>
+      <div class="glass channel-card anim anim-delay-1" onclick="toggleChannel(this)">
+        <div class="channel-icon">&#x1F4F0;</div>
+        <div class="channel-name"><span class="lang-en">Press / PR</span><span class="lang-ar">الصحافة والعلاقات</span></div>
+        <div class="channel-detail"><span class="lang-en">Release + partner kit</span><span class="lang-ar">بيان صحفي + حزمة شركاء</span></div>
+        <div class="channel-expand"><div class="channel-expand-inner"><span class="lang-en">Launch press release (claims verified against codebase). Partner sales enablement kit with co-marketing framework.</span><span class="lang-ar">بيان صحفي (ادعاءات محققة). حزمة تمكين شركاء مع إطار تسويق مشترك.</span></div></div>
+      </div>
+      <div class="glass channel-card anim anim-delay-2" onclick="toggleChannel(this)">
+        <div class="channel-icon">&#x1F4D6;</div>
+        <div class="channel-name"><span class="lang-en">Documentation</span><span class="lang-ar">التوثيق</span></div>
+        <div class="channel-detail"><span class="lang-en">User docs + FAQ (28 items)</span><span class="lang-ar">توثيق + أسئلة شائعة (28)</span></div>
+        <div class="channel-expand"><div class="channel-expand-inner"><span class="lang-en">12-section user documentation verified against codebase. 28 FAQ items with Schema.org markup. Quick-start guide.</span><span class="lang-ar">12 قسم توثيق محقق. 28 سؤال شائع. دليل بدء سريع.</span></div></div>
+      </div>
+      <div class="glass channel-card anim anim-delay-3" onclick="toggleChannel(this)">
+        <div class="channel-icon">&#x2694;&#xFE0F;</div>
+        <div class="channel-name"><span class="lang-en">Sales Tools</span><span class="lang-ar">أدوات المبيعات</span></div>
+        <div class="channel-detail"><span class="lang-en">Battle cards + outreach + MEDDIC</span><span class="lang-ar">بطاقات + تواصل + MEDDIC</span></div>
+        <div class="channel-expand"><div class="channel-expand-inner"><span class="lang-en">Competitive battle cards (4 competitors), cold outreach sequences with scoring rubric, MEDDIC checklist, account tiering matrix, CXO value stories.</span><span class="lang-ar">بطاقات معركة (4 منافسين)، تواصل بارد مع مقياس تقييم، قائمة MEDDIC، مصفوفة تصنيف الحسابات.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 7: QUALITY ASSURANCE ============ -->
+<section class="section-dark" id="quality">
+  <div class="container">
+    <div class="anim">
+      <p class="section-label">
+        <span class="lang-en">Quality Assurance</span>
+        <span class="lang-ar">ضمان الجودة</span>
+      </p>
+      <h2 class="section-title">
+        <span class="lang-en">6-Agent MEGA Audit</span>
+        <span class="lang-ar">تدقيق شامل بـ6 وكلاء</span>
+      </h2>
+      <p class="section-subtitle">
+        <span class="lang-en">42 files audited across 7 dimensions. Every claim verified against the actual product codebase.</span>
+        <span class="lang-ar">42 ملفاً تم تدقيقها عبر 7 أبعاد. كل ادعاء تم التحقق منه مقابل الكود الفعلي.</span>
+      </p>
+    </div>
+
+    <div class="qa-grid">
+      <div class="anim">
+        <div class="score-ring-wrap">
+          <div class="score-ring" id="scoreRing">
+            <svg viewBox="0 0 160 160">
+              <circle class="ring-bg" />
+              <circle class="ring-fill" id="ringFill" />
+            </svg>
+            <div class="score-ring-value">74</div>
+          </div>
+          <div class="score-ring-label"><span class="lang-en">Overall Audit Score</span><span class="lang-ar">درجة التدقيق الإجمالية</span></div>
+        </div>
+
+        <div class="dim-bar">
+          <div class="dim-header"><span class="dim-name"><span class="lang-en">Content Quality</span><span class="lang-ar">جودة المحتوى</span></span><span class="dim-score">8/10</span></div>
+          <div class="dim-track"><div class="dim-fill" data-width="80"></div></div>
+        </div>
+        <div class="dim-bar">
+          <div class="dim-header"><span class="dim-name"><span class="lang-en">AI Detection</span><span class="lang-ar">كشف الذكاء الاصطناعي</span></span><span class="dim-score">8/10</span></div>
+          <div class="dim-track"><div class="dim-fill" data-width="80"></div></div>
+        </div>
+        <div class="dim-bar">
+          <div class="dim-header"><span class="dim-name"><span class="lang-en">Brand Positioning</span><span class="lang-ar">التموضع</span></span><span class="dim-score">7/10</span></div>
+          <div class="dim-track"><div class="dim-fill" data-width="70"></div></div>
+        </div>
+        <div class="dim-bar">
+          <div class="dim-header"><span class="dim-name"><span class="lang-en">Arabic Language</span><span class="lang-ar">اللغة العربية</span></span><span class="dim-score">7/10</span></div>
+          <div class="dim-track"><div class="dim-fill" data-width="70"></div></div>
+        </div>
+        <div class="dim-bar">
+          <div class="dim-header"><span class="dim-name"><span class="lang-en">Product Truth</span><span class="lang-ar">حقيقة المنتج</span></span><span class="dim-score">6/10</span></div>
+          <div class="dim-track"><div class="dim-fill" data-width="60"></div></div>
+        </div>
+        <div class="dim-bar">
+          <div class="dim-header"><span class="dim-name"><span class="lang-en">Cross-File Consistency</span><span class="lang-ar">الاتساق</span></span><span class="dim-score">5/10</span></div>
+          <div class="dim-track"><div class="dim-fill" data-width="50"></div></div>
+        </div>
+        <div class="dim-bar">
+          <div class="dim-header"><span class="dim-name"><span class="lang-en">Customer Journey</span><span class="lang-ar">رحلة العميل</span></span><span class="dim-score">5/10</span></div>
+          <div class="dim-track"><div class="dim-fill" data-width="50"></div></div>
+        </div>
+      </div>
+
+      <div class="anim anim-delay-2">
+        <p class="section-label" style="margin-bottom:1rem">
+          <span class="lang-en">7 Showstoppers Found &amp; Fixed</span>
+          <span class="lang-ar">7 مشاكل حرجة تم اكتشافها وإصلاحها</span>
+        </p>
+        <ul class="fix-list">
+          <li><span class="fix-check">&#10003;</span><span class="lang-en">Semantic Search + Ask Vault reclassified as "Coming Soon"</span><span class="lang-ar">البحث الدلالي + اسأل Vault أُعيد تصنيفهما كـ"قريباً"</span></li>
+          <li><span class="fix-check">&#10003;</span><span class="lang-en">IP address logging claims removed from all files</span><span class="lang-ar">ادعاءات تسجيل IP أُزيلت من جميع الملفات</span></li>
+          <li><span class="fix-check">&#10003;</span><span class="lang-en">OTP delivery corrected from "phone" to "email"</span><span class="lang-ar">تسليم OTP صُحح من "الهاتف" إلى "البريد الإلكتروني"</span></li>
+          <li><span class="fix-check">&#10003;</span><span class="lang-en">"First Saudi DMS" unprovable claim removed</span><span class="lang-ar">ادعاء "أول نظام سعودي" غير القابل للإثبات أُزيل</span></li>
+          <li><span class="fix-check">&#10003;</span><span class="lang-en">Mobile app claims changed to "mobile-responsive browser"</span><span class="lang-ar">ادعاءات التطبيق تغيرت إلى "متصفح متجاوب"</span></li>
+          <li><span class="fix-check">&#10003;</span><span class="lang-en">Beta seat count standardized to 30 across all files</span><span class="lang-ar">عدد مقاعد البيتا موحد إلى 30 في جميع الملفات</span></li>
+          <li><span class="fix-check">&#10003;</span><span class="lang-en">Unsourced "95%" statistic replaced with "the vast majority"</span><span class="lang-ar">إحصائية "95%" بدون مصدر استُبدلت بـ"الغالبية العظمى"</span></li>
+        </ul>
+
+        <div style="margin-top:2rem">
+          <p class="section-label" style="margin-bottom:1rem">
+            <span class="lang-en">Humanizer Pass</span>
+            <span class="lang-ar">تمرير التطبيع</span>
+          </p>
+          <div class="glass" style="padding:1.2rem">
+            <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+              <div>
+                <div style="font-size:2rem;font-weight:800;color:var(--text-gold)">8.9<span style="font-size:1rem">/10</span></div>
+                <div style="font-size:0.78rem;color:var(--text-secondary)"><span class="lang-en">Average human-ness</span><span class="lang-ar">معدل البشرية</span></div>
+              </div>
+              <div style="font-size:0.82rem;color:var(--text-secondary);line-height:1.7">
+                <span class="lang-en">7 files processed. 263 em dashes removed. AI writing patterns (rule-of-three, negative parallelism, hyphenated compounds) eliminated across all marketing content.</span>
+                <span class="lang-ar">7 ملفات. 263 شرطة طويلة أُزيلت. أنماط كتابة AI (قاعدة الثلاثة، التوازي السلبي) أُزيلت من كل المحتوى التسويقي.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 8: WHAT'S NEXT ============ -->
+<section class="section-alt" id="next">
+  <div class="container">
+    <div class="anim">
+      <p class="section-label">
+        <span class="lang-en">What's Next</span>
+        <span class="lang-ar">الخطوة التالية</span>
+      </p>
+      <h2 class="section-title">
+        <span class="lang-en">8 Decisions Before Launch</span>
+        <span class="lang-ar">8 قرارات قبل الإطلاق</span>
+      </h2>
+      <p class="section-subtitle">
+        <span class="lang-en">The strategy is complete. These client decisions are the only thing between this GTM and market.</span>
+        <span class="lang-ar">الاستراتيجية مكتملة. قرارات العميل هذه هي الشيء الوحيد بين هذا العمل والسوق.</span>
+      </p>
+    </div>
+
+    <div class="decisions-grid">
+      <div class="glass decision-card anim">
+        <div class="decision-badge high">D1</div>
+        <div>
+          <div class="decision-name"><span class="lang-en">Pricing Model &amp; Tiers</span><span class="lang-ar">نموذج التسعير والباقات</span></div>
+          <div class="decision-desc"><span class="lang-en">SAR amounts for Starter / Professional / Enterprise tiers</span><span class="lang-ar">مبالغ بالريال لباقات المبتدئ / المحترف / المؤسسي</span></div>
+        </div>
+      </div>
+      <div class="glass decision-card anim anim-delay-1">
+        <div class="decision-badge high">D2</div>
+        <div>
+          <div class="decision-name"><span class="lang-en">Data Hosting Location</span><span class="lang-ar">موقع استضافة البيانات</span></div>
+          <div class="decision-desc"><span class="lang-en">Confirm KSA-based hosting for compliance claims</span><span class="lang-ar">تأكيد الاستضافة داخل المملكة للادعاءات التنظيمية</span></div>
+        </div>
+      </div>
+      <div class="glass decision-card anim anim-delay-2">
+        <div class="decision-badge medium">D3</div>
+        <div>
+          <div class="decision-name"><span class="lang-en">Logo Permissions</span><span class="lang-ar">أذونات الشعارات</span></div>
+          <div class="decision-desc"><span class="lang-en">Al-Ufuq, Miral, Amwaj logo usage rights for case studies</span><span class="lang-ar">حقوق استخدام شعارات الأفق، ميرال، أمواج</span></div>
+        </div>
+      </div>
+      <div class="glass decision-card anim anim-delay-3">
+        <div class="decision-badge high">D4</div>
+        <div>
+          <div class="decision-name"><span class="lang-en">Launch Date</span><span class="lang-ar">تاريخ الإطلاق</span></div>
+          <div class="decision-desc"><span class="lang-en">Target date to trigger T-14 launch calendar</span><span class="lang-ar">التاريخ المستهدف لتفعيل تقويم الإطلاق T-14</span></div>
+        </div>
+      </div>
+      <div class="glass decision-card anim">
+        <div class="decision-badge medium">D5</div>
+        <div>
+          <div class="decision-name"><span class="lang-en">WhatsApp Business Number</span><span class="lang-ar">رقم واتساب الأعمال</span></div>
+          <div class="decision-desc"><span class="lang-en">Dedicated support number for all CTA placements</span><span class="lang-ar">رقم دعم مخصص لجميع نقاط الاتصال</span></div>
+        </div>
+      </div>
+      <div class="glass decision-card anim anim-delay-1">
+        <div class="decision-badge medium">D6</div>
+        <div>
+          <div class="decision-name"><span class="lang-en">Landing Page URL</span><span class="lang-ar">رابط صفحة الهبوط</span></div>
+          <div class="decision-desc"><span class="lang-en">Domain / path where all CTAs should point</span><span class="lang-ar">النطاق / المسار لجميع روابط الدعوة للعمل</span></div>
+        </div>
+      </div>
+      <div class="glass decision-card anim anim-delay-2">
+        <div class="decision-badge high">D7</div>
+        <div>
+          <div class="decision-name"><span class="lang-en">E-Signature Legal Review</span><span class="lang-ar">المراجعة القانونية للتوقيع</span></div>
+          <div class="decision-desc"><span class="lang-en">Verify e-signature legality claims with legal counsel</span><span class="lang-ar">التحقق من ادعاءات شرعية التوقيع الإلكتروني مع المستشار القانوني</span></div>
+        </div>
+      </div>
+      <div class="glass decision-card anim anim-delay-3">
+        <div class="decision-badge high">D8</div>
+        <div>
+          <div class="decision-name"><span class="lang-en">Encryption Verification</span><span class="lang-ar">التحقق من التشفير</span></div>
+          <div class="decision-desc"><span class="lang-en">Confirm encryption-at-rest is implemented in production</span><span class="lang-ar">تأكيد تطبيق التشفير أثناء التخزين في الإنتاج</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 9: FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <p class="footer-tagline footer-tagline-ar">حوكمة سعودية. منصة عالمية.</p>
+    <p class="footer-tagline">Saudi governance. World-class platform.</p>
+    <p class="footer-sub" style="margin-top:1rem">
+      <span class="lang-en">Musahm Vault GTM Strategy &middot; April 2026 &middot; Built with Claude Code</span>
+      <span class="lang-ar">استراتيجية مساهم Vault &middot; أبريل 2026 &middot; بُنيت بـ Claude Code</span>
+    </p>
+  </div>
+</footer>
+
+<!-- ============ FILE INVENTORY OVERLAY ============ -->
+<div class="inv-overlay" id="fileInventory">
+  <button class="inv-close" onclick="document.getElementById('fileInventory').classList.remove('open')">&times;</button>
+  <div class="inv-inner">
+    <h2 class="inv-title"><span class="lang-en">Complete File Inventory</span><span class="lang-ar">جرد الملفات الكامل</span></h2>
+    <p class="inv-sub"><span class="lang-en">Every file in the GTM repository, organized by folder, with its purpose.</span><span class="lang-ar">كل ملف في مستودع GTM، مرتب حسب المجلد، مع وظيفته.</span></p>
+
+    <!-- Root -->
+    <div class="inv-folder">
+      <div class="inv-folder-name">gtm/ <span class="inv-folder-count">11</span></div>
+      <div class="inv-file"><span class="inv-file-name">CLAUDE.md</span><span class="inv-file-desc"><span class="lang-en">Quick-reference context file: product truth, file map, brand rules, audit status, blocking decisions. Used by AI to maintain accuracy</span><span class="lang-ar">ملف مرجعي سريع: حقيقة المنتج، خريطة الملفات، قواعد العلامة، حالة التدقيق، القرارات المعلقة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">positioning-statement.md</span><span class="inv-file-desc"><span class="lang-en">Canonical positioning using FOR/WHO/OUR/UNLIKE/PROOF canvas. Single source of truth for all messaging. Bilingual EN+AR</span><span class="lang-ar">التموضع الأساسي بإطار FOR/WHO/OUR/UNLIKE/PROOF. المصدر الوحيد لكل الرسائل</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">voice-guide.md</span><span class="inv-file-desc"><span class="lang-en">Brand Voice Matrix (4 attributes x We Are/We Are NOT), 4-tier confidence calibration, 7 anti-patterns, persona-specific adjustments</span><span class="lang-ar">مصفوفة صوت العلامة (4 سمات)، 4 مستويات ثقة، 7 أنماط ممنوعة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">GTM-AUDIT-AND-EXECUTION-PLAN.md</span><span class="inv-file-desc"><span class="lang-en">Master plan: 7 milestones, 38+ tasks, severity findings, execution sequence. The project roadmap</span><span class="lang-ar">الخطة الرئيسية: 7 معالم، 38+ مهمة، تسلسل التنفيذ</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">MEGA-AUDIT.md</span><span class="inv-file-desc"><span class="lang-en">6-agent audit report scoring 74/100 across 7 dimensions. 7 showstoppers identified with fixes</span><span class="lang-ar">تقرير تدقيق 6 وكلاء بدرجة 74/100 عبر 7 أبعاد. 7 مشاكل حرجة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">AUDIT-REPORT.md</span><span class="inv-file-desc"><span class="lang-en">First PMM audit (62/100). 10 CRITICAL, 16 MODERATE findings. Triggered the entire fix pipeline</span><span class="lang-ar">أول تدقيق PMM (62/100). 10 حرجة، 16 متوسطة. أطلق خط الإصلاح</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">CEO-AUDIT.md</span><span class="inv-file-desc"><span class="lang-en">Executive readiness audit. Can a CEO hand this to investors or the board?</span><span class="lang-ar">تدقيق جاهزية تنفيذية. هل يمكن للمدير تقديمه للمستثمرين؟</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">execution-plan.md</span><span class="inv-file-desc"><span class="lang-en">Per-task skill/agent mapping: which agent, which skill, which input, which output for every task</span><span class="lang-ar">خريطة المهام: أي وكيل، أي مهارة، أي مدخل، أي مخرج لكل مهمة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">GTM-AGENTS-REPO-SYNTHESIS.md</span><span class="inv-file-desc"><span class="lang-en">Framework extraction from gtm-agents repo (67 plugins, 244 skills). The 10 frameworks adapted for Musahm</span><span class="lang-ar">استخراج الأطر من مستودع gtm-agents (67 إضافة، 244 مهارة). 10 أطر مكيّفة لمساهم</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">humanizer-report.md</span><span class="inv-file-desc"><span class="lang-en">Per-file AI detection scores (before/after). 7 files processed, 263 em dashes removed, avg 8.9/10</span><span class="lang-ar">درجات كشف AI لكل ملف. 7 ملفات، 263 شرطة أُزيلت، المعدل 8.9/10</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">TOOL-STACK.md</span><span class="inv-file-desc"><span class="lang-en">80+ tools evaluated across 15 categories. 11 Tier-S picks. Total cost ~$45/month</span><span class="lang-ar">80+ أداة تم تقييمها عبر 15 فئة. 11 من الفئة S. التكلفة ~45$/شهر</span></span></div>
+    </div>
+
+    <!-- Phase 1 -->
+    <div class="inv-folder">
+      <div class="inv-folder-name">phase1-discovery/ <span class="inv-folder-count">4</span></div>
+      <div class="inv-file"><span class="inv-file-name">icp.md</span><span class="inv-file-desc"><span class="lang-en">Ideal Customer Profile. 4 buyer personas (Board Secretary, CEO, CFO, Legal Counsel). 6 sectors ranked. Disqualification criteria defined</span><span class="lang-ar">ملف العميل المثالي. 4 شخصيات مشتري. 6 قطاعات مرتبة. معايير الاستبعاد</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">competitive-analysis.md</span><span class="inv-file-desc"><span class="lang-en">4 competitors (Diligent, Majles.tech, Ebana, SharePoint). 40-feature matrix. Positioning quadrant. 5 exploitable advantages</span><span class="lang-ar">4 منافسين. مصفوفة 40 ميزة. خريطة تموضع. 5 مزايا قابلة للاستغلال</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">battle-cards.md</span><span class="inv-file-desc"><span class="lang-en">FIA framework (Features/Implementation/Advantages) per competitor. Trap-setting questions. Walk-away criteria</span><span class="lang-ar">إطار FIA لكل منافس. أسئلة استراتيجية. معايير الانسحاب</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">brand-audit.md</span><span class="inv-file-desc"><span class="lang-en">Current brand state. 5 critical pre-Vault fixes. Proposed hero tagline. Brand architecture decision (Vault as sub-brand)</span><span class="lang-ar">حالة العلامة الحالية. 5 إصلاحات حرجة. شعار مقترح. هيكل العلامة</span></span></div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="inv-folder">
+      <div class="inv-folder-name">phase2-brand/ <span class="inv-folder-count">4</span></div>
+      <div class="inv-file"><span class="inv-file-name">concept-1-trust-heritage.md</span><span class="inv-file-desc"><span class="lang-en">Brand concept: institutional Arabic gravitas. Scored 40.5/100. Not selected (weak differentiation)</span><span class="lang-ar">مفهوم العلامة: هيبة مؤسسية عربية. 40.5/100. لم يُختر</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">concept-2-modern-digital.md</span><span class="inv-file-desc"><span class="lang-en">Brand concept: SaaS startup energy. Scored 26.5/100. Not selected (Majles.tech owns this lane)</span><span class="lang-ar">مفهوم العلامة: طاقة شركة ناشئة. 26.5/100. لم يُختر</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">concept-3-ksa-native-tech.md</span><span class="inv-file-desc"><span class="lang-en">SELECTED. "Built FOR Saudi governance." Scored 50.5/100. Strongest differentiation: no foreign competitor can credibly claim this</span><span class="lang-ar">المختار. "مبنية للحوكمة السعودية." 50.5/100. أقوى تمايز</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">recommendation.md</span><span class="inv-file-desc"><span class="lang-en">Winning concept with 5 required modifications. Palette, voice table, tagline, Arabic-first policy, anti-patterns</span><span class="lang-ar">المفهوم الفائز مع 5 تعديلات. اللوحة، جدول الصوت، الشعار، سياسة العربية أولاً</span></span></div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="inv-folder">
+      <div class="inv-folder-name">phase3-segmentation/ <span class="inv-folder-count">3</span></div>
+      <div class="inv-file"><span class="inv-file-name">message-house.md</span><span class="inv-file-desc"><span class="lang-en">Hero statement, 3 proof points per product, 9 objection handlers with bilingual AR/EN responses</span><span class="lang-ar">بيان رئيسي، 3 نقاط إثبات لكل منتج، 9 معالجات اعتراضات ثنائية اللغة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">sector-priority-matrix.md</span><span class="inv-file-desc"><span class="lang-en">6 sectors ranked by urgency, ease of sale, Vision 2030 relevance. Real Estate + Healthcare = P0</span><span class="lang-ar">6 قطاعات مرتبة بالإلحاح، سهولة البيع، ملاءمة رؤية 2030. عقارات + صحة = P0</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">beta-rollout-plan.md</span><span class="inv-file-desc"><span class="lang-en">3-wave deployment strategy. Wave 1: 8-12 companies. Scoring matrix for client selection</span><span class="lang-ar">استراتيجية 3 موجات. الموجة 1: 8-12 شركة. مصفوفة تقييم لاختيار العملاء</span></span></div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="inv-folder">
+      <div class="inv-folder-name">phase4-content/ <span class="inv-folder-count">33</span></div>
+      <div class="inv-file"><span class="inv-file-name">landing-page.md</span><span class="inv-file-desc"><span class="lang-en">8-section landing page copy with narrative arc, urgency anchors, mid-page CTA strip. Bilingual</span><span class="lang-ar">صفحة هبوط 8 أقسام مع قوس سردي وعناصر إلحاح. ثنائية اللغة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">final-launch-email.md</span><span class="inv-file-desc"><span class="lang-en">Bilingual beta invite. 8 feature bullets, 30-seat urgency anchor, WhatsApp CTA</span><span class="lang-ar">دعوة بيتا ثنائية اللغة. 8 نقاط ميزات، إلحاح 30 مقعد</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">launch-email.md</span><span class="inv-file-desc"><span class="lang-en">Original launch email template (pre-rewrite version)</span><span class="lang-ar">قالب بريد الإطلاق الأصلي (قبل إعادة الكتابة)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">nurture-sequence.md</span><span class="inv-file-desc"><span class="lang-en">Email nurture with 4-dimension scoring rubric (4 x 25 = 100-point model)</span><span class="lang-ar">سلسلة رعاية بمقياس تقييم 4 أبعاد (4 x 25 = 100 نقطة)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">onboarding-sequence.md</span><span class="inv-file-desc"><span class="lang-en">Behavioral onboarding with 5 activation milestones</span><span class="lang-ar">تأهيل سلوكي بـ5 معالم تفعيل</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">final-social-posts.md</span><span class="inv-file-desc"><span class="lang-en">48 posts, 8-week calendar. LinkedIn + Twitter/X. 4 campaign phases: Launch Buzz, Problem Education, Social Proof, Conversion Push</span><span class="lang-ar">48 منشوراً، 8 أسابيع. LinkedIn + Twitter/X. 4 مراحل حملة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">social-posts.md</span><span class="inv-file-desc"><span class="lang-en">Original social posts (pre-rewrite version)</span><span class="lang-ar">المنشورات الأصلية (قبل إعادة الكتابة)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">social-calendar.md</span><span class="inv-file-desc"><span class="lang-en">Social media calendar template and scheduling framework</span><span class="lang-ar">قالب تقويم وسائل التواصل</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">final-sms-blast.md</span><span class="inv-file-desc"><span class="lang-en">4 SMS variants (2 languages x 2 lengths). UCS-2 compliant with character count analysis</span><span class="lang-ar">4 أنواع SMS (لغتين x طولين). متوافق مع UCS-2</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">sms-blast.md</span><span class="inv-file-desc"><span class="lang-en">Original SMS content (pre-rewrite version)</span><span class="lang-ar">محتوى SMS الأصلي (قبل إعادة الكتابة)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">whatsapp-library.md</span><span class="inv-file-desc"><span class="lang-en">WhatsApp message templates. 20+ messages for support, updates, engagement. Channel-perfect informal tone</span><span class="lang-ar">قوالب رسائل واتساب. 20+ رسالة. نبرة غير رسمية مناسبة للقناة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">video-script.md</span><span class="inv-file-desc"><span class="lang-en">78-second brand intro video. 6 scenes: problem, vision, registry feature, Vault, trust proof, CTA</span><span class="lang-ar">فيديو تعريفي 78 ثانية. 6 مشاهد: المشكلة، الرؤية، السجل، Vault، الثقة، CTA</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">final-video-demo-script.md</span><span class="inv-file-desc"><span class="lang-en">2:40 product demo. 8 scenes with exact clicks, talk tracks, "wow moments," objection handlers</span><span class="lang-ar">عرض منتج 2:40. 8 مشاهد بنقرات دقيقة ومسارات حديث</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">sales-deck.md</span><span class="inv-file-desc"><span class="lang-en">15-slide presentation mapped to Value Story Framework. Speaker notes per slide</span><span class="lang-ar">عرض 15 شريحة مرتبط بإطار قصة القيمة. ملاحظات متحدث</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">cold-outreach.md</span><span class="inv-file-desc"><span class="lang-en">Cold email sequences. 4x25 scoring rubric (Personalization, Value, CTA, Technical). 10-asset personalization system</span><span class="lang-ar">تسلسلات بريد بارد. مقياس 4x25. نظام تخصيص 10 أصول</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">google-ads.md</span><span class="inv-file-desc"><span class="lang-en">Google Ads campaigns. 6-step framework. Keyword strategy. 6 sitelink landing page requirements</span><span class="lang-ar">حملات Google Ads. إطار 6 خطوات. استراتيجية كلمات مفتاحية</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">linkedin-strategy.md</span><span class="inv-file-desc"><span class="lang-en">5-phase LinkedIn credibility ladder. Organic + paid strategy from awareness to advocacy</span><span class="lang-ar">سلم مصداقية LinkedIn من 5 مراحل. استراتيجية عضوية + مدفوعة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">blog-posts.md</span><span class="inv-file-desc"><span class="lang-en">Blog content with SCAR arc (Situation/Complication/Action/Resolution) per article</span><span class="lang-ar">محتوى مدونة بإطار SCAR لكل مقال</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">seo-keywords.md</span><span class="inv-file-desc"><span class="lang-en">15 primary keywords. Long-tail variants. Arabic morphology mapping. Technical SEO checklist</span><span class="lang-ar">15 كلمة مفتاحية. متغيرات طويلة. خرائط صرف عربية. قائمة SEO تقنية</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">faq.md</span><span class="inv-file-desc"><span class="lang-en">28 FAQ items with Schema.org markup. Bilingual. Covers product, security, pricing, compliance</span><span class="lang-ar">28 سؤال شائع مع Schema.org. ثنائي اللغة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">press-release.md</span><span class="inv-file-desc"><span class="lang-en">Launch press release. Claims verified against codebase. "First" claims removed per audit</span><span class="lang-ar">بيان صحفي للإطلاق. الادعاءات محققة مقابل الكود</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">partner-kit.md</span><span class="inv-file-desc"><span class="lang-en">Partner sales enablement. Co-marketing framework. Revenue sharing structure</span><span class="lang-ar">حزمة تمكين الشركاء. إطار تسويق مشترك</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">poster-copy.md</span><span class="inv-file-desc"><span class="lang-en">Print and digital poster copy. Bilingual headlines and body text</span><span class="lang-ar">نسخة ملصقات مطبوعة ورقمية. ثنائية اللغة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">case-study-template.md</span><span class="inv-file-desc"><span class="lang-en">CHIC framework (Challenge/How/Impact/Conclusion) for writing client case studies</span><span class="lang-ar">إطار CHIC لكتابة حالات العملاء</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">quick-start-guide.md</span><span class="inv-file-desc"><span class="lang-en">Quick start guide for new Vault users. Onboarding steps</span><span class="lang-ar">دليل بدء سريع لمستخدمي Vault الجدد</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">thank-you-page.md</span><span class="inv-file-desc"><span class="lang-en">Post-signup confirmation. 7 sections: confirmation, timeline, prep checklist, resources, contact, social proof, tagline</span><span class="lang-ar">صفحة تأكيد بعد التسجيل. 7 أقسام</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">deliverables-index.md</span><span class="inv-file-desc"><span class="lang-en">Master index of all Phase 4 content with status tracking</span><span class="lang-ar">فهرس رئيسي لكل محتوى المرحلة 4 مع تتبع الحالة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">generate-visuals.js</span><span class="inv-file-desc"><span class="lang-en">Re-runnable JavaScript generator for social media graphics</span><span class="lang-ar">مولد JavaScript قابل لإعادة التشغيل لصور التواصل الاجتماعي</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">final-social-visuals-*.pptx</span><span class="inv-file-desc"><span class="lang-en">2 PowerPoint files with social media visuals (LinkedIn 1200x628, Instagram 1080x1080)</span><span class="lang-ar">ملفا PowerPoint بصور التواصل الاجتماعي</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">final-boss-review.html</span><span class="inv-file-desc"><span class="lang-en">Executive review dashboard with approve/revise/reject controls and CSV export</span><span class="lang-ar">لوحة مراجعة تنفيذية مع أزرار قبول/تعديل/رفض وتصدير CSV</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">final-launch-dashboard*.html</span><span class="inv-file-desc"><span class="lang-en">2 interactive launch review dashboards (English + bilingual versions)</span><span class="lang-ar">لوحتا مراجعة إطلاق تفاعليتان (إنجليزية + ثنائية اللغة)</span></span></div>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="inv-folder">
+      <div class="inv-folder-name">phase5-launch/ <span class="inv-folder-count">4</span></div>
+      <div class="inv-file"><span class="inv-file-name">launch-checklist.md</span><span class="inv-file-desc"><span class="lang-en">T-14 launch calendar. 12 channels coordinated from pre-launch setup through T+7 monitoring</span><span class="lang-ar">تقويم إطلاق T-14. 12 قناة منسقة من الإعداد حتى المراقبة T+7</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">beta-kpi-plan.md</span><span class="inv-file-desc"><span class="lang-en">10 KPIs instrumented via PostHog. DAU, MAU, feature adoption, NPS, conversion, error rates</span><span class="lang-ar">10 مؤشرات عبر PostHog. المستخدمين النشطين، تبني الميزات، NPS، التحويل</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">vault-user-docs.md</span><span class="inv-file-desc"><span class="lang-en">12-section user documentation extracted from and verified against the actual Vault codebase</span><span class="lang-ar">12 قسم توثيق مستخرج ومحقق مقابل كود Vault الفعلي</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">win-loss-template.md</span><span class="inv-file-desc"><span class="lang-en">9-field post-deal analysis template for continuous sales learning</span><span class="lang-ar">نموذج تحليل ما بعد الصفقة بـ9 حقول للتعلم المستمر</span></span></div>
+    </div>
+
+    <!-- Audit Artifacts -->
+    <div class="inv-folder">
+      <div class="inv-folder-name">audit-artifacts/ <span class="inv-folder-count">6</span></div>
+      <div class="inv-file"><span class="inv-file-name">product-truth.md</span><span class="inv-file-desc"><span class="lang-en">Every feature claim verified against backend source code. 4 false claims caught</span><span class="lang-ar">كل ادعاء ميزة تم التحقق منه مقابل الكود. 4 ادعاءات خاطئة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">consistency.md</span><span class="inv-file-desc"><span class="lang-en">Cross-file consistency analysis. 30+ "من الصفر" repetitions, 5 CTA verbs, numeral violations</span><span class="lang-ar">تحليل الاتساق. 30+ تكرار "من الصفر"، 5 أفعال CTA، انتهاكات أرقام</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">customer-journey.md</span><span class="inv-file-desc"><span class="lang-en">Buyer journey mapping across 5 stages. 4 rated "Bumpy," 1 rated "Broken" (Google Ads)</span><span class="lang-ar">خرائط رحلة المشتري. 4 "متعثرة"، 1 "مكسورة" (Google Ads)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">arabic-audit.md</span><span class="inv-file-desc"><span class="lang-en">MSA quality, numeral system compliance, naming consistency across Arabic content</span><span class="lang-ar">جودة الفصحى، امتثال الأرقام، اتساق التسمية عبر المحتوى العربي</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">quality.md</span><span class="inv-file-desc"><span class="lang-en">Content polish, structure, persuasion, and readability assessment</span><span class="lang-ar">تقييم التلميع، الهيكل، الإقناع، وسهولة القراءة</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">positioning.md</span><span class="inv-file-desc"><span class="lang-en">Brand positioning credibility and differentiation strength analysis</span><span class="lang-ar">تحليل مصداقية التموضع وقوة التمايز</span></span></div>
+    </div>
+
+    <!-- Deliverables -->
+    <div class="inv-folder">
+      <div class="inv-folder-name">deliverables/ <span class="inv-folder-count">15</span></div>
+      <div class="inv-file"><span class="inv-file-name">positioning-statement.md</span><span class="inv-file-desc"><span class="lang-en">Polished canonical positioning (M1). The document everything else traces back to</span><span class="lang-ar">التموضع الأساسي المصقول (M1). الوثيقة التي يعود إليها كل شيء</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">voice-guide.md</span><span class="inv-file-desc"><span class="lang-en">Brand voice bible (M1). Rated "best-in-class" in audit</span><span class="lang-ar">كتاب صوت العلامة (M1). صُنف "الأفضل" في التدقيق</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">battle-cards.md</span><span class="inv-file-desc"><span class="lang-en">4 competitive cards, 7-section extended framework (M1)</span><span class="lang-ar">4 بطاقات تنافسية، إطار 7 أقسام (M1)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">meddic-checklist.md</span><span class="inv-file-desc"><span class="lang-en">MEDDIC sales qualification adapted for KSA governance buyers (M2)</span><span class="lang-ar">تأهيل مبيعات MEDDIC مكيّف لمشتري الحوكمة السعودية (M2)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">cxo-value-story.md</span><span class="inv-file-desc"><span class="lang-en">Executive value story for CEO, CFO, Board Secretary. Bilingual (M2)</span><span class="lang-ar">قصة قيمة تنفيذية للمدير التنفيذي والمالي وأمين السر (M2)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">demo-script.md</span><span class="inv-file-desc"><span class="lang-en">25-minute product demo. 6 scenes with exact UI clicks (M2)</span><span class="lang-ar">عرض منتج 25 دقيقة. 6 مشاهد بنقرات واجهة دقيقة (M2)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">account-tiering-matrix.md</span><span class="inv-file-desc"><span class="lang-en">T1/T2/T3 scoring: Firmographic 40% + Governance 30% + Intent 20% + Engagement 10% (M2)</span><span class="lang-ar">تصنيف T1/T2/T3: شركة 40% + حوكمة 30% + نية 20% + تفاعل 10% (M2)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">humanizer-score-report.md</span><span class="inv-file-desc"><span class="lang-en">Per-file AI detection scores with before/after patterns (M3)</span><span class="lang-ar">درجات كشف AI لكل ملف مع الأنماط قبل/بعد (M3)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">pricing-tiers.md</span><span class="inv-file-desc"><span class="lang-en">3-tier packaging (Starter/Professional/Enterprise). SAR amounts pending client decision D1 (M6)</span><span class="lang-ar">3 باقات. مبالغ الريال معلقة على قرار العميل D1 (M6)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">crisis-playbook.md</span><span class="inv-file-desc"><span class="lang-en">P1-P4 severity matrix. Response SLAs (15min/1hr/4hr/24hr). 4 bilingual templates (M6)</span><span class="lang-ar">مصفوفة خطورة P1-P4. اتفاقيات استجابة. 4 قوالب ثنائية اللغة (M6)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">brand-governance-checklist.md</span><span class="inv-file-desc"><span class="lang-en">14-item pre-publish gate. Built from real failure patterns caught during M0-M4 (M6)</span><span class="lang-ar">بوابة نشر 14 بنداً. مبنية من أنماط فشل حقيقية خلال M0-M4 (M6)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">thank-you-page.md</span><span class="inv-file-desc"><span class="lang-en">Post-signup confirmation flow (M4)</span><span class="lang-ar">تدفق تأكيد بعد التسجيل (M4)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">win-loss-template.md</span><span class="inv-file-desc"><span class="lang-en">Post-deal analysis model (M4)</span><span class="lang-ar">نموذج تحليل ما بعد الصفقة (M4)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">final-audit-report.md</span><span class="inv-file-desc"><span class="lang-en">Full corpus audit with fix log. Pass 1 + Pass 2 results (Final)</span><span class="lang-ar">تدقيق كامل مع سجل الإصلاحات. نتائج التمريرين (نهائي)</span></span></div>
+      <div class="inv-file"><span class="inv-file-name">process-methodology.md</span><span class="inv-file-desc"><span class="lang-en">This entire process documented. How the GTM was built, step by step (Final)</span><span class="lang-ar">توثيق العملية بالكامل. كيف بُنيت الاستراتيجية خطوة بخطوة (نهائي)</span></span></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function() {
+  // Language toggle
+  window.toggleLang = function() {
+    const html = document.documentElement;
+    if (html.dir === 'rtl') {
+      html.dir = 'ltr';
+      html.lang = 'en';
+    } else {
+      html.dir = 'rtl';
+      html.lang = 'ar';
+    }
+    localStorage.setItem('gtm-journey-lang', html.dir);
+  };
+
+  // Restore lang preference
+  const saved = localStorage.getItem('gtm-journey-lang');
+  if (saved === 'rtl') {
+    document.documentElement.dir = 'rtl';
+    document.documentElement.lang = 'ar';
+  }
+
+  // Scroll animations
+  const obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.anim').forEach(function(el) { obs.observe(el); });
+
+  // Animated counters
+  let countersStarted = false;
+  const counterObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && !countersStarted) {
+        countersStarted = true;
+        animateCounters();
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const metricsEl = document.getElementById('metricsGrid');
+  if (metricsEl) counterObs.observe(metricsEl);
+
+  // Also animate the summary stats
+  document.querySelectorAll('.stat-number[data-target]').forEach(function(el) {
+    const statObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          animateSingle(e.target);
+          statObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    statObs.observe(el);
+  });
+
+  function animateSingle(el) {
+    const target = parseFloat(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const decimals = parseInt(el.dataset.decimals) || 0;
+    const duration = 1800;
+    const start = performance.now();
+
+    function tick(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = eased * target;
+      el.textContent = (decimals ? current.toFixed(decimals) : Math.round(current)) + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function animateCounters() {
+    document.querySelectorAll('#metricsGrid .counter').forEach(function(el) {
+      const target = parseFloat(el.dataset.target);
+      const decimals = parseInt(el.dataset.decimals) || 0;
+      const duration = 2000;
+      const start = performance.now();
+
+      function tick(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = eased * target;
+        el.textContent = decimals ? current.toFixed(decimals) : Math.round(current);
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  // Accordion timeline
+  document.querySelectorAll('.phase').forEach(function(phase) {
+    phase.addEventListener('click', function() {
+      const wasActive = this.classList.contains('active');
+      document.querySelectorAll('.phase').forEach(function(p) { p.classList.remove('active'); });
+      if (!wasActive) this.classList.add('active');
+    });
+  });
+
+  // Channel cards
+  window.toggleChannel = function(card) {
+    const wasActive = card.classList.contains('active');
+    document.querySelectorAll('.channel-card').forEach(function(c) { c.classList.remove('active'); });
+    if (!wasActive) card.classList.add('active');
+  };
+
+  // Sticky nav
+  const nav = document.getElementById('stickyNav');
+  const hero = document.getElementById('hero');
+  const navObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        nav.classList.remove('visible');
+      } else {
+        nav.classList.add('visible');
+      }
+    });
+  }, { threshold: 0 });
+  if (hero) navObs.observe(hero);
+
+  // Audit dimension bars animation
+  const qaObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.dim-fill').forEach(function(bar) {
+          bar.style.width = bar.dataset.width + '%';
+        });
+        document.getElementById('ringFill').classList.add('animated');
+        qaObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  const qaSection = document.getElementById('quality');
+  if (qaSection) qaObs.observe(qaSection);
+})();
+</script>
+</body>
+</html>

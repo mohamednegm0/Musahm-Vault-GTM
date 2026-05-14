@@ -121,7 +121,43 @@
   .scene-list { font-size:0.8rem; color:var(--gray-500); margin-top:0.5rem; line-height:1.7; }
   .scene-list strong { color:var(--navy); font-weight:600; }
   .footer { text-align:center; padding:2rem; color:var(--gray-500); font-size:0.78rem; border-top:1px solid var(--gray-200); margin-top:2rem; }
-  @media (max-width:768px) { .card-grid { grid-template-columns:1fr; } .review-controls { flex-direction:column; } .comment-input { min-width:100%; } }
+  .table-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:12px; }
+  @media (max-width:768px) {
+    .header { padding:1.5rem 1rem; }
+    .header h1 { font-size:1.3rem; }
+    .progress-section { padding:1rem; }
+    .nav { padding:0 0.5rem; }
+    .nav a { padding:0.6rem 0.7rem; font-size:0.75rem; }
+    .main { padding:1rem; }
+    .card-grid { grid-template-columns:1fr; }
+    .decision-grid { grid-template-columns:1fr; }
+    .info-grid { grid-template-columns:1fr; }
+    .review-controls { flex-direction:column; }
+    .comment-input { min-width:100%; }
+    .status-select { min-width:100%; }
+    .card-top { flex-direction:column; gap:0.5rem; }
+    .section { scroll-margin-top:100px; }
+    .sched-table, .overview-table { font-size:0.75rem; }
+    .sched-table th, .sched-table td,
+    .overview-table th, .overview-table td { padding:0.5rem 0.6rem; }
+    .phase-header { padding:0.75rem 1rem; }
+  }
+  @media (max-width:480px) {
+    .header { padding:1rem 0.75rem; }
+    .header h1 { font-size:1.1rem; }
+    .header-sub { font-size:0.82rem; }
+    .progress-section { padding:0.75rem; }
+    .progress-stats { gap:0.75rem; }
+    .progress-stat { font-size:0.75rem; }
+    .main { padding:0.75rem; }
+    .section-title { font-size:1rem; }
+    .card-top { padding:0.75rem; }
+    .review-controls { padding:0.75rem; }
+    .export-btn { width:100%; text-align:center; }
+    .info-card { padding:0.75rem; }
+    .timeline { padding-left:1.5rem; }
+    .footer { padding:1rem; font-size:0.72rem; }
+  }
 </style>
 </head>
 <body>
@@ -193,7 +229,7 @@
 <div id="overview" class="section">
   <div class="section-title">Deliverables Overview <span class="section-count">7 FILES</span></div>
   <div class="source-note">Tell the team which file to edit by referencing the Source File column below.</div>
-  <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-200);overflow:hidden">
+  <div class="table-scroll" style="background:var(--white);border:1px solid var(--gray-200)">
     <table class="overview-table">
       <thead><tr><th>#</th><th>Deliverable</th><th>Source File</th><th>Status</th><th>What's Inside</th></tr></thead>
       <tbody>
@@ -562,7 +598,7 @@ We built <strong>Vault</strong> from scratch for Saudi governance.
 
   <div class="phase-header" onclick="togglePhase('p1')"><h3>Phase 1: Launch Buzz (Weeks 1-2) <span style="color:var(--gray-500);font-weight:400">- 12 posts</span></h3><span class="phase-arrow" id="arrow-p1">&#9654;</span></div>
   <div class="phase-content" id="p1">
-    <table class="sched-table"><thead><tr><th>Wk</th><th>Day</th><th>Platform</th><th>Theme</th><th>Content Hook (Arabic)</th><th>English Summary</th><th>Status</th></tr></thead><tbody>
+    <div class="table-scroll"><table class="sched-table"><thead><tr><th>Wk</th><th>Day</th><th>Platform</th><th>Theme</th><th>Content Hook (Arabic)</th><th>English Summary</th><th>Status</th></tr></thead><tbody>
       <tr><td>1</td><td>Sun</td><td>LinkedIn</td><td>Launch announcement</td><td dir="rtl" style="font-size:0.78rem">&#1571;&#1591;&#1604;&#1602;&#1606;&#1575; &#1605;&#1587;&#1575;&#1607;&#1605; Vault. &#1606;&#1592;&#1575;&#1605; &#1608;&#1579;&#1575;&#1574;&#1602; &#1587;&#1593;&#1608;&#1583;&#1610; &#1604;&#1604;&#1581;&#1608;&#1603;&#1605;&#1577;.</td><td>We launched Musahm Vault. Saudi DMS for governance.</td><td><span class="badge-written">WRITTEN</span></td></tr>
       <tr><td>1</td><td>Sun</td><td>Twitter/X</td><td>Launch teaser</td><td dir="rtl" style="font-size:0.78rem">&#1608;&#1579;&#1575;&#1574;&#1602; &#1588;&#1585;&#1603;&#1578;&#1603; &#1605;&#1576;&#1593;&#1579;&#1585;&#1577; &#1576;&#1610;&#1606; &#1575;&#1604;&#1573;&#1610;&#1605;&#1610;&#1604; &#1608;&#1575;&#1604;&#1608;&#1575;&#1578;&#1587;&#1575;&#1576;&#1567;</td><td>Your docs scattered between email and WhatsApp?</td><td><span class="badge-written">WRITTEN</span></td></tr>
       <tr><td>1</td><td>Tue</td><td>LinkedIn</td><td>Feature: File Mgmt</td><td dir="rtl" style="font-size:0.78rem">&#1575;&#1585;&#1601;&#1593;&#1548; &#1589;&#1606;&#1617;&#1601;&#1548; &#1606;&#1592;&#1617;&#1605;. &#1605;&#1587;&#1575;&#1581;&#1575;&#1578; &#1593;&#1605;&#1604; Vault &#1578;&#1590;&#1593; &#1603;&#1604; &#1608;&#1579;&#1610;&#1602;&#1577; &#1601;&#1610; &#1605;&#1603;&#1575;&#1606;&#1607;&#1575; &#1575;&#1604;&#1589;&#1581;&#1610;&#1581;</td><td>Upload, classify, organize. Vault puts every doc in its place.</td><td><span class="badge-planned">PLANNED</span></td></tr>
@@ -575,12 +611,12 @@ We built <strong>Vault</strong> from scratch for Saudi governance.
       <tr><td>2</td><td>Tue</td><td>Twitter/X</td><td>WhatsApp counter</td><td dir="rtl" style="font-size:0.78rem">&#1608;&#1575;&#1578;&#1587;&#1575;&#1576; &#1610;&#1603;&#1601;&#1610;&#1567; &#1581;&#1578;&#1609; &#1610;&#1591;&#1604;&#1576; &#1575;&#1604;&#1605;&#1583;&#1602;&#1602; &#1608;&#1579;&#1610;&#1602;&#1577; &#1608;&#1604;&#1575; &#1571;&#1581;&#1583; &#1610;&#1593;&#1585;&#1601; &#1608;&#1610;&#1606;. Vault &#1610;&#1587;&#1580;&#1604; &#1603;&#1604; &#1588;&#1610;&#1569;</td><td>WhatsApp is enough? Until the auditor asks and no one knows where.</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>2</td><td>Thu</td><td>LinkedIn</td><td>Beta milestone</td><td dir="rtl" style="font-size:0.78rem">&#1571;&#1608;&#1604; 10 &#1588;&#1585;&#1603;&#1575;&#1578; &#1587;&#1580;&#1617;&#1604;&#1578; &#1601;&#1610; &#1575;&#1604;&#1606;&#1587;&#1582;&#1577; &#1575;&#1604;&#1578;&#1580;&#1585;&#1610;&#1576;&#1610;&#1577;. 20 &#1605;&#1602;&#1593;&#1583;&#1611;&#1575; &#1605;&#1578;&#1576;&#1602;&#1610;&#1575;&#1611;</td><td>First 10 companies registered. 20 seats remaining.</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>2</td><td>Thu</td><td>Twitter/X</td><td>Scarcity</td><td dir="rtl" style="font-size:0.78rem">30 &#1605;&#1602;&#1593;&#1583;&#1611;&#1575; &#1578;&#1580;&#1585;&#1610;&#1576;&#1610;&#1575;&#1611;. 10 &#1588;&#1585;&#1603;&#1575;&#1578; &#1575;&#1606;&#1590;&#1605;&#1578;. &#1603;&#1606; &#1575;&#1604;&#1578;&#1575;&#1604;&#1610;</td><td>30 beta seats. 10 joined. Be next.</td><td><span class="badge-planned">PLANNED</span></td></tr>
-    </tbody></table>
+    </tbody></table></div>
   </div>
 
   <div class="phase-header" onclick="togglePhase('p2')"><h3>Phase 2: Problem Education (Weeks 3-4) <span style="color:var(--gray-500);font-weight:400">- 12 posts</span></h3><span class="phase-arrow" id="arrow-p2">&#9654;</span></div>
   <div class="phase-content" id="p2">
-    <table class="sched-table"><thead><tr><th>Wk</th><th>Day</th><th>Platform</th><th>Theme</th><th>Content Hook (Arabic)</th><th>English Summary</th><th>Status</th></tr></thead><tbody>
+    <div class="table-scroll"><table class="sched-table"><thead><tr><th>Wk</th><th>Day</th><th>Platform</th><th>Theme</th><th>Content Hook (Arabic)</th><th>English Summary</th><th>Status</th></tr></thead><tbody>
       <tr><td>3</td><td>Sun</td><td>LinkedIn</td><td>Real Estate</td><td dir="rtl" style="font-size:0.78rem">&#1588;&#1585;&#1603;&#1575;&#1578; &#1575;&#1604;&#1593;&#1602;&#1575;&#1585; &#1578;&#1583;&#1610;&#1585; &#1605;&#1574;&#1575;&#1578; &#1575;&#1604;&#1589;&#1603;&#1608;&#1603;. Vault &#1610;&#1606;&#1592;&#1605;&#1607;&#1575; &#1601;&#1610; &#1605;&#1587;&#1575;&#1581;&#1575;&#1578; &#1593;&#1605;&#1604;</td><td>Real estate companies manage hundreds of deeds. Vault organizes them.</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>3</td><td>Sun</td><td>Twitter/X</td><td>Real estate angle</td><td dir="rtl" style="font-size:0.78rem">&#1589;&#1603; &#1590;&#1575;&#1574;&#1593; &#1610;&#1572;&#1582;&#1585; &#1578;&#1587;&#1604;&#1610;&#1605; &#1605;&#1588;&#1585;&#1608;&#1593; &#1571;&#1587;&#1575;&#1576;&#1610;&#1593;</td><td>A lost deed delays project delivery by weeks</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>3</td><td>Tue</td><td>LinkedIn</td><td>Compliance</td><td dir="rtl" style="font-size:0.78rem">&#1575;&#1604;&#1605;&#1575;&#1583;&#1577; 71 &#1605;&#1606; &#1606;&#1592;&#1575;&#1605; &#1575;&#1604;&#1588;&#1585;&#1603;&#1575;&#1578;: &#1605;&#1575; &#1575;&#1604;&#1584;&#1610; &#1610;&#1580;&#1576; &#1578;&#1608;&#1579;&#1610;&#1602;&#1607;&#1567;</td><td>Article 71 of Companies Law: what must be documented?</td><td><span class="badge-planned">PLANNED</span></td></tr>
@@ -593,12 +629,12 @@ We built <strong>Vault</strong> from scratch for Saudi governance.
       <tr><td>4</td><td>Tue</td><td>Twitter/X</td><td>Workflow</td><td dir="rtl" style="font-size:0.78rem">&#1608;&#1579;&#1610;&#1602;&#1577; &#1576;&#1583;&#1608;&#1606; &#1575;&#1593;&#1578;&#1605;&#1575;&#1583; = &#1605;&#1582;&#1575;&#1591;&#1585;&#1577;. Vault &#1610;&#1605;&#1606;&#1593; &#1575;&#1604;&#1606;&#1588;&#1585; &#1602;&#1576;&#1604; &#1575;&#1604;&#1605;&#1608;&#1575;&#1601;&#1602;&#1577;</td><td>Doc without approval = risk. Vault blocks before approval.</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>4</td><td>Thu</td><td>LinkedIn</td><td>Investor readiness</td><td dir="rtl" style="font-size:0.78rem">&#1605;&#1587;&#1578;&#1579;&#1605;&#1585; &#1610;&#1591;&#1604;&#1576; &#1608;&#1579;&#1575;&#1574;&#1602; &#1575;&#1604;&#1581;&#1608;&#1603;&#1605;&#1577;. &#1576;&#1600; Vault: &#1583;&#1602;&#1575;&#1574;&#1602; &#1604;&#1575; &#1571;&#1610;&#1575;&#1605;</td><td>Investor requests governance docs. With Vault: minutes not days.</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>4</td><td>Thu</td><td>Twitter/X</td><td>Version control</td><td dir="rtl" style="font-size:0.78rem">&#1605;&#1581;&#1590;&#1585; &#1605;&#1580;&#1604;&#1587; &#1576;&#1606;&#1587;&#1582;&#1577; &#1602;&#1583;&#1610;&#1605;&#1577; = &#1571;&#1586;&#1605;&#1577; &#1579;&#1602;&#1577;. Vault &#1610;&#1581;&#1601;&#1592; &#1603;&#1604; &#1573;&#1589;&#1583;&#1575;&#1585;</td><td>Board minutes with old version = trust crisis. Vault saves every version.</td><td><span class="badge-planned">PLANNED</span></td></tr>
-    </tbody></table>
+    </tbody></table></div>
   </div>
 
   <div class="phase-header" onclick="togglePhase('p3')"><h3>Phase 3: Social Proof (Weeks 5-6) <span style="color:var(--gray-500);font-weight:400">- 12 posts</span></h3><span class="phase-arrow" id="arrow-p3">&#9654;</span></div>
   <div class="phase-content" id="p3">
-    <table class="sched-table"><thead><tr><th>Wk</th><th>Day</th><th>Platform</th><th>Theme</th><th>English Summary</th><th>Status</th></tr></thead><tbody>
+    <div class="table-scroll"><table class="sched-table"><thead><tr><th>Wk</th><th>Day</th><th>Platform</th><th>Theme</th><th>English Summary</th><th>Status</th></tr></thead><tbody>
       <tr><td>5</td><td>Sun</td><td>LinkedIn</td><td>Client reference</td><td>A Saudi company chose Vault for document governance</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>5</td><td>Sun</td><td>Twitter/X</td><td>Metric</td><td>Beta companies digitized docs within one week</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>5</td><td>Tue</td><td>LinkedIn</td><td>DMS vs file storage</td><td>SharePoint stores files without controls. Vault organizes with permissions + workflows + audit.</td><td><span class="badge-planned">PLANNED</span></td></tr>
@@ -611,12 +647,12 @@ We built <strong>Vault</strong> from scratch for Saudi governance.
       <tr><td>6</td><td>Tue</td><td>Twitter/X</td><td>Integration</td><td>Board decision + supporting doc + chain of custody = real governance</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>6</td><td>Thu</td><td>LinkedIn</td><td>Founder reflection</td><td>6 weeks since launch: what we learned from first 20 companies</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>6</td><td>Thu</td><td>Twitter/X</td><td>Milestone</td><td>6 weeks. 20 companies. Zero security incidents.</td><td><span class="badge-planned">PLANNED</span></td></tr>
-    </tbody></table>
+    </tbody></table></div>
   </div>
 
   <div class="phase-header" onclick="togglePhase('p4')"><h3>Phase 4: Conversion Push (Weeks 7-8) <span style="color:var(--gray-500);font-weight:400">- 12 posts</span></h3><span class="phase-arrow" id="arrow-p4">&#9654;</span></div>
   <div class="phase-content" id="p4">
-    <table class="sched-table"><thead><tr><th>Wk</th><th>Day</th><th>Platform</th><th>Theme</th><th>English Summary</th><th>Status</th></tr></thead><tbody>
+    <div class="table-scroll"><table class="sched-table"><thead><tr><th>Wk</th><th>Day</th><th>Platform</th><th>Theme</th><th>English Summary</th><th>Status</th></tr></thead><tbody>
       <tr><td>7</td><td>Sun</td><td>LinkedIn</td><td>Scarcity + recap</td><td>10 beta seats left. Here's what the first companies got.</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>7</td><td>Sun</td><td>Twitter/X</td><td>Urgency</td><td>Beta seats running out. Register before closing.</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>7</td><td>Tue</td><td>LinkedIn</td><td>ROI framing</td><td>Cost of weak governance: fines, lost trust, delayed deals</td><td><span class="badge-planned">PLANNED</span></td></tr>
@@ -629,12 +665,12 @@ We built <strong>Vault</strong> from scratch for Saudi governance.
       <tr><td>8</td><td>Tue</td><td>Twitter/X</td><td>Roadmap</td><td>New features coming. Beta companies get them first.</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>8</td><td>Thu</td><td>LinkedIn</td><td>Beta closing</td><td>Beta registration closes end of week. Last chance.</td><td><span class="badge-planned">PLANNED</span></td></tr>
       <tr><td>8</td><td>Thu</td><td>Twitter/X</td><td>Final CTA</td><td>Last chance to join the beta. Register now.</td><td><span class="badge-planned">PLANNED</span></td></tr>
-    </tbody></table>
+    </tbody></table></div>
   </div>
 
   <div style="margin-top:1.5rem">
     <div class="section-title" style="font-size:1rem">Posting Schedule <span class="section-count">LAUNCH WEEK</span></div>
-    <table class="sched-table">
+    <div class="table-scroll"><table class="sched-table">
       <thead><tr><th>Platform</th><th>Day</th><th>Time (AST)</th><th>Post</th><th>Rationale</th></tr></thead>
       <tbody>
         <tr><td>LinkedIn</td><td>Sunday</td><td>09:00 AM</td><td>Primary AR/EN</td><td>KSA business week start</td></tr>
@@ -644,7 +680,7 @@ We built <strong>Vault</strong> from scratch for Saudi governance.
         <tr><td>LinkedIn</td><td>Thursday</td><td>09:00 AM</td><td>Audit/Compliance</td><td>Compliance audience</td></tr>
         <tr><td>Twitter/X</td><td>Thursday</td><td>12:00 PM</td><td>Contrast Declaration</td><td>Brand voice anchor</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
 </div>
 

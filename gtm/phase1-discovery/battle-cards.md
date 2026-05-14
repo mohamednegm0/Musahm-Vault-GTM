@@ -72,7 +72,7 @@ Majles.tech is a modern, startup-energy governance platform targeting mid-to-lar
 
 | Feature | Talking Point (EN) | نقطة الحديث (AR) |
 |---------|-------------------|-------------------|
-| **Shareholder Registry** | "Musahm is the only platform in Saudi Arabia with a built-in shareholder registry. No spreadsheets, no separate system. Every share transfer, every capital change, tracked and auditable." | "مساهم هي المنصة الوحيدة في السعودية بسجل مساهمين مدمج. لا جداول بيانات، لا نظام منفصل. كل نقل أسهم، كل تغيير رأس مال، متتبع وقابل للتدقيق." |
+| **Shareholder Registry** | "No other Saudi governance platform we've evaluated offers a built-in shareholder registry. No spreadsheets, no separate system. Every share transfer, every capital change, tracked and auditable." | "لا تقدم أي منصة حوكمة سعودية منافسة سجل مساهمين مدمج. لا جداول بيانات، لا نظام منفصل. كل نقل أسهم، كل تغيير رأس مال، متتبع وقابل للتدقيق." |
 | **SMS Shareholder Communications** | "In Saudi Arabia, formal shareholder notices happen over SMS and WhatsApp. Musahm sends them directly from the platform -- compliant, tracked, timestamped." | "في السعودية، الإشعارات الرسمية للمساهمين تتم عبر الرسائل النصية والواتساب. مساهم ترسلها مباشرة من المنصة -- متوافقة، متتبعة، بطابع زمني." |
 | **Vault (Companion DMS)** | "Governance decisions produce documents. Vault organizes them in governance-themed workspaces -- Board Meetings, Decisions, Committees, Contracts, Policies -- so every document sits in the context of the governance function it serves, with full workflow tracking and audit trails." | "قرارات الحوكمة تُنتج مستندات. خزنة تنظمها في مساحات عمل مخصصة للحوكمة -- اجتماعات المجلس، القرارات، اللجان، العقود، السياسات -- فكل مستند يوجد في سياق وظيفة الحوكمة التي يخدمها، مع تتبع كامل لسير العمل وسجلات التدقيق." |
 | **E-Signatures** | "Sign resolutions and contracts inside Musahm. No third-party tool, no email chains." | "وقّع القرارات والعقود داخل مساهم. بدون أداة خارجية، بدون سلاسل بريد إلكتروني." |
@@ -395,11 +395,11 @@ There is no pitch. The prospect's internal narrative is:
 
 | Dimension | Musahm | Majles.tech | Ebana DMS | Diligent | WhatsApp/Excel |
 |-----------|--------|-------------|-----------|----------|----------------|
-| **Shareholder Registry** | Yes (exclusive) | No | No | No | Excel (uncontrolled) |
+| **Shareholder Registry** | Yes (differentiator*) | No | No | No | Excel (uncontrolled) |
 | **Board Management** | Yes | Yes (strong) | No | Yes (strong) | WhatsApp group |
 | **DMS with Governance Context** | Yes (Vault) | No | Generic DMS | Limited | Shared folders |
 | **E-Signatures** | Yes | No | No | Yes | No |
-| **SMS Shareholder Comms** | Yes (exclusive) | No | No | No | WhatsApp (informal) |
+| **SMS Shareholder Comms** | Yes (differentiator*) | No | No | No | WhatsApp (informal) |
 | **Arabic-First UX** | Yes | Bilingual (EN-forward) | English-dominant | English-first (localized) | N/A |
 | **Listed + Unlisted + LLC** | All three | Listed focus | N/A | Listed focus | N/A |
 | **Mobile Apps** | Mobile-responsive (browser) | No | No | Yes | WhatsApp app |

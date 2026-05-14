@@ -74,8 +74,8 @@
 
 ## 3. Musahm's Top 5 Exploitable Advantages
 
-### Advantage 1: Shareholder Registry, Nobody Else Has It
-Musahm is the only platform offering integrated shareholder registry management with share transfer documentation over electronic channels. For KSA companies managing ownership transitions, capital calls, or investor reporting, this is a category-exclusive feature. **Exploit it as a headline differentiator.**
+### Advantage 1: Shareholder Registry -- A Key Differentiator
+No other competing platform we evaluated offers integrated shareholder registry management with share transfer documentation over electronic channels. For KSA companies managing ownership transitions, capital calls, or investor reporting, this is a key differentiator based on public competitor analysis. **Exploit it as a headline differentiator.**
 
 ### Advantage 2: The Full Governance Stack (Musahm + Vault)
 No competitor offers both governance workflow management AND a purpose-built DMS in a single product family. Majles has a basic document hub. Ebana has standalone DMS with zero governance context. Musahm + Vault = documents live where decisions happen. **Position as "the only platform where your board decisions and company documents share one brain."**

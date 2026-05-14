@@ -143,11 +143,40 @@
   .sched-table td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--gray-100); }
 
   .footer { text-align: center; padding: 2rem; color: var(--gray-500); font-size: 0.78rem; border-top: 1px solid var(--gray-200); margin-top: 2rem; }
-
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
   @media (max-width: 768px) {
+    .header { padding: 1.5rem 1rem; }
+    .header h1 { font-size: 1.3rem; }
+    .progress-section { padding: 1rem; }
+    .nav { padding: 0 0.5rem; }
+    .nav a { padding: 0.6rem 0.7rem; font-size: 0.75rem; }
+    .main { padding: 1rem; }
     .card-grid { grid-template-columns: 1fr; }
+    .decision-grid { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
     .review-controls { flex-direction: column; }
     .comment-input { min-width: 100%; }
+    .status-select { min-width: 100%; }
+    .card-top { flex-direction: column; gap: 0.5rem; }
+    .section { scroll-margin-top: 100px; }
+    .sched-table { font-size: 0.75rem; }
+    .sched-table th, .sched-table td { padding: 0.5rem 0.6rem; }
+  }
+  @media (max-width: 480px) {
+    .header { padding: 1rem 0.75rem; }
+    .header h1 { font-size: 1.1rem; }
+    .header-sub { font-size: 0.82rem; }
+    .progress-section { padding: 0.75rem; }
+    .progress-stats { gap: 0.75rem; }
+    .progress-stat { font-size: 0.75rem; }
+    .main { padding: 0.75rem; }
+    .section-title { font-size: 1rem; }
+    .card-top { padding: 0.75rem; }
+    .review-controls { padding: 0.75rem; }
+    .export-btn { width: 100%; text-align: center; }
+    .info-card { padding: 0.75rem; }
+    .timeline { padding-left: 1.5rem; }
+    .footer { padding: 1rem; font-size: 0.72rem; }
   }
 </style>
 </head>
@@ -652,7 +681,7 @@ We built <strong>Vault</strong> from scratch for Saudi governance.
       <div class="card-top"><div class="card-info"><div class="card-id">#24 Calendar</div><div class="card-title">8-Week Content Calendar (48 Topics Planned, 9 Fully Written)</div><div class="card-summary">4 phases across 8 weeks. 48 topic hooks planned (6/week). <strong>9 launch-day posts are fully written</strong> (5 LinkedIn + 4 Twitter). The remaining 39 are one-line topic prompts that need full copy written before posting.</div></div></div>
       <div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div>
     </div>
-    <table class="sched-table" style="margin-top:1rem">
+    <div class="table-scroll" style="margin-top:1rem"><table class="sched-table">
       <thead><tr><th>Platform</th><th>Day</th><th>Time (AST)</th><th>Post</th><th>Rationale</th></tr></thead>
       <tbody>
         <tr><td>LinkedIn</td><td>Sunday</td><td>09:00 AM</td><td>Primary AR/EN</td><td>KSA business week start</td></tr>
@@ -662,7 +691,7 @@ We built <strong>Vault</strong> from scratch for Saudi governance.
         <tr><td>LinkedIn</td><td>Thursday</td><td>09:00 AM</td><td>Audit/Compliance</td><td>Compliance audience</td></tr>
         <tr><td>Twitter/X</td><td>Thursday</td><td>12:00 PM</td><td>Contrast Declaration</td><td>Brand voice anchor</td></tr>
       </tbody>
-    </table>
+    </table></div>
     <div class="review-card status-pending" data-id="sched-posting" style="margin-top:1rem">
       <div class="card-top"><div class="card-info"><div class="card-id">#25</div><div class="card-title">Posting Schedule &amp; Timing Strategy</div><div class="card-summary">6 posts/week. Arabic first, English 2-3 hours later on Twitter. Simultaneous on LinkedIn. Stagger variants to test which angle drives most beta signups.</div></div></div>
       <div class="review-controls"><div class="control-group"><label>Status</label><select class="status-select" onchange="updateStatus(this)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="edits">Needs Edits</option><option value="rejected">Rejected</option></select></div><div class="control-group" style="flex:1"><label>Comments</label><textarea class="comment-input" placeholder="Add feedback..." oninput="saveComment(this)"></textarea></div></div>

@@ -14,13 +14,13 @@
 
 **WHO** manage corporate governance across WhatsApp groups, email chains, and shared drives, and face rising compliance pressure from the new Companies Law, CMA requirements, and Vision 2030 governance mandates,
 
-**OUR** platform, Musahm, is the only Saudi-built governance platform that combines board management, shareholder registry with SMS communications, e-signatures, and a governed document management system (Vault) in a single Arabic-first product.
+**OUR** platform, Musahm, is the only Saudi governance platform we've evaluated that combines board management, shareholder registry with SMS communications, e-signatures, and a governed document management system (Vault) in a single Arabic-first product.
 
 **UNLIKE** Majles.tech (board management only, no shareholder registry, no DMS), Ebana (standalone DMS, no governance context), SharePoint (general-purpose storage, no governance logic), and Diligent (enterprise pricing, English-first, no Saudi regulatory alignment),
 
 **WE PROVE IT BY:**
 - Three Saudi companies operating on the platform today: Al-Ufuq (education), Miral (healthcare), Amwaj (education).
-- The only Saudi platform with an integrated shareholder registry and direct SMS shareholder communications.
+- No other evaluated Saudi governance platform offers an integrated shareholder registry and direct SMS shareholder communications.
 - Six pre-configured governance workspaces with five-level access control (Viewer to Admin) and per-document ACLs.
 - Complete audit trail on every action -- user identity, details, and timestamp.
 - OTP-verified external document sharing with watermarks.
@@ -34,7 +34,7 @@
 
 **الذين** يديرون حوكمة شركاتهم عبر مجموعات واتساب وسلاسل بريد إلكتروني ومجلدات مشتركة، ويواجهون ضغوطاً متزايدة من نظام الشركات الجديد ومتطلبات هيئة السوق المالية ومعايير رؤية 2030.
 
-**منصتنا** مساهم هي المنصة السعودية الوحيدة التي تجمع إدارة المجلس وسجل المساهمين مع تواصل SMS والتوقيعات الإلكترونية ونظام إدارة وثائق محوكم (Vault) في منتج واحد بواجهة عربية أصلية.
+**منصتنا** مساهم هي المنصة السعودية الوحيدة من بين المنصات المقيّمة التي تجمع إدارة المجلس وسجل المساهمين مع تواصل SMS والتوقيعات الإلكترونية ونظام إدارة وثائق محوكم (Vault) في منتج واحد بواجهة عربية أصلية.
 
 **على عكس** مجلس (إدارة اجتماعات فقط، بدون سجل مساهمين، بدون إدارة وثائق)، وإبانة (إدارة وثائق منفصلة بدون سياق حوكمة)، وSharePoint (تخزين عام بدون منطق حوكمة)، وDigilent (تسعير مؤسسي، إنجليزي أولاً، بدون توافق تنظيمي سعودي).
 

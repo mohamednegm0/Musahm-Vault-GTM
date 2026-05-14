@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GTM Review Hub — Multi-Product Launch Manager. Review, approve, and manage go-to-market content across all your products.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<title>GTM Review Hub v2 — Multi-Product Launch Manager</title>
+<style>
+/* ─── DESIGN TOKENS ─── */
+:root {
+  --navy:#1a1f2e; --navy-light:#252b3d; --navy-hover:#2d3450; --navy-deep:#0f1419;
+  --gold:#c3924d; --gold-light:#d4a96a; --gold-bg:#fdf6ed; --gold-dim:rgba(195,146,77,.15);
+  --white:#ffffff; --bg:#f8f9fb; --surface:#ffffff;
+  --gray-50:#f8f9fb; --gray-100:#f1f3f5; --gray-200:#e2e5ea; --gray-300:#cdd1d8;
+  --gray-400:#9da3af; --gray-500:#6b7280; --gray-600:#4b5563; --gray-700:#374151;
+  --gray-800:#1f2937; --gray-900:#111827;
+  --red:#ef4444; --red-bg:#fef2f2; --red-dim:rgba(239,68,68,.12);
+  --amber:#f59e0b; --amber-bg:#fffbeb; --amber-dim:rgba(245,158,11,.12);
+  --emerald:#10b981; --emerald-bg:#ecfdf5; --emerald-dim:rgba(16,185,129,.12);
+  --blue:#3b82f6; --blue-bg:#eff6ff; --blue-dim:rgba(59,130,246,.12);
+  --violet:#8b5cf6; --violet-bg:#f5f3ff; --violet-dim:rgba(139,92,246,.12);
+  --pink:#ec4899; --cyan:#06b6d4;
+  --sidebar-w:260px;
+  --r:12px; --r-sm:8px; --r-xs:6px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+  --shadow-lg:0 4px 20px rgba(0,0,0,.08),0 8px 32px rgba(0,0,0,.04);
+  --shadow-xl:0 20px 60px rgba(0,0,0,.15);
+  --ease:cubic-bezier(.4,0,.2,1); --speed:.2s;
+  --text:#111827; --text-secondary:#6b7280; --text-muted:#9da3af;
+  --border:#e2e5ea; --border-light:#f1f3f5;
+}
+.dark {
+  --bg:#0f1117; --surface:#1a1d27; --white:#1a1d27;
+  --gray-50:#1e2130; --gray-100:#252838; --gray-200:#2d3142; --gray-300:#3d4155;
+  --gray-400:#6b7085; --gray-500:#8b90a0; --gray-600:#a0a5b5; --gray-700:#c5c9d5;
+  --gray-800:#e0e3eb; --gray-900:#f0f2f5;
+  --text:#f0f2f5; --text-secondary:#a0a5b5; --text-muted:#6b7085;
+  --border:#2d3142; --border-light:#252838;
+  --gold-bg:#2a2418; --red-bg:#2a1a1a; --amber-bg:#2a2418; --emerald-bg:#1a2a20; --blue-bg:#1a1f2a; --violet-bg:#201a2a;
+  --red-dim:rgba(239,68,68,.18); --amber-dim:rgba(245,158,11,.18);
+  --emerald-dim:rgba(16,185,129,.18); --blue-dim:rgba(59,130,246,.18); --gold-dim:rgba(195,146,77,.2);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;transition:background .3s var(--ease),color .3s var(--ease)}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,textarea,select{font-family:inherit}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--gray-300);border-radius:3px}
+::selection{background:var(--gold-dim);color:var(--gold)}
+a{color:var(--gold);text-decoration:none}
+
+/* ─── SIDEBAR ─── */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:var(--navy);display:flex;flex-direction:column;z-index:200;transition:transform .3s var(--ease)}
+.sb-brand{padding:1.2rem 1.2rem .7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-brand h1{color:#fff;font-size:1rem;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:.5rem}
+.sb-brand h1 span{background:var(--gold);color:var(--navy);font-size:.55rem;padding:.12rem .45rem;border-radius:4px;font-weight:800;letter-spacing:.5px}
+.sb-brand p{color:var(--gray-400);font-size:.68rem;margin-top:.15rem}
+.sb-section{padding:.8rem .7rem .3rem}
+.sb-label{color:var(--gray-500);font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:0 .5rem;margin-bottom:.4rem}
+.sb-list{flex:1;overflow-y:auto;padding:0 .7rem}
+.sb-item{display:flex;align-items:center;gap:.5rem;padding:.5rem .65rem;border-radius:var(--r-sm);color:var(--gray-400);font-size:.8rem;font-weight:500;cursor:pointer;transition:all var(--speed) var(--ease);margin-bottom:1px;position:relative;user-select:none}
+.sb-item:hover{background:var(--navy-hover);color:var(--gray-200)}
+.sb-item.active{background:var(--navy-hover);color:#fff}
+.sb-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:55%;background:var(--gold);border-radius:0 3px 3px 0}
+.sb-emoji{font-size:.95rem;flex-shrink:0;width:20px;text-align:center}
+.sb-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-pct{font-size:.65rem;color:var(--gray-500);font-weight:700}
+.sb-item.active .sb-pct{color:var(--gold)}
+.sb-add{display:flex;align-items:center;gap:.4rem;padding:.5rem .65rem;margin:.4rem .7rem;border-radius:var(--r-sm);color:var(--gold);font-size:.78rem;font-weight:600;background:var(--gold-dim);transition:all var(--speed) var(--ease);border:1px dashed rgba(195,146,77,.3)}
+.sb-add:hover{background:rgba(195,146,77,.25)}
+.sb-bottom{padding:.6rem;border-top:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;gap:1px}
+.sb-btn{display:flex;align-items:center;gap:.45rem;padding:.5rem .65rem;width:100%;border-radius:var(--r-sm);color:var(--gray-400);font-size:.75rem;font-weight:500;transition:all var(--speed) var(--ease)}
+.sb-btn:hover{background:var(--navy-hover);color:var(--gray-200)}
+
+/* ─── MAIN ─── */
+.main{margin-left:var(--sidebar-w);min-height:100vh;transition:margin .3s var(--ease)}
+
+/* ─── HUB ─── */
+.hub-head{background:linear-gradient(135deg,var(--navy),var(--navy-deep));padding:2.2rem 2.5rem 1.8rem}
+.hub-head h2{color:#fff;font-size:1.5rem;font-weight:800;letter-spacing:-.03em}
+.hub-head p{color:var(--gray-400);font-size:.85rem;margin-top:.2rem}
+.hub-stats{display:flex;gap:.8rem;margin-top:1.1rem;flex-wrap:wrap}
+.hub-stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-sm);padding:.6rem .9rem;min-width:115px}
+.hub-stat b{display:block;color:#fff;font-size:1.3rem;font-weight:800}
+.hub-stat small{color:var(--gray-400);font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.hub-body{padding:1.8rem 2.5rem 2.5rem}
+.hub-title{font-size:.95rem;font-weight:700;color:var(--text-secondary);margin-bottom:.8rem}
+.p-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.1rem}
+
+/* Product Cards */
+.p-card{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:all var(--speed) var(--ease);position:relative}
+.p-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);border-color:var(--gray-300)}
+.p-card-bar{height:4px}
+.p-card-body{padding:1.1rem}
+.p-card-top{display:flex;justify-content:space-between;align-items:flex-start}
+.p-card-emoji{font-size:1.6rem;margin-right:.6rem}
+.p-card-info{flex:1}
+.p-card-name{font-size:1rem;font-weight:700;color:var(--text)}
+.p-card-tag{font-size:.75rem;color:var(--text-muted);margin-top:.1rem}
+.p-card-ring{position:relative;width:48px;height:48px;flex-shrink:0}
+.p-card-ring svg{transform:rotate(-90deg)}
+.p-card-ring-txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:var(--text-secondary)}
+.p-card-stats{display:flex;gap:.8rem;margin-top:.8rem;padding-top:.65rem;border-top:1px solid var(--border-light)}
+.p-card-s{font-size:.7rem;color:var(--text-muted);display:flex;align-items:center;gap:.25rem}
+.p-card-s strong{color:var(--text-secondary)}
+.p-card-actions{position:absolute;top:.8rem;right:.8rem;display:flex;gap:.3rem;opacity:0;transition:opacity var(--speed) var(--ease)}
+.p-card:hover .p-card-actions{opacity:1}
+.p-card-act{width:26px;height:26px;border-radius:6px;background:var(--gray-100);color:var(--gray-500);display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all var(--speed) var(--ease)}
+.p-card-act:hover{background:var(--red-dim);color:var(--red)}
+.p-card-add{border:2px dashed var(--border);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;color:var(--text-muted);transition:all var(--speed) var(--ease);cursor:pointer;border-radius:var(--r)}
+.p-card-add:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
+
+/* ─── REVIEW PAGE ─── */
+.rev-head{background:linear-gradient(135deg,var(--navy),var(--navy-deep));padding:1.5rem 2.5rem 1.2rem}
+.rev-back{color:var(--gray-400);font-size:.78rem;font-weight:500;display:inline-flex;align-items:center;gap:.3rem;margin-bottom:.6rem;cursor:pointer;transition:color var(--speed)}
+.rev-back:hover{color:#fff}
+.rev-title{color:#fff;font-size:1.4rem;font-weight:800;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.rev-badge{font-size:.6rem;padding:.12rem .5rem;border-radius:4px;font-weight:800;color:#fff}
+.rev-sub{color:var(--gray-400);font-size:.8rem;margin-top:.15rem}
+.rev-acts{display:flex;gap:.4rem;margin-top:.6rem}
+.rev-act{padding:.35rem .7rem;border-radius:var(--r-xs);font-size:.72rem;font-weight:600;transition:all var(--speed) var(--ease)}
+.rev-act-edit{color:var(--gray-300);border:1px solid rgba(255,255,255,.15)}
+.rev-act-edit:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.06)}
+.rev-act-del{color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.rev-act-del:hover{background:var(--red-dim)}
+
+/* Progress */
+.prog{background:var(--surface);border-bottom:1px solid var(--border);padding:.8rem 2.5rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.prog-row{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:.5rem}
+.prog-stat{display:flex;align-items:center;gap:.3rem;font-size:.75rem;font-weight:600;color:var(--text-secondary)}
+.prog-dot{width:7px;height:7px;border-radius:50%}
+.dot-a{background:var(--emerald)}.dot-e{background:var(--amber)}.dot-r{background:var(--red)}.dot-p{background:var(--gray-300)}
+.prog-pct{margin-left:auto;font-weight:700;font-size:.8rem;color:var(--text)}
+.prog-bar{height:5px;background:var(--gray-100);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;border-radius:3px;transition:width .4s ease}
+/* Search + Filter */
+.prog-tools{display:flex;gap:.5rem;align-items:center;margin-top:.6rem;flex-wrap:wrap}
+.search-box{position:relative;flex:1;min-width:180px;max-width:340px}
+.search-box input{width:100%;padding:.4rem .6rem .4rem 1.8rem;border:1px solid var(--border);border-radius:var(--r-xs);font-size:.78rem;background:var(--surface);color:var(--text);transition:all var(--speed) var(--ease)}
+.search-box input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-dim)}
+.search-box input::placeholder{color:var(--text-muted)}
+.search-icon{position:absolute;left:.55rem;top:50%;transform:translateY(-50%);font-size:.7rem;color:var(--text-muted);pointer-events:none}
+.filter-pills{display:flex;gap:.25rem}
+.filter-pill{padding:.3rem .6rem;border-radius:20px;font-size:.68rem;font-weight:600;color:var(--text-muted);background:var(--gray-100);border:1px solid transparent;transition:all var(--speed) var(--ease);cursor:pointer}
+.filter-pill:hover{color:var(--text-secondary);background:var(--gray-200)}
+.filter-pill.active{color:var(--gold);background:var(--gold-dim);border-color:var(--gold)}
+.prog-btns{display:flex;gap:.4rem;margin-left:auto}
+
+/* BTN */
+.btn{padding:.45rem 1rem;border-radius:var(--r-sm);font-size:.78rem;font-weight:600;transition:all var(--speed) var(--ease);display:inline-flex;align-items:center;gap:.3rem}
+.btn-sm{padding:.35rem .75rem;font-size:.72rem}
+.btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:var(--gold-light)}
+.btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:var(--navy-light)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text-secondary)}.btn-outline:hover{border-color:var(--gray-300);background:var(--gray-50)}
+.btn-danger{background:var(--red);color:#fff}.btn-danger:hover{opacity:.9}
+.btn-ghost{background:transparent;color:var(--text-muted)}.btn-ghost:hover{color:var(--text);background:var(--gray-100)}
+
+/* General Review */
+.gen-rev{background:var(--surface);border:2px solid var(--gold);border-radius:var(--r);padding:1.1rem;margin:1.2rem 2.5rem;box-shadow:0 4px 15px rgba(195,146,77,.06)}
+.gen-rev-title{font-size:.95rem;font-weight:800;color:var(--text)}
+.gen-rev-desc{font-size:.72rem;color:var(--text-muted);margin-top:.05rem}
+.gen-rev textarea{width:100%;min-height:75px;padding:.65rem;border:1px solid var(--border);border-radius:var(--r-sm);font-size:.82rem;resize:vertical;line-height:1.7;margin-top:.6rem;background:var(--surface);color:var(--text)}
+.gen-rev textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim)}
+.gen-rev select{padding:.35rem .6rem;border:2px solid var(--border);border-radius:var(--r-sm);font-size:.78rem;font-weight:700;cursor:pointer;background:var(--surface);color:var(--text)}
+
+/* Section */
+.rev-body{padding:0 2.5rem 2.5rem}
+.sec{margin-top:1.5rem}
+.sec-head{display:flex;align-items:center;gap:.4rem;margin-bottom:.6rem}
+.sec-title{font-size:1.05rem;font-weight:700;color:var(--text)}
+.sec-count{background:var(--gold-bg);color:var(--gold);padding:.08rem .45rem;border-radius:20px;font-size:.62rem;font-weight:700}
+.sec-acts{margin-left:auto;display:flex;gap:.3rem}
+.sec-btn{padding:.25rem .5rem;border-radius:var(--r-xs);font-size:.68rem;font-weight:600;color:var(--text-muted);transition:all var(--speed) var(--ease)}
+.sec-btn:hover{color:var(--gold);background:var(--gold-dim)}
+.sec-btn-del:hover{color:var(--red);background:var(--red-dim)}
+
+/* Review Cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(460px,1fr));gap:.8rem}
+.card{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);overflow:hidden;transition:all var(--speed) var(--ease)}
+.card:hover{box-shadow:var(--shadow)}
+.card.st-approved{border-left:4px solid var(--emerald)}.card.st-edits{border-left:4px solid var(--amber)}
+.card.st-rejected{border-left:4px solid var(--red)}.card.st-pending{border-left:4px solid var(--gray-300)}
+.card-top{padding:.85rem 1rem;cursor:pointer;display:flex;align-items:flex-start;gap:.6rem}
+.card-sel{width:16px;height:16px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;margin-top:.15rem;cursor:pointer;transition:all var(--speed) var(--ease);display:flex;align-items:center;justify-content:center;font-size:.6rem;color:transparent}
+.card-sel:hover{border-color:var(--gold)}
+.card-sel.checked{background:var(--gold);border-color:var(--gold);color:#fff}
+.card-info{flex:1;min-width:0}
+.card-id{font-size:.62rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.card-title{font-size:.88rem;font-weight:700;color:var(--text);margin-top:.05rem}
+.card-sum{font-size:.74rem;color:var(--text-muted);margin-top:.15rem;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-tags{display:flex;gap:.2rem;flex-wrap:wrap;margin-top:.3rem}
+.card-tag{padding:.06rem .35rem;border-radius:4px;font-size:.6rem;font-weight:600}
+.tag-ar{background:var(--emerald-dim);color:var(--emerald)}.tag-en{background:var(--blue-dim);color:var(--blue)}
+.tag-li{background:#eef2ff;color:#4f46e5}.tag-tw{background:#f0f9ff;color:#0284c7}
+.tag-email{background:var(--amber-dim);color:var(--amber)}.tag-sms{background:var(--violet-dim);color:var(--violet)}
+.tag-video{background:var(--red-dim);color:var(--red)}.tag-visual{background:var(--gold-bg);color:var(--gold)}
+.dark .tag-li{background:rgba(79,70,229,.15);color:#818cf8}.dark .tag-tw{background:rgba(2,132,199,.15);color:#38bdf8}
+.card-meta{font-size:.6rem;color:var(--text-muted);margin-top:.2rem;font-style:italic}
+.card-arrow{color:var(--gray-300);font-size:.7rem;transition:transform var(--speed) var(--ease);flex-shrink:0;margin-top:.15rem}
+.card.open .card-arrow{transform:rotate(90deg);color:var(--gold)}
+.card-expand{display:none;border-top:1px solid var(--border-light)}
+.card.open .card-expand{display:block}
+.card-content{padding:.7rem 1rem;font-size:.8rem;line-height:1.8;color:var(--text-secondary);white-space:pre-wrap}
+.card-divider{border-top:1px dashed var(--border);margin:.3rem 1rem}
+.card-clabel{font-size:.62rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.3px;padding:.3rem 1rem 0;display:flex;align-items:center;gap:.3rem}
+.card-clabel::before{content:'';width:6px;height:6px;border-radius:2px;display:inline-block}
+.card-clabel-ar::before{background:var(--emerald)}.card-clabel-en::before{background:var(--blue)}
+.card-ctrl{padding:.6rem 1rem;background:var(--gray-50);border-top:1px solid var(--border-light);display:flex;gap:.6rem;align-items:flex-start;flex-wrap:wrap}
+.dark .card-ctrl{background:var(--gray-100)}
+.ctrl-group{display:flex;flex-direction:column;gap:.15rem}
+.ctrl-group label{font-size:.62rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.3px}
+.ctrl-select{padding:.35rem .5rem;border:1px solid var(--border);border-radius:var(--r-xs);font-size:.76rem;font-weight:600;cursor:pointer;background:var(--surface);color:var(--text);min-width:120px}
+.ctrl-select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-dim)}
+.card-btns{display:flex;gap:.2rem;margin-left:auto;align-self:center}
+.card-btn{padding:.3rem .5rem;border-radius:var(--r-xs);font-size:.65rem;font-weight:600;color:var(--text-muted);transition:all var(--speed) var(--ease)}
+.card-btn:hover{background:var(--gray-200);color:var(--text)}
+.card-btn-del:hover{color:var(--red);background:var(--red-dim)}
+
+/* Comment Thread */
+.comments{padding:.5rem 1rem .7rem;border-top:1px solid var(--border-light)}
+.comment-count{font-size:.68rem;font-weight:700;color:var(--text-muted);margin-bottom:.4rem;display:flex;align-items:center;gap:.3rem}
+.comment{padding:.35rem 0;display:flex;gap:.5rem;align-items:flex-start}
+.comment + .comment{border-top:1px solid var(--border-light);margin-top:.3rem;padding-top:.5rem}
+.comment-avatar{width:22px;height:22px;border-radius:50%;background:var(--gold-dim);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:800;flex-shrink:0}
+.comment-body{flex:1}
+.comment-meta{font-size:.62rem;color:var(--text-muted)}
+.comment-meta strong{color:var(--text-secondary);font-weight:700}
+.comment-text{font-size:.76rem;color:var(--text);line-height:1.5;margin-top:.1rem}
+.comment-del{font-size:.58rem;color:var(--text-muted);cursor:pointer;padding:.1rem .3rem;border-radius:3px;transition:all var(--speed)}
+.comment-del:hover{color:var(--red);background:var(--red-dim)}
+.comment-input{display:flex;gap:.4rem;margin-top:.4rem}
+.comment-input input{flex:1;padding:.35rem .55rem;border:1px solid var(--border);border-radius:var(--r-xs);font-size:.76rem;background:var(--surface);color:var(--text)}
+.comment-input input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-dim)}
+.comment-input button{padding:.35rem .6rem;border-radius:var(--r-xs);background:var(--gold);color:#fff;font-size:.72rem;font-weight:600}
+
+/* Bulk Action Bar */
+.bulk-bar{position:fixed;bottom:1.5rem;left:50%;transform:translateX(calc(-50% + var(--sidebar-w)/2)) translateY(100px);background:var(--navy);color:#fff;padding:.6rem 1.2rem;border-radius:var(--r);display:flex;align-items:center;gap:.8rem;z-index:300;box-shadow:var(--shadow-xl);transition:transform .3s var(--ease);font-size:.8rem;font-weight:600}
+.bulk-bar.show{transform:translateX(calc(-50% + var(--sidebar-w)/2)) translateY(0)}
+.bulk-bar button{padding:.3rem .7rem;border-radius:var(--r-xs);font-size:.72rem;font-weight:600;transition:all var(--speed)}
+.bulk-approve{background:var(--emerald);color:#fff}.bulk-edits{background:var(--amber);color:#fff}
+.bulk-reject{background:var(--red);color:#fff}.bulk-clear{color:var(--gray-400)}
+.bulk-bar button:hover{opacity:.85}
+
+/* ─── MODALS ─── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;padding:1rem}
+.modal-bg.show{display:flex}
+.modal{background:var(--surface);border-radius:var(--r);width:100%;max-width:520px;box-shadow:var(--shadow-xl);max-height:90vh;overflow-y:auto;animation:modalIn .2s var(--ease)}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-head{padding:1.1rem 1.3rem;border-bottom:1px solid var(--border-light);display:flex;justify-content:space-between;align-items:center}
+.modal-head h3{font-size:1rem;font-weight:700;color:var(--text)}
+.modal-x{width:28px;height:28px;border-radius:6px;background:var(--gray-100);color:var(--gray-500);display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all var(--speed)}
+.modal-x:hover{background:var(--red-dim);color:var(--red)}
+.modal-body{padding:1.3rem}
+.fg{margin-bottom:.9rem}
+.fg-label{display:block;font-size:.75rem;font-weight:600;color:var(--text-secondary);margin-bottom:.25rem}
+.fg-input,.fg-select,.fg-textarea{width:100%;padding:.5rem .65rem;border:1px solid var(--border);border-radius:var(--r-sm);font-size:.82rem;transition:all var(--speed);background:var(--surface);color:var(--text)}
+.fg-input:focus,.fg-select:focus,.fg-textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim)}
+.fg-textarea{min-height:110px;resize:vertical;line-height:1.6}
+.fg-hint{font-size:.65rem;color:var(--text-muted);margin-top:.15rem}
+.fg-colors{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.25rem}
+.fg-color{width:30px;height:30px;border-radius:7px;border:2px solid transparent;cursor:pointer;transition:all var(--speed)}
+.fg-color:hover,.fg-color.sel{border-color:var(--text);transform:scale(1.1)}
+.emoji-grid{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.25rem}
+.emoji-opt{width:34px;height:34px;border-radius:7px;border:2px solid transparent;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;transition:all var(--speed)}
+.emoji-opt:hover,.emoji-opt.sel{border-color:var(--gold);background:var(--gold-dim)}
+.modal-foot{padding:.8rem 1.3rem;border-top:1px solid var(--border-light);display:flex;justify-content:flex-end;gap:.4rem}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:#fff;padding:.65rem 1.1rem;border-radius:var(--r-sm);font-size:.78rem;font-weight:500;z-index:600;transform:translateY(100px);opacity:0;transition:all .3s ease;box-shadow:0 8px 24px rgba(0,0,0,.15);display:flex;align-items:center;gap:.5rem;max-width:360px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-undo{padding:.2rem .5rem;border-radius:4px;font-size:.7rem;font-weight:700;color:var(--gold);background:var(--gold-dim);cursor:pointer;white-space:nowrap}
+
+/* Save Indicator */
+.save-badge{position:fixed;top:.8rem;right:.8rem;background:var(--emerald);color:#fff;padding:.25rem .6rem;border-radius:20px;font-size:.65rem;font-weight:700;z-index:300;opacity:0;transition:opacity .3s;pointer-events:none}
+.save-badge.show{opacity:1}
+
+/* Empty State */
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--text-muted)}
+.empty-icon{font-size:2.2rem;margin-bottom:.4rem}
+.empty-text{font-size:.85rem;font-weight:500}
+.empty-sub{font-size:.75rem;color:var(--text-muted);margin-top:.2rem}
+
+/* ─── RESPONSIVE ─── */
+.menu-tog{display:none;position:fixed;top:.8rem;left:.8rem;z-index:300;width:34px;height:34px;border-radius:8px;background:var(--navy);color:#fff;align-items:center;justify-content:center;font-size:1rem;box-shadow:var(--shadow)}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}.menu-tog{display:flex}
+  .hub-head,.rev-head{padding-left:3.5rem}
+  .hub-body,.rev-body,.gen-rev,.prog{padding-left:1rem;padding-right:1rem}
+  .gen-rev{margin-left:1rem;margin-right:1rem}
+  .cards{grid-template-columns:1fr}.p-grid{grid-template-columns:1fr}
+  .bulk-bar{transform:translateX(-50%) translateY(100px)}.bulk-bar.show{transform:translateX(-50%) translateY(0)}
+}
+@media(max-width:480px){.card-ctrl{flex-direction:column}.card-btns{margin-left:0;margin-top:.3rem}}
+</style>
+</head>
+<body>
+<!-- Mobile Toggle -->
+<button class="menu-tog" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<!-- Save Badge -->
+<div class="save-badge" id="saveBadge">Saved ✓</div>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <div class="sb-brand"><h1>GTM Hub <span>V2</span></h1><p>Multi-Product Launch Manager</p></div>
+  <div class="sb-section"><div class="sb-label">Products</div></div>
+  <div class="sb-list" id="sbList"></div>
+  <button class="sb-add" onclick="openProductModal()">+ Add Product</button>
+  <div class="sb-bottom">
+    <button class="sb-btn" onclick="openSettingsModal()">⚙ Settings</button>
+    <button class="sb-btn" onclick="nav('hub')">◉ Hub Dashboard</button>
+  </div>
+</nav>
+
+<!-- Main -->
+<div class="main" id="main"></div>
+
+<!-- Product Modal -->
+<div class="modal-bg" id="mProduct">
+  <div class="modal">
+    <div class="modal-head"><h3 id="mProductTitle">Add Product</h3><button class="modal-x" onclick="closeModal('mProduct')">×</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="mProdId">
+      <div class="fg"><label class="fg-label">Emoji</label>
+        <div class="emoji-grid" id="emojiGrid"></div></div>
+      <div class="fg"><label class="fg-label">Product Name *</label>
+        <input class="fg-input" id="mProdName" placeholder="e.g. Musahm Vault"></div>
+      <div class="fg"><label class="fg-label">Tagline</label>
+        <input class="fg-input" id="mProdTagline" placeholder="e.g. Saudi governance. World-class platform."></div>
+      <div class="fg"><label class="fg-label">Description</label>
+        <textarea class="fg-textarea" id="mProdDesc" placeholder="Brief description of this product's GTM plan" style="min-height:60px"></textarea></div>
+      <div class="fg"><label class="fg-label">Deadline</label>
+        <input class="fg-input" id="mProdDeadline" type="date"></div>
+      <div class="fg"><label class="fg-label">Team Members (comma-separated)</label>
+        <input class="fg-input" id="mProdTeam" placeholder="e.g. Mohamed, Ahmed, Sara"></div>
+      <div class="fg"><label class="fg-label">Accent Color</label>
+        <div class="fg-colors" id="colorGrid"></div></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('mProduct')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveProduct()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- Content Modal -->
+<div class="modal-bg" id="mContent">
+  <div class="modal" style="max-width:580px">
+    <div class="modal-head"><h3 id="mContentTitle">Add Content Item</h3><button class="modal-x" onclick="closeModal('mContent')">×</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="mContId">
+      <input type="hidden" id="mContProd">
+      <div class="fg"><label class="fg-label">Section *</label>
+        <select class="fg-select" id="mContSection"></select></div>
+      <div class="fg"><label class="fg-label">Title *</label>
+        <input class="fg-input" id="mContTitle" placeholder="e.g. LinkedIn Launch Post (Arabic)"></div>
+      <div class="fg"><label class="fg-label">Summary</label>
+        <input class="fg-input" id="mContSummary" placeholder="Brief description"></div>
+      <div class="fg"><label class="fg-label">Content / Copy</label>
+        <textarea class="fg-textarea" id="mContBody" placeholder="Paste content here for review..."></textarea></div>
+      <div class="fg"><label class="fg-label">Tags (comma-separated)</label>
+        <input class="fg-input" id="mContTags" placeholder="e.g. Arabic, LinkedIn, Launch">
+        <div class="fg-hint">Common: Arabic, English, LinkedIn, Twitter, Email, SMS, Video, Visual</div></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('mContent')">Cancel</button>
+      <button class="btn btn-gold" id="mContSave" onclick="saveContent()">Add Content</button>
+    </div>
+  </div>
+</div>
+
+<!-- Section Modal -->
+<div class="modal-bg" id="mSection">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-head"><h3 id="mSectionTitle">Add Section</h3><button class="modal-x" onclick="closeModal('mSection')">×</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="mSecId"><input type="hidden" id="mSecProd">
+      <div class="fg"><label class="fg-label">Section Name *</label>
+        <input class="fg-input" id="mSecName" placeholder="e.g. Presentations"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('mSection')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveSection()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-bg" id="mSettings">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-head"><h3>Settings</h3><button class="modal-x" onclick="closeModal('mSettings')">×</button></div>
+    <div class="modal-body">
+      <div class="fg"><label class="fg-label">Your Name</label>
+        <input class="fg-input" id="mSetName" placeholder="e.g. Mohamed Negm">
+        <div class="fg-hint">Used for comments and review attribution</div></div>
+      <div class="fg"><label class="fg-label">Theme</label>
+        <div style="display:flex;gap:.4rem;margin-top:.2rem">
+          <button class="btn btn-sm" id="themeLight" onclick="setTheme(false)">☀ Light</button>
+          <button class="btn btn-sm" id="themeDark" onclick="setTheme(true)">🌙 Dark</button>
+        </div></div>
+      <div style="border-top:1px solid var(--border);margin:1rem 0;position:relative">
+        <span style="position:absolute;top:-.55rem;left:50%;transform:translateX(-50%);background:var(--surface);padding:0 .6rem;font-size:.65rem;color:var(--text-muted);font-weight:600">DATA</span>
+      </div>
+      <div class="fg"><label class="fg-label">Export</label>
+        <div style="display:flex;gap:.4rem"><button class="btn btn-sm btn-navy" onclick="exportJSON()">↓ JSON Backup</button><button class="btn btn-sm btn-outline" onclick="exportAllCSV()">↓ All as CSV</button></div></div>
+      <div class="fg"><label class="fg-label">Import</label>
+        <input type="file" id="importFile" accept=".json" style="font-size:.78rem" onchange="importJSON(event)">
+        <div class="fg-hint">Imports V1 and V2 format. Replaces all current data.</div></div>
+      <div style="border-top:1px solid var(--border);margin:1rem 0"></div>
+      <div class="fg"><button class="btn btn-sm btn-danger" onclick="resetAll()">🗑 Reset All Data</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<!-- Bulk Action Bar -->
+<div class="bulk-bar" id="bulkBar">
+  <span id="bulkCount">0 selected</span>
+  <button class="bulk-approve" onclick="bulkStatus('approved')">✓ Approve</button>
+  <button class="bulk-edits" onclick="bulkStatus('edits')">✎ Edits</button>
+  <button class="bulk-reject" onclick="bulkStatus('rejected')">✕ Reject</button>
+  <button class="bulk-clear" onclick="clearSelection()">Clear</button>
+</div>
+
+<script>
+// ━━━ CONSTANTS ━━━
+const KEY='gtm-hub-v2', EMOJIS=['🏛️','📋','🔐','📊','🚀','💼','📱','🌐','📝','🎯','💡','⚡','🔥','📈','🛡️','🎨','📦','🔗','🏆','💰'], COLORS=['#c3924d','#3b82f6','#10b981','#8b5cf6','#ef4444','#f59e0b','#ec4899','#06b6d4','#14b8a6','#f97316'];
+const DEFAULT_SECTIONS=[{id:'social',label:'Social Media',order:0},{id:'email',label:'Email',order:1},{id:'sms',label:'SMS',order:2},{id:'video',label:'Video',order:3},{id:'visual',label:'Visuals & Graphics',order:4},{id:'sales',label:'Sales Enablement',order:5},{id:'content',label:'Content & Blog',order:6}];
+
+// ━━━ STATE ━━━
+let S={version:2,settings:{userName:'',darkMode:false},products:[],_view:'hub',_active:null,_search:'',_filter:'all',_selected:[]};
+let _undo=null, _undoTimer=null;
+
+// ━━━ DATA ━━━
+function load(){
+  const raw=localStorage.getItem(KEY);
+  if(raw){try{const d=JSON.parse(raw);if(d.version===2)S={...S,...d};else if(d.products)S=migrateV1(d)}catch(e){}}
+  if(!S.products.length)S.products=defaultData();
+  if(S.settings.darkMode)document.body.classList.add('dark');
+  save();
+}
+function save(){
+  localStorage.setItem(KEY,JSON.stringify(S));
+  const b=document.getElementById('saveBadge');b.classList.add('show');setTimeout(()=>b.classList.remove('show'),1200);
+}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function now(){return new Date().toISOString()}
+
+function migrateV1(old){
+  const s={version:2,settings:{userName:'',darkMode:false},products:[],_view:'hub',_active:null,_search:'',_filter:'all',_selected:[]};
+  (old.products||[]).forEach(p=>{
+    const prod={id:p.id,name:p.name,tagline:p.tagline||'',description:'',color:p.color||'#c3924d',emoji:'🚀',deadline:'',team:[],
+      generalNotes:p.generalNotes||'',generalVerdict:p.generalVerdict||'pending',createdAt:now(),updatedAt:now(),
+      sections:JSON.parse(JSON.stringify(DEFAULT_SECTIONS)),items:[]};
+    (p.items||[]).forEach((it,i)=>{
+      prod.items.push({id:it.id,sectionId:it.section||'other',order:i,title:it.title,summary:it.summary||'',content:it.content||'',
+        tags:it.tags||[],status:it.status||'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),
+        comments:it.comment?[{id:uid(),author:'Migrated',text:it.comment,createdAt:now()}]:[]});
+    });
+    s.products.push(prod);
+  });
+  return s;
+}
+
+// ━━━ NAVIGATION ━━━
+function nav(view,pid){S._view=view;S._active=pid||null;S._search='';S._filter='all';S._selected=[];save();render()}
+
+// ━━━ RENDER ENGINE ━━━
+function render(){renderSidebar();if(S._view==='review'&&S._active)renderReview();else renderHub();updateBulkBar()}
+
+function renderSidebar(){
+  const c=document.getElementById('sbList');
+  c.innerHTML=S.products.map(p=>{const st=pStats(p);const a=S._view==='review'&&S._active===p.id;
+    return`<div class="sb-item ${a?'active':''}" onclick="nav('review','${p.id}')"><span class="sb-emoji">${p.emoji||'🚀'}</span><span class="sb-name">${esc(p.name)}</span><span class="sb-pct">${st.pct}%</span></div>`}).join('');
+}
+
+function renderHub(){
+  const tp=S.products.length, ti=S.products.reduce((s,p)=>s+p.items.length,0),
+    tr=S.products.reduce((s,p)=>{const st=pStats(p);return s+st.approved+st.edits+st.rejected},0);
+  document.getElementById('main').innerHTML=`
+    <div class="hub-head"><h2>GTM Review Hub</h2><p>Manage and review go-to-market content across all your products</p>
+      <div class="hub-stats"><div class="hub-stat"><b>${tp}</b><small>Products</small></div><div class="hub-stat"><b>${ti}</b><small>Content Items</small></div>
+        <div class="hub-stat"><b>${tr}</b><small>Reviewed</small></div><div class="hub-stat"><b>${ti?Math.round(tr/ti*100):0}%</b><small>Complete</small></div></div></div>
+    <div class="hub-body"><div class="hub-title">Your Products</div><div class="p-grid">${S.products.map(renderPCard).join('')}
+      <div class="p-card-add" onclick="openProductModal()"><div style="font-size:1.6rem;font-weight:300">+</div><div style="font-size:.8rem;font-weight:600;margin-top:.2rem">Add Product</div></div></div></div>`;
+}
+
+function renderPCard(p){
+  const st=pStats(p),c=2*Math.PI*18,off=c-(st.pct/100)*c;
+  return`<div class="p-card" onclick="nav('review','${p.id}')"><div class="p-card-bar" style="background:${p.color}"></div>
+    <div class="p-card-actions"><button class="p-card-act" onclick="event.stopPropagation();openProductModal('${p.id}')" title="Edit">✎</button><button class="p-card-act" onclick="event.stopPropagation();delProduct('${p.id}')" title="Delete">×</button></div>
+    <div class="p-card-body"><div class="p-card-top"><span class="p-card-emoji">${p.emoji||'🚀'}</span><div class="p-card-info"><div class="p-card-name">${esc(p.name)}</div><div class="p-card-tag">${esc(p.tagline)}</div></div>
+      <div class="p-card-ring"><svg width="48" height="48"><circle cx="24" cy="24" r="18" fill="none" stroke="var(--border)" stroke-width="3.5"/><circle cx="24" cy="24" r="18" fill="none" stroke="${p.color}" stroke-width="3.5" stroke-dasharray="${c}" stroke-dashoffset="${off}" stroke-linecap="round"/></svg><div class="p-card-ring-txt">${st.pct}%</div></div></div>
+      <div class="p-card-stats"><div class="p-card-s"><strong>${p.items.length}</strong>items</div><div class="p-card-s" style="color:var(--emerald)"><strong>${st.approved}</strong>ok</div><div class="p-card-s" style="color:var(--amber)"><strong>${st.edits}</strong>edits</div><div class="p-card-s"><strong>${st.pending}</strong>pending</div></div></div></div>`
+}
+
+function renderReview(){
+  const p=findP(S._active);if(!p)return nav('hub');
+  const st=pStats(p), filtered=getFilteredItems(p), grouped=groupBySec(p,filtered);
+  const secOpts=p.sections.map(s=>`<option value="${s.id}">${esc(s.label)}</option>`).join('');
+  document.getElementById('mContSection').innerHTML=secOpts;
+
+  document.getElementById('main').innerHTML=`
+    <div class="rev-head">
+      <button class="rev-back" onclick="nav('hub')">← All Products</button>
+      <div class="rev-title">${p.emoji||'🚀'} ${esc(p.name)} <span class="rev-badge" style="background:${p.color}">GTM REVIEW</span></div>
+      <div class="rev-sub">${esc(p.tagline||'Review and approve all content items')}</div>
+      <div class="rev-acts">
+        <button class="rev-act rev-act-edit" onclick="openProductModal('${p.id}')">✎ Edit Product</button>
+        <button class="rev-act rev-act-del" onclick="delProduct('${p.id}')">🗑 Delete</button>
+      </div>
+    </div>
+    <div class="prog">
+      <div class="prog-row">
+        <div class="prog-stat"><span class="prog-dot dot-a"></span>Approved:<strong>${st.approved}</strong></div>
+        <div class="prog-stat"><span class="prog-dot dot-e"></span>Edits:<strong>${st.edits}</strong></div>
+        <div class="prog-stat"><span class="prog-dot dot-r"></span>Rejected:<strong>${st.rejected}</strong></div>
+        <div class="prog-stat"><span class="prog-dot dot-p"></span>Pending:<strong>${st.pending}</strong></div>
+        <div class="prog-pct">${st.pct}% reviewed</div>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${st.pct}%;background:linear-gradient(90deg,${p.color},var(--emerald))"></div></div>
+      <div class="prog-tools">
+        <div class="search-box"><span class="search-icon">🔍</span><input id="searchInput" placeholder="Search content..." value="${esc(S._search)}" oninput="onSearch(this.value)"></div>
+        <div class="filter-pills">
+          <button class="filter-pill ${S._filter==='all'?'active':''}" onclick="onFilter('all')">All</button>
+          <button class="filter-pill ${S._filter==='pending'?'active':''}" onclick="onFilter('pending')">Pending</button>
+          <button class="filter-pill ${S._filter==='approved'?'active':''}" onclick="onFilter('approved')">Approved</button>
+          <button class="filter-pill ${S._filter==='edits'?'active':''}" onclick="onFilter('edits')">Edits</button>
+          <button class="filter-pill ${S._filter==='rejected'?'active':''}" onclick="onFilter('rejected')">Rejected</button>
+        </div>
+        <div class="prog-btns">
+          <button class="btn btn-sm btn-outline" onclick="exportCSV('${p.id}')">↓ CSV</button>
+          <button class="btn btn-sm btn-outline" onclick="openSectionModal('${p.id}')">+ Section</button>
+          <button class="btn btn-sm btn-gold" onclick="openContentModal('${p.id}')">+ Add Content</button>
+        </div>
+      </div>
+    </div>
+    <div class="gen-rev">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+        <div><div class="gen-rev-title">General Review Notes</div><div class="gen-rev-desc">Overall feedback. Auto-saved.</div></div>
+        <select onchange="setGenVerdict('${p.id}',this.value)">
+          <option value="pending" ${(p.generalVerdict||'pending')==='pending'?'selected':''}>Overall: Pending</option>
+          <option value="approved" ${p.generalVerdict==='approved'?'selected':''}>Overall: Approved</option>
+          <option value="edits" ${p.generalVerdict==='edits'?'selected':''}>Overall: Needs Revisions</option>
+          <option value="rejected" ${p.generalVerdict==='rejected'?'selected':''}>Overall: Not Ready</option>
+        </select>
+      </div>
+      <textarea oninput="setGenNotes('${p.id}',this.value)" placeholder="Write your overall review...">${esc(p.generalNotes||'')}</textarea>
+    </div>
+    <div class="rev-body">
+      ${Object.keys(grouped).length===0&&!S._search&&S._filter==='all'?'<div class="empty"><div class="empty-icon">📄</div><div class="empty-text">No content items yet</div><div class="empty-sub">Click "+ Add Content" to get started</div></div>':''}
+      ${Object.keys(grouped).length===0&&(S._search||S._filter!=='all')?'<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">No items match your filter</div><div class="empty-sub">Try changing your search or filter</div></div>':''}
+      ${p.sections.sort((a,b)=>a.order-b.order).map(sec=>{
+        const items=grouped[sec.id];if(!items||!items.length)return'';
+        return`<div class="sec"><div class="sec-head"><div class="sec-title">${esc(sec.label)}</div><span class="sec-count">${items.length}</span>
+          <div class="sec-acts"><button class="sec-btn" onclick="openSectionModal('${p.id}','${sec.id}')">✎</button><button class="sec-btn sec-btn-del" onclick="delSection('${p.id}','${sec.id}')">×</button><button class="sec-btn" onclick="openContentModal('${p.id}','${sec.id}')">+ Add</button></div></div>
+          <div class="cards">${items.sort((a,b)=>a.order-b.order).map((it,i)=>renderCard(p.id,it,i)).join('')}</div></div>`}).join('')}
+    </div>`;
+}
+
+function renderCard(pid,it,idx){
+  const cls='st-'+(it.status||'pending'), sel=S._selected.includes(it.id), tags=renderTags(it.tags);
+  const meta=it.reviewedAt?`Reviewed ${timeAgo(it.reviewedAt)}${it.reviewedBy?' by '+esc(it.reviewedBy):''}`:it.updatedAt?`Updated ${timeAgo(it.updatedAt)}`:'';
+  return`<div class="card ${cls}" data-id="${it.id}" id="card-${it.id}">
+    <div class="card-top" onclick="toggleCard('${it.id}')">
+      <div class="card-sel ${sel?'checked':''}" onclick="event.stopPropagation();toggleSel('${it.id}')">✓</div>
+      <div class="card-info"><div class="card-id">#${idx+1} ${esc(getSectionLabel(pid,it.sectionId))}</div>
+        <div class="card-title">${esc(it.title)}</div>
+        ${it.summary?`<div class="card-sum">${esc(it.summary)}</div>`:''}
+        ${tags?`<div class="card-tags">${tags}</div>`:''}
+        ${meta?`<div class="card-meta">${meta}</div>`:''}
+      </div><span class="card-arrow">▶</span></div>
+    <div class="card-expand">
+      ${it.content?`<div class="card-content">${esc(it.content)}</div>`:''}
+      ${renderComments(pid,it)}
+    </div>
+    <div class="card-ctrl">
+      <div class="ctrl-group"><label>Status</label>
+        <select class="ctrl-select" onchange="setStatus('${pid}','${it.id}',this.value)">
+          <option value="pending" ${(it.status||'pending')==='pending'?'selected':''}>Pending</option>
+          <option value="approved" ${it.status==='approved'?'selected':''}>Approved</option>
+          <option value="edits" ${it.status==='edits'?'selected':''}>Needs Edits</option>
+          <option value="rejected" ${it.status==='rejected'?'selected':''}>Rejected</option>
+        </select></div>
+      <div class="card-btns">
+        <button class="card-btn" onclick="openContentModal('${pid}',null,'${it.id}')" title="Edit">✎ Edit</button>
+        <button class="card-btn" onclick="dupItem('${pid}','${it.id}')" title="Duplicate">📋 Dup</button>
+        <button class="card-btn card-btn-del" onclick="delItem('${pid}','${it.id}')" title="Delete">🗑</button>
+      </div>
+    </div></div>`
+}
+
+function renderTags(tags){
+  return(tags||[]).map(t=>{const k=t.toLowerCase();let c='tag-en';
+    if(k.includes('arab'))c='tag-ar';else if(k.includes('link'))c='tag-li';else if(k.includes('twit'))c='tag-tw';
+    else if(k.includes('email'))c='tag-email';else if(k.includes('sms'))c='tag-sms';
+    else if(k.includes('video'))c='tag-video';else if(k.includes('visual')||k.includes('graph'))c='tag-visual';
+    return`<span class="card-tag ${c}">${esc(t)}</span>`}).join('')
+}
+
+function renderComments(pid,it){
+  const cc=it.comments||[];
+  return`<div class="comments"><div class="comment-count">💬 ${cc.length} comment${cc.length!==1?'s':''}</div>
+    ${cc.map(c=>`<div class="comment"><div class="comment-avatar">${(c.author||'?')[0].toUpperCase()}</div>
+      <div class="comment-body"><div class="comment-meta"><strong>${esc(c.author)}</strong> · ${timeAgo(c.createdAt)}</div>
+        <div class="comment-text">${esc(c.text)}</div></div>
+      <button class="comment-del" onclick="delComment('${pid}','${it.id}','${c.id}')">×</button></div>`).join('')}
+    <div class="comment-input"><input id="ci-${it.id}" placeholder="Add comment..." onkeydown="if(event.key==='Enter')addComment('${pid}','${it.id}')">
+      <button onclick="addComment('${pid}','${it.id}')">→</button></div></div>`
+}
+
+// ━━━ CARD TOGGLE ━━━
+function toggleCard(id){const el=document.getElementById('card-'+id);if(el)el.classList.toggle('open')}
+
+// ━━━ SELECTION & BULK ━━━
+function toggleSel(id){
+  const i=S._selected.indexOf(id);if(i>=0)S._selected.splice(i,1);else S._selected.push(id);
+  const el=document.querySelector(`#card-${id} .card-sel`);if(el)el.classList.toggle('checked');
+  updateBulkBar();
+}
+function clearSelection(){S._selected=[];document.querySelectorAll('.card-sel.checked').forEach(e=>e.classList.remove('checked'));updateBulkBar()}
+function updateBulkBar(){const bar=document.getElementById('bulkBar'),cnt=document.getElementById('bulkCount');
+  cnt.textContent=S._selected.length+' selected';bar.classList.toggle('show',S._selected.length>0)}
+function bulkStatus(status){
+  const p=findP(S._active);if(!p)return;
+  S._selected.forEach(id=>{const it=p.items.find(x=>x.id===id);if(it){it.status=status;it.reviewedAt=now();it.reviewedBy=S.settings.userName||'Reviewer'}});
+  save();S._selected=[];render();toast(`${S._selected.length||'Items'} set to ${status}`);
+}
+
+// ━━━ SEARCH & FILTER ━━━
+function onSearch(q){S._search=q;renderReviewContent()}
+function onFilter(f){S._filter=f;renderReviewContent()}
+function renderReviewContent(){
+  // Re-render the full review to update filtered content
+  if(S._view==='review'&&S._active)renderReview();
+}
+function getFilteredItems(p){
+  let items=[...p.items];
+  if(S._filter!=='all')items=items.filter(i=>(i.status||'pending')===S._filter);
+  if(S._search){const q=S._search.toLowerCase();items=items.filter(i=>(i.title+' '+i.summary+' '+(i.tags||[]).join(' ')+' '+i.content).toLowerCase().includes(q))}
+  return items;
+}
+function groupBySec(p,items){const g={};items.forEach(it=>{const s=it.sectionId||'other';if(!g[s])g[s]=[];g[s].push(it)});return g}
+
+// ━━━ PRODUCT CRUD ━━━
+function openProductModal(id){
+  const isEdit=!!id, p=isEdit?findP(id):null;
+  document.getElementById('mProductTitle').textContent=isEdit?'Edit Product':'Add Product';
+  document.getElementById('mProdId').value=id||'';
+  document.getElementById('mProdName').value=p?p.name:'';
+  document.getElementById('mProdTagline').value=p?p.tagline:'';
+  document.getElementById('mProdDesc').value=p?p.description||'':'';
+  document.getElementById('mProdDeadline').value=p?p.deadline||'':'';
+  document.getElementById('mProdTeam').value=p?(p.team||[]).join(', '):'';
+  renderEmojis(p?p.emoji:'🚀');renderColors(p?p.color:'#c3924d');
+  openModal('mProduct');
+}
+function renderEmojis(sel){document.getElementById('emojiGrid').innerHTML=EMOJIS.map(e=>`<div class="emoji-opt ${e===sel?'sel':''}" onclick="pickEmoji(this,'${e}')">${e}</div>`).join('')}
+function pickEmoji(el,e){document.querySelectorAll('.emoji-opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');el.dataset.val=e}
+function renderColors(sel){document.getElementById('colorGrid').innerHTML=COLORS.map(c=>`<div class="fg-color ${c===sel?'sel':''}" style="background:${c}" data-c="${c}" onclick="pickColor(this)"></div>`).join('')}
+function pickColor(el){document.querySelectorAll('.fg-color').forEach(x=>x.classList.remove('sel'));el.classList.add('sel')}
+
+function saveProduct(){
+  const name=document.getElementById('mProdName').value.trim();if(!name)return toast('Name is required','error');
+  const tag=document.getElementById('mProdTagline').value.trim();
+  const desc=document.getElementById('mProdDesc').value.trim();
+  const deadline=document.getElementById('mProdDeadline').value;
+  const team=document.getElementById('mProdTeam').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const emoji=document.querySelector('.emoji-opt.sel')?.textContent||'🚀';
+  const color=document.querySelector('.fg-color.sel')?.dataset.c||'#c3924d';
+  const editId=document.getElementById('mProdId').value;
+  if(editId){const p=findP(editId);if(p){p.name=name;p.tagline=tag;p.description=desc;p.deadline=deadline;p.team=team;p.emoji=emoji;p.color=color;p.updatedAt=now()}}
+  else{S.products.push({id:uid(),name,tagline:tag,description:desc,color,emoji,deadline,team,generalNotes:'',generalVerdict:'pending',createdAt:now(),updatedAt:now(),sections:JSON.parse(JSON.stringify(DEFAULT_SECTIONS)),items:[]})}
+  save();closeModal('mProduct');render();toast(editId?'Product updated':'Product added');
+}
+
+function delProduct(id){
+  const p=findP(id);if(!p)return;if(!confirm(`Delete "${p.name}" and all its content?\nThis cannot be undone.`))return;
+  const backup=JSON.parse(JSON.stringify(p));
+  S.products=S.products.filter(x=>x.id!==id);
+  if(S._active===id){S._active=null;S._view='hub'}
+  save();render();toastUndo('Product deleted',()=>{S.products.push(backup);save();render()});
+}
+
+// ━━━ CONTENT CRUD ━━━
+function openContentModal(pid,secId,editId){
+  const p=findP(pid);if(!p)return;
+  document.getElementById('mContProd').value=pid;
+  // Populate section dropdown with this product's sections
+  document.getElementById('mContSection').innerHTML=p.sections.sort((a,b)=>a.order-b.order).map(s=>`<option value="${s.id}">${esc(s.label)}</option>`).join('');
+  if(editId){
+    const it=p.items.find(x=>x.id===editId);if(!it)return;
+    document.getElementById('mContentTitle').textContent='Edit Content Item';
+    document.getElementById('mContId').value=editId;
+    document.getElementById('mContSection').value=it.sectionId||'social';
+    document.getElementById('mContTitle').value=it.title;
+    document.getElementById('mContSummary').value=it.summary||'';
+    document.getElementById('mContBody').value=it.content||'';
+    document.getElementById('mContTags').value=(it.tags||[]).join(', ');
+    document.getElementById('mContSave').textContent='Save Changes';
+  }else{
+    document.getElementById('mContentTitle').textContent='Add Content Item';
+    document.getElementById('mContId').value='';
+    document.getElementById('mContSection').value=secId||p.sections[0]?.id||'social';
+    document.getElementById('mContTitle').value='';document.getElementById('mContSummary').value='';
+    document.getElementById('mContBody').value='';document.getElementById('mContTags').value='';
+    document.getElementById('mContSave').textContent='Add Content';
+  }
+  openModal('mContent');
+}
+
+function saveContent(){
+  const pid=document.getElementById('mContProd').value;const p=findP(pid);if(!p)return;
+  const title=document.getElementById('mContTitle').value.trim();if(!title)return toast('Title is required','error');
+  const secId=document.getElementById('mContSection').value;
+  const summary=document.getElementById('mContSummary').value.trim();
+  const content=document.getElementById('mContBody').value.trim();
+  const tags=document.getElementById('mContTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const editId=document.getElementById('mContId').value;
+  if(editId){
+    const it=p.items.find(x=>x.id===editId);
+    if(it){it.sectionId=secId;it.title=title;it.summary=summary;it.content=content;it.tags=tags;it.updatedAt=now()}
+    toast('Content updated');
+  }else{
+    p.items.push({id:uid(),sectionId:secId,order:p.items.filter(x=>x.sectionId===secId).length,title,summary,content,tags,status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]});
+    toast('Content added');
+  }
+  save();closeModal('mContent');render();
+}
+
+function delItem(pid,itemId){
+  const p=findP(pid);if(!p)return;
+  const it=p.items.find(x=>x.id===itemId);if(!it)return;
+  if(!confirm('Delete this content item?'))return;
+  const backup=JSON.parse(JSON.stringify(it));const idx=p.items.indexOf(it);
+  p.items=p.items.filter(x=>x.id!==itemId);
+  save();render();toastUndo('Item deleted',()=>{p.items.splice(idx,0,backup);save();render()});
+}
+
+function dupItem(pid,itemId){
+  const p=findP(pid);if(!p)return;const it=p.items.find(x=>x.id===itemId);if(!it)return;
+  const dup={...JSON.parse(JSON.stringify(it)),id:uid(),title:it.title+' (Copy)',status:'pending',reviewedAt:null,reviewedBy:'',comments:[],createdAt:now(),updatedAt:now()};
+  p.items.push(dup);save();render();toast('Item duplicated');
+}
+
+// ━━━ SECTIONS ━━━
+function openSectionModal(pid,secId){
+  document.getElementById('mSecProd').value=pid;
+  if(secId){const p=findP(pid);const sec=p?.sections.find(s=>s.id===secId);
+    document.getElementById('mSectionTitle').textContent='Rename Section';document.getElementById('mSecId').value=secId;document.getElementById('mSecName').value=sec?sec.label:''}
+  else{document.getElementById('mSectionTitle').textContent='Add Section';document.getElementById('mSecId').value='';document.getElementById('mSecName').value=''}
+  openModal('mSection');
+}
+function saveSection(){
+  const pid=document.getElementById('mSecProd').value;const p=findP(pid);if(!p)return;
+  const name=document.getElementById('mSecName').value.trim();if(!name)return toast('Name required','error');
+  const secId=document.getElementById('mSecId').value;
+  if(secId){const sec=p.sections.find(s=>s.id===secId);if(sec)sec.label=name}
+  else{p.sections.push({id:uid(),label:name,order:p.sections.length})}
+  save();closeModal('mSection');render();toast(secId?'Section renamed':'Section added');
+}
+function delSection(pid,secId){
+  const p=findP(pid);if(!p)return;const sec=p.sections.find(s=>s.id===secId);
+  const itemCount=p.items.filter(i=>i.sectionId===secId).length;
+  if(!confirm(`Delete section "${sec?.label}"?${itemCount?` This will also remove ${itemCount} item(s).`:''}`))return;
+  p.sections=p.sections.filter(s=>s.id!==secId);p.items=p.items.filter(i=>i.sectionId!==secId);
+  save();render();toast('Section deleted');
+}
+
+// ━━━ REVIEW ACTIONS ━━━
+function setStatus(pid,itemId,status){
+  const p=findP(pid);if(!p)return;const it=p.items.find(x=>x.id===itemId);if(!it)return;
+  it.status=status;it.reviewedAt=now();it.reviewedBy=S.settings.userName||'Reviewer';it.updatedAt=now();save();
+  const card=document.getElementById('card-'+itemId);
+  if(card){card.className=card.className.replace(/st-\w+/,'st-'+status);
+    const meta=card.querySelector('.card-meta');if(meta)meta.textContent=`Reviewed just now${it.reviewedBy?' by '+it.reviewedBy:''}`}
+  renderSidebar();updateProgress(p);
+}
+function updateProgress(p){
+  const st=pStats(p);const prog=document.querySelector('.prog');if(!prog)return;
+  prog.querySelectorAll('.prog-stat strong').forEach((el,i)=>{[st.approved,st.edits,st.rejected,st.pending][i]!==undefined&&(el.textContent=[st.approved,st.edits,st.rejected,st.pending][i])});
+  const pctEl=prog.querySelector('.prog-pct');if(pctEl)pctEl.textContent=st.pct+'% reviewed';
+  const fill=prog.querySelector('.prog-fill');if(fill)fill.style.width=st.pct+'%';
+}
+function setGenVerdict(pid,v){const p=findP(pid);if(p){p.generalVerdict=v;save()}}
+function setGenNotes(pid,n){const p=findP(pid);if(p){p.generalNotes=n;save()}}
+
+// ━━━ COMMENTS ━━━
+function addComment(pid,itemId){
+  const input=document.getElementById('ci-'+itemId);if(!input)return;
+  const text=input.value.trim();if(!text)return;
+  const p=findP(pid);if(!p)return;const it=p.items.find(x=>x.id===itemId);if(!it)return;
+  if(!it.comments)it.comments=[];
+  it.comments.push({id:uid(),author:S.settings.userName||'Reviewer',text,createdAt:now()});
+  save();input.value='';
+  // Re-render comments inline
+  const card=document.getElementById('card-'+itemId);
+  if(card){const commentsEl=card.querySelector('.comments');if(commentsEl)commentsEl.outerHTML=renderComments(pid,it)}
+}
+function delComment(pid,itemId,commentId){
+  const p=findP(pid);if(!p)return;const it=p.items.find(x=>x.id===itemId);if(!it)return;
+  it.comments=(it.comments||[]).filter(c=>c.id!==commentId);save();
+  const card=document.getElementById('card-'+itemId);
+  if(card){const commentsEl=card.querySelector('.comments');if(commentsEl)commentsEl.outerHTML=renderComments(pid,it)}
+}
+
+// ━━━ SETTINGS ━━━
+function openSettingsModal(){
+  document.getElementById('mSetName').value=S.settings.userName||'';
+  updateThemeButtons();openModal('mSettings');
+}
+function setTheme(dark){S.settings.darkMode=dark;document.body.classList.toggle('dark',dark);save();updateThemeButtons()}
+function updateThemeButtons(){
+  const l=document.getElementById('themeLight'),d=document.getElementById('themeDark');
+  if(l)l.className='btn btn-sm '+(S.settings.darkMode?'btn-outline':'btn-gold');
+  if(d)d.className='btn btn-sm '+(S.settings.darkMode?'btn-gold':'btn-outline');
+}
+// Auto-save settings name on modal close
+const origClose=closeModal;
+function closeModalSettings(){
+  const name=document.getElementById('mSetName')?.value?.trim();
+  if(name!==undefined)S.settings.userName=name;save();
+}
+
+// ━━━ EXPORT ━━━
+function exportCSV(pid){
+  const p=findP(pid);if(!p)return;let csv='#,Section,Title,Status,Reviewed At,Reviewed By,Comments\n';
+  csv+=`"","Overall","${esc(p.name)}","${p.generalVerdict||'pending'}","","","${(p.generalNotes||'').replace(/"/g,'""').replace(/\n/g,' ')}"\n`;
+  p.items.forEach((it,i)=>{const cmt=(it.comments||[]).map(c=>c.author+': '+c.text).join(' | ');
+    csv+=`"${i+1}","${getSectionLabel(pid,it.sectionId)}","${it.title.replace(/"/g,'""')}","${it.status||'pending'}","${it.reviewedAt||''}","${it.reviewedBy||''}","${cmt.replace(/"/g,'""')}"\n`});
+  dl(`${p.name.replace(/\s+/g,'-')}-review.csv`,csv,'text/csv');toast('CSV exported');
+}
+function exportAllCSV(){S.products.forEach(p=>exportCSV(p.id))}
+function exportJSON(){dl('gtm-hub-backup.json',JSON.stringify(S,null,2),'application/json');toast('JSON exported');closeModal('mSettings')}
+function importJSON(e){
+  const f=e.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=ev=>{try{const d=JSON.parse(ev.target.result);
+    if(d.version===2){S={...S,...d};save();render();toast('V2 data imported');closeModal('mSettings')}
+    else if(d.products){S=migrateV1(d);save();render();toast('V1 data imported & migrated');closeModal('mSettings')}
+    else toast('Invalid format','error')}catch(err){toast('Error reading file','error')}};
+  r.readAsText(f);
+}
+function resetAll(){if(!confirm('Delete ALL data? This cannot be undone!')){return}localStorage.removeItem(KEY);location.reload()}
+
+// ━━━ MODALS ━━━
+function openModal(id){document.getElementById(id).classList.add('show')}
+function closeModal(id){document.getElementById(id).classList.remove('show');if(id==='mSettings')closeModalSettings()}
+
+// ━━━ TOAST ━━━
+function toast(msg){const el=document.getElementById('toast'),m=document.getElementById('toastMsg');m.textContent=msg;
+  document.querySelector('.toast-undo')?.remove();el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2500)}
+function toastUndo(msg,fn){
+  const el=document.getElementById('toast'),m=document.getElementById('toastMsg');m.textContent=msg+' ';
+  document.querySelector('.toast-undo')?.remove();
+  const btn=document.createElement('span');btn.className='toast-undo';btn.textContent='Undo';btn.onclick=()=>{fn();el.classList.remove('show')};
+  el.appendChild(btn);el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),5000);
+}
+
+// ━━━ HELPERS ━━━
+function findP(id){return S.products.find(x=>x.id===id)}
+function pStats(p){let a=0,e=0,r=0,pe=0;(p.items||[]).forEach(i=>{if(i.status==='approved')a++;else if(i.status==='edits')e++;else if(i.status==='rejected')r++;else pe++});
+  const t=p.items.length,rev=a+e+r;return{approved:a,edits:e,rejected:r,pending:pe,total:t,pct:t?Math.round(rev/t*100):0}}
+function getSectionLabel(pid,secId){const p=findP(pid);const sec=p?.sections.find(s=>s.id===secId);return sec?sec.label:secId}
+function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function timeAgo(iso){if(!iso)return'';const d=new Date(iso),n=Date.now(),s=Math.floor((n-d)/1e3);
+  if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';
+  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
+function dl(name,content,type){const b=new Blob(['\ufeff'+content],{type:type+';charset=utf-8;'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
+
+// ━━━ KEYBOARD ━━━
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){document.querySelectorAll('.modal-bg.show').forEach(m=>m.classList.remove('show'))}
+  if((e.ctrlKey||e.metaKey)&&e.key==='f'&&S._view==='review'){e.preventDefault();document.getElementById('searchInput')?.focus()}
+});
+// Close modals on backdrop click
+document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg){bg.classList.remove('show');if(bg.id==='mSettings')closeModalSettings()}}));
+// Close sidebar on mobile nav
+document.addEventListener('click',e=>{if(innerWidth<=768&&e.target.closest('.sb-item'))document.querySelector('.sidebar').classList.remove('open')});
+
+// ━━━ DEFAULT DATA ━━━
+function defaultData(){
+  return[{id:'vault-gtm',name:'Musahm Vault',tagline:'Saudi governance. World-class platform.',description:'GTM content for Musahm Vault product launch — document management system.',color:'#c3924d',emoji:'🏛️',deadline:'',team:[],generalNotes:'',generalVerdict:'pending',createdAt:now(),updatedAt:now(),
+    sections:JSON.parse(JSON.stringify(DEFAULT_SECTIONS)),
+    items:[
+      {id:'li1',sectionId:'social',order:0,title:'LinkedIn: Launch Announcement (Arabic)',summary:'Main launch post. "Where are your docs right now?" 5 product pillars. 30-seat beta CTA.',content:'Where are your company\'s documents right now?\n\nIn the CFO\'s inbox? In a WhatsApp group? On the laptop of someone who left six months ago? The auditor asks, and the search takes days instead of minutes.\n\nSaudi companies rely on Musahm today to govern their decisions. Now we complete the picture.\n\nToday we launch Musahm Vault, a document management system built from scratch for Saudi governance:\n\n◼ Upload, classify, and organize your documents in workspaces with smart tags\n◼ Five permission levels per document, from Viewer to Admin\n◼ Approval workflows: no document goes live without review and sign-off\n◼ Audit trail for every action with user and timestamp\n◼ Direct integration with Shareholder Registry and meeting records in Musahm\n\nVault is more than file storage. A complete system to organize, protect, and govern your documents.\n\nBeta seats are limited. First 30 companies only.\nActivate Vault: [link]',tags:['Arabic','LinkedIn','Launch'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'li2',sectionId:'social',order:1,title:'LinkedIn: Launch Announcement (English)',summary:'English mirror. Same structure: scatter problem, solution reveal, 5 feature bullets, Vision 2030 anchor, 30-seat CTA.',content:'Where are your company\'s most important documents right now?\n\nIn the CFO\'s inbox? In a WhatsApp group? On the laptop of someone who left six months ago?\n\nSaudi companies already rely on Musahm to govern their board decisions. Today we complete the picture.\n\nIntroducing Musahm Vault, a document management system built from scratch for Saudi governance:\n\n◼ Upload, classify, and organize documents in governed workspaces with smart tagging\n◼ Five-level permissions on every document, from Viewer through Admin\n◼ Approval workflows: no document goes live without review and sign-off\n◼ Full audit trail. Every action logged with user identity and timestamp\n◼ Direct integration with Shareholder Registry and board meeting records\n\nVault is more than file storage. A complete system to organize, protect, and govern your documents.\n\nBeta is limited to the first 30 companies. Activate Vault: [link]\n\n#Musahm #CorporateGovernance #SaudiTech #CompaniesLaw #DocumentManagement #Vault',tags:['English','LinkedIn','Launch'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'li3',sectionId:'social',order:2,title:'LinkedIn: Shareholder Registry Angle (Arabic)',summary:'Unique differentiator: no competitor links shareholder registry to documents.',content:'Is your company\'s shareholder registry connected to its documents?\n\nIn most Saudi companies, general assembly decisions are in a Word file. The shareholder registry is in Excel. Contracts are in the lawyer\'s email.\n\nThat is why we built Musahm Vault, to connect governance documents to their proper context.\n\n◼ Shareholder registry in Musahm ← their documents in Vault\n◼ Board meeting minutes ← in a governed workspace with five-level permissions\n◼ Comprehensive audit trail proving chain of custody\n◼ Approval workflows: no document goes out without review and sign-off\n◼ Version control: every edit saved automatically with rollback to any version\n\nFirst 30 companies get exclusive beta access. Activate Vault: [link]',tags:['Arabic','LinkedIn','Feature'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'li4',sectionId:'social',order:3,title:'LinkedIn: Audit/Compliance Angle (English)',summary:'Targets CFOs and auditors. "When a regulator asks for your board resolution, how fast can you produce it?"',content:'When a regulator asks for your board resolution from last quarter, how fast can you produce it?\n\nIf the answer is "days, not minutes," your governance has a documentation gap.\n\nMusahm Vault, governed document management:\n\n◼ Every document tagged, classified, and connected to the decision it supports\n◼ Five-tier access control with per-document permissions\n◼ Audit trail that proves chain of custody: user, action, timestamp\n◼ OTP-verified external sharing with watermarked copies\n◼ Approval workflows that block publishing until every reviewer signs off\n\nLimited beta. First 30 companies only. Activate Vault: [link]',tags:['English','LinkedIn','Compliance'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'li5',sectionId:'social',order:4,title:'LinkedIn: Vault as a Place / Bank Metaphor (Arabic)',summary:'"Your docs deserve a vault, not a shared folder." Bank analogy.',content:'Your company\'s documents deserve a vault, not a shared folder.\n\nYour company keeps its money in a bank. Its data on secure servers. But governance documents? In a WhatsApp group.\n\nMusahm Vault is your digital vault. One place for every governance document:\n\n◼ Every document in its proper place, classified and protected with permissions\n◼ Approval workflows: no document goes out without review and sign-off\n◼ Auditor requests a document? Retrieve it in seconds, not days\n\nFirst 30 companies only. Activate Vault: [link]',tags:['Arabic','LinkedIn','Brand'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'tw1',sectionId:'social',order:5,title:'Twitter: Triple Beat (Arabic + English)',summary:'"Your docs scattered between email and WhatsApp?" Three-word punch.',content:'Your company docs are scattered between email and WhatsApp?\n\nWe built Musahm Vault for Saudi governance, a document system with a complete audit trail.\n\nPermissions, audit, and protection.\n\nFirst 30 companies only.\nActivate Vault: [link]',tags:['Arabic','English','Twitter','Launch'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'tw2',sectionId:'social',order:6,title:'Twitter: Vision 2030 Hook',summary:'"Vision 2030 raised governance standards. Are your documents ready?"',content:'Vision 2030 raised governance standards. Are your company\'s documents ready?\n\nMusahm Vault, a Saudi document system with full audit trail and governed permissions.\n\nFirst 30 companies. Activate Vault: [link]',tags:['Arabic','English','Twitter'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'tw3',sectionId:'social',order:7,title:'Twitter: Contrast Declaration',summary:'"Instead of importing a foreign DMS, we built Vault."',content:'Instead of importing a foreign document system, we built Vault. Saudi, governed, with an audit trail for every action.\n\nBecause our companies deserve document protection that understands their regulations.\n\nFirst 30 companies in beta. Activate Vault: [link]',tags:['Arabic','English','Twitter','Brand'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'tw4',sectionId:'social',order:8,title:'Twitter: Vault as a Place (Arabic)',summary:'"Your money in a bank. Your data on a server. Your governance docs?"',content:'Your money in a bank. Your data on a server. Your governance documents?\n\nMusahm Vault. Your digital vault.\n\nFirst 30 companies. Activate Vault: [link]',tags:['Arabic','Twitter'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'em1',sectionId:'email',order:0,title:'Beta Announcement Email (Arabic)',summary:'To existing Musahm clients. Board Secretary pain opener. 8 feature bullets.',content:'Subject: Your governance documents deserve Saudi-grade protection\n\nDear [Company Name],\n\nYou manage your company\'s governance through Musahm. But where are those governance documents now?\n\nMeeting minutes scattered across emails. Contracts on personal devices. Board decisions in folders no one can find.\n\nWe built Vault from scratch.\n\n• Shareholder registry linked to documents\n• Six governed workspaces\n• Five permission levels\n• Complete audit trail\n• Automated approval and review chains\n• Protected external sharing with OTP and watermarks\n• Electronic signatures integrated into workflows\n• Full version control\n\nOnly 30 beta seats. Registration closes soon.',tags:['Arabic','Email','Launch'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'em2',sectionId:'email',order:1,title:'Beta Announcement Email (English)',summary:'English mirror. Same 8 feature bullets. "30 beta seats remain."',content:'Subject: Your governance documents deserve Saudi-grade protection\n\nDear [Client Name],\n\nYou already govern your board meetings through Musahm. But where do the documents behind those decisions live?\n\nWe built Vault from scratch for Saudi governance.\n\n• Shareholder documents linked to the registry. No separate folders.\n• Six governed workspaces for board meetings, committees, decisions, contracts, policies.\n• Five levels of access control, from Viewer to Admin.\n• Complete audit trail. Every action logged. No deletions without record.\n• Approval chains enforced automatically.\n• OTP-verified external sharing with watermarked copies.\n• Electronic signatures integrated into document workflows.\n• Full version control with rollback.\n\n30 beta seats remain. Registration closes soon.',tags:['English','Email','Launch'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'sms1',sectionId:'sms',order:0,title:'SMS: Arabic Single (62 chars)',summary:'Core hook + CTA. 1 segment.',content:'Musahm Vault, governed documents, built Saudi. 30 seats. Register: [link]',tags:['Arabic','SMS'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'sms2',sectionId:'sms',order:1,title:'SMS: Arabic Extended (125 chars)',summary:'Wave 1 VIPs. Adds audit trail + "you are the first 30 invited." 2 segments.',content:'Musahm Vault is now available in beta, a Saudi document system with audit trail and governed permissions. As Musahm clients, you are the first 30 invited. Register: [link]',tags:['Arabic','SMS'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'sms3',sectionId:'sms',order:2,title:'SMS: English Single (118 chars)',summary:'1 segment GSM-7.',content:'Musahm Vault - Saudi-built document governance. Full audit trail, governed access. 30 beta seats only. Register: [link]',tags:['English','SMS'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'sms4',sectionId:'sms',order:3,title:'SMS: English Extended (147 chars)',summary:'1 segment.',content:'Musahm Vault beta is live. Saudi-built governance DMS - audit trail, five-level access, governed workflows. First 30 seats only. Register: [link]',tags:['English','SMS'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'vid1',sectionId:'video',order:0,title:'Brand Video Script (~78 seconds)',summary:'Cinematic intro. 6 scenes. Arabic VO + English subtitles. "Built Saudi" positioning.',content:'Scene 1 (0:00-0:18) The Problem: Scattered docs across email, WhatsApp, personal devices.\n\nScene 2 (0:18-0:28) The Stakes: Lost docs stall deals. Unauthorized access costs reputation.\n\nScene 3 (0:28-0:42) Solution Reveal: "We didn\'t import a foreign system. We built Vault from scratch."\n\nScene 4 (0:42-0:60) Features: Smart organization, role-based permissions, audit trail.\n\nScene 5 (0:60-0:70) Complete Stack: Musahm + Vault together.\n\nScene 6 (0:70-0:78) CTA: First 30 companies. Register now.',tags:['Video','Arabic','Brand'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'vid2',sectionId:'video',order:1,title:'Product Demo Video (~2:40)',summary:'Screen-capture walkthrough. 8 scenes showing actual Vault UI.',content:'Scene 0 (0:00-0:12) Hook.\nScene 1 (0:12-0:30) Dashboard.\nScene 2 (0:30-0:55) File Upload.\nScene 3 (0:55-1:10) Search.\nScene 4 (1:10-1:35) Permissions.\nScene 5 (1:35-2:00) Workflows.\nScene 6 (2:00-2:25) Audit + Versioning.\nScene 7 (2:25-2:40) CTA.',tags:['Video','Demo'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'vis1',sectionId:'visual',order:0,title:'Slide 1: Launch Announcement',summary:'Navy background, gold accents. 4 feature bullets. LinkedIn 1200x628.',content:'',tags:['Visual','LinkedIn'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'vis2',sectionId:'visual',order:1,title:'Slide 2: Shareholder Registry',summary:'"Is your shareholder registry connected to your documents?"',content:'',tags:['Visual','LinkedIn'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'vis3',sectionId:'visual',order:2,title:'Slide 3: DMS Workflow',summary:'4-step flow: Upload > Classify > Approve > Share.',content:'',tags:['Visual','LinkedIn'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'sal1',sectionId:'sales',order:0,title:'Battle Cards',summary:'4 competitive cards (Majles, Ebana, Diligent, WhatsApp). FIA framework.',content:'1. Majles.tech — Board management focus, no DMS\n2. Ebana — Compliance focus, no document governance\n3. Diligent — Enterprise pricing, not Saudi-native\n4. WhatsApp/SharePoint — No governance controls',tags:['Sales','Competitive'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'sal2',sectionId:'sales',order:1,title:'Demo Script (25 minutes)',summary:'6-scene scripted demo for sales calls.',content:'',tags:['Sales','Demo'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'sal3',sectionId:'sales',order:2,title:'Pricing Tiers',summary:'3 tiers: Starter / Professional / Enterprise. SAR pending.',content:'Tier 1: Starter — Small companies\nTier 2: Professional — Mid-size\nTier 3: Enterprise — Large\n\n⚠ SAR pricing pending (Blocker D1)',tags:['Sales','Pricing'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'con1',sectionId:'content',order:0,title:'Landing Page Copy',summary:'Full landing page content with hero, features, social proof, CTA.',content:'',tags:['Content','Website'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+      {id:'con2',sectionId:'content',order:1,title:'FAQ (28 items)',summary:'28-item FAQ. Covers features, security, pricing, onboarding.',content:'',tags:['Content','FAQ'],status:'pending',reviewedAt:null,reviewedBy:'',createdAt:now(),updatedAt:now(),comments:[]},
+    ]}];
+}
+
+// ━━━ INIT ━━━
+load();render();
+</script>
+</body>
+</html>
