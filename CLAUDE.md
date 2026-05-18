@@ -1,23 +1,49 @@
-# Musahm Vault
+# Musahm Workspace (GTM root)
 
-DMS + AI extraction + workflows + multi-tenancy. .NET 10 + MongoDB | React 18 + Vite. Saudi Arabia.
+This is the GTM / strategy / docs root. Product code lives in nested repos that you sync from GitHub — never edit them as part of parent commits.
 
+| Folder | What | Source | Sync script |
+|--------|------|--------|-------------|
+| `Vault/` | Musahm Vault (current product) — DMS + AI extraction + workflows + multi-tenancy | [`Musahm-dev/Musahm-Vault`](https://github.com/Musahm-dev/Musahm-Vault) `development` | `sync.bat` |
+| `Musahm/` | Musahm (legacy platform) — shareholder / board management | [`Musahm-dev/Musahm`](https://github.com/Musahm-dev/Musahm) `master` | `sync.bat` |
+| `gtm/`, `aidocs/`, `README.md` | Strategy, GTM artifacts, boss reviews | this repo | — |
+
+> **Always run `sync.bat` before chatting about the product or writing user stories** so your context is the latest code.
 > **Knowledge graph** (file index, API endpoints, entity maps, search patterns) → `llm.txt`
 
-## Stack
+## Product Stacks
+
+### Vault/ — Musahm Vault (current)
 
 ```
-Backend/Vault/  .NET 10 Clean Arch (Vault.slnx)
+Vault/Backend/Vault/   .NET 10 Clean Arch (Vault.slnx)
   API/          Controllers, DI, Swagger, JWT
   Core/         Entities, DTOs, interfaces, constants, enums
   Service/      Business logic, seeders, helpers, i18n
   Repository/   MongoDB driver, BaseRepository<T>, UnitOfWork
   MCP-Bots/     Node.js MCP servers
 
-Frontend/       npm monorepo
+Vault/Frontend/        npm monorepo
   apps/web/     React 18 SPA (Vite 7, TS, plain CSS, react-router v6)
   packages/     core/ hooks/ types/ utils/
 ```
+
+### Musahm/ — Legacy platform
+
+```
+Musahm/AlGameia/       .NET 5 Clean Arch (AlGameia.sln)
+  GameiaAPI/    Controllers, SignalR Hubs, Middleware
+  Core/         Entities, resx i18n (ar-SA/en)
+  Repository/   EF Core repositories
+  Service/      Business logic, seeders
+  Jobs/         Background jobs
+
+Musahm/gamiaawebsite/  Angular 12 + PrimeNG + ngx-translate + SSR
+
+Musahm/Documentation/  Specs, SQL, board-meeting docx, Arabic policy files
+```
+
+See [`Musahm/CLAUDE.md`](Musahm/CLAUDE.md) for legacy-specific patterns.
 
 ## Mechanical Overrides
 

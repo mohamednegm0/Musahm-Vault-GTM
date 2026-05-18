@@ -9,7 +9,9 @@
       "Bash(powershell.exe -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\LENOVO\\\\AppData\\\\Local\\\\Temp\\\\dotnet-install.ps1\" -Channel 10.0 -InstallDir \"C:\\\\Users\\\\LENOVO\\\\.dotnet\")",
       "Bash(\"/c/Users/LENOVO/.dotnet/dotnet.exe\" --version)",
       "mcp__Claude_Preview__preview_start",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3456/final-boss-review.html)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3456/final-boss-review.html)",
+      "Bash(gh api *)",
+      "Bash(read b *)"
     ]
   }
 }

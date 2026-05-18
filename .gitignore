@@ -1,3 +1,8 @@
+# Nested product repos — each has its own .git, managed via sync-*.bat
+# Do NOT track inside this parent repo. Pull updates with sync-all.bat.
+/Musahm/
+/Vault/
+
 /Backend/Vault/API/bin
 /Backend/Vault/API/obj
 /Backend/Vault/Core/bin
